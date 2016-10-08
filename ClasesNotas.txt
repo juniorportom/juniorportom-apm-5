@@ -1,0 +1,175 @@
+html, me da estructura
+css, me da el estilo de la pagina
+javascript, me da dinamismo
+Conectividad: webSocket, comunicacion punto a punto, comunicacion en tiempo real
+Html 5 es estable: Fue terminado el 28 de octubre del 2014
+MOteores de render en navegadores: Lo que se escribe en codigo lo va a interpretar y dibujar en el dispositivo.
+Chrome, consume RAM
+Motores: Redkid, gueko
+Motor de procesamiento de java script, V8 (el mejor) desarrollado por google
+Compatibilidad de html5: http://html5test.com/, pagina para conpatibilidad
+Caniuse.com
+mobilehtml5.org
+crosswell
+Interaccion y experiencia de usuario. Como se siente el usuario con mi apliación
+	Consistencia: Respetar convenciones establecidas, conocimiento y costumbres del usuario
+	Respetar la relación entre aspecto, posición y comportamiento.
+	Mimtización con aspectos
+	"La consistencia mas importante es aquella que espera el usuario."
+	Inviten al usuario aprender nuevas metodologias. 
+	"La consistencia serializa el camino a seguir por el usuario."
+	Aprovechar modelos y patrones que e usuario ya tiene interiorizado.
+
+	Perceptibilidad: Si no se persibe la opcion de ejecución de un evento el usuario no lo va realizar.
+	El descubrimiento de interacciones no puede ir ligado a la casualidad.
+	No se debe ocultar información importante o posibilidad de interactuar.
+	Se debe tener en cuanta los usuarios que interactuan mediante lectores y voz, interfaces tactiles, entre otros.
+
+	Previsibilidad: Cuendo el usuario sabe que va a pasar, se facilita que se realice el objetivo correcamente.
+	"Slack, comunicación de los equipos local o remoto"
+	Si no esprevisible, se conlleva a acciones de prueba y error
+	Aparición de procesos inconsistsentes e impredecibles.
+
+	Facilidad de aprendizaje: Deben de ser faciles de aprender y faciles de recordar.
+	Ideal que no hubiera proceso de aprendizaje.
+	Buscar que sea intuitivo.
+	"Sosh"
+	Aprovechar espacios vacios para enseñar a usar la aplicaion.
+	Transferencia de habilidades, aprovechamiento de conocimientos de otros .
+	skeumorfidmo digital, Imitar el aspecto de algo real, para facilitar el conocimiento previo.
+
+	Simplicidad: Motrar aquelos elementos que aporten significativamente y sean funcionales,
+	mantener a raya lo irrelevante.
+	Centrarse en el usuario final en el contexto del momento.
+	Un diseño simple no tiene por que dejar de ser complejo.
+	Se confunde la simplicidad final con la funcional.
+	"Evernote"
+
+	Feedback: Debe darse en doble vida
+    Informar al usuario de donde esta, que pasa o que va a pasar
+    Complementar la experiencia, no complicarla
+    Una operación debe darme cierto feedback
+    Diferenciar entre descuidos, eleecciones incorrectas y/o errores
+    una interaciion importante, debe ser avalada por el usuario.
+    Deshacer debe ser una opcion
+    "Google analitics" Mapa de calor el cual muestra la usabilidad de el app, esta app me permite capturar información de la usabilidad del sitio
+    newrelic.com Me da feedback del backen de la aplicacion es paga.
+    piwik, para feedback de la aplicación en el servidor local
+
+    El sistema completo:
+
+    particularidades del diseño movil
+    - Como se sijeta el dispositivo
+    - Aprovechar la tecnologia disponible
+    - Condiciones de luz
+    - Se va a ussa en la calle
+    - va a tener actividad fisica
+
+    La ley del pulgar.
+    2048 app
+
+    Dispositivos touch y multi touch
+
+    El diseño movil es mas sensible al entorno del usuario, el ello dependee el exito o el fracaso.
+    Uso de bosetos y ´prototipos ayudara a detectar fallos o encontrar nuevas ideas 
+
+    Prototipo: Simulación o modelo que representa el aspecto propuesto del producto esperado.
+    Sirve para aproximar conceptos de experiencia de usuario
+    Sketch/wireframes: recopilacion rapida de ideas respecto a estructuras o informacion
+    Prototipo/mockups: Visulamenete mas precisos con respecto al producto final
+    tieneden a acercarse mas al producto final y conllevan interaccion
+    pencil
+    mockups
+    drawui
+
+    Diseño centrado en el usuario
+
+    Procrso de diseño, braintorming, prototipado, test y evaluación
+    bocetos antes que prototipos
+
+    Bocetos
+    	todos pueden participar
+    	costo bajo, lapiz, papel, marcadores...
+    	Crear bocetos no se trata de calidad, se trata de aterrizar ideas
+    	Se puede obtener feedback mas rapido
+    	no se debe entrar en detalle
+
+
+    templates
+
+    interaccion tiene: Pre un durante y un pos
+
+    Kidsttired
+
+    dropbox
+
+
+    Prototipo y UX
+    - Que funciona y que no; controlar el desarrollo innecesario
+    - Descubrir nuevas rutas o situaciones o esperadas
+    - Test y evaluación con usuarios
+    - Mejora de comunicación con equipos
+    - No tienen que ser perfectos
+    - conocer a los usuarios
+    - Early adopters, si el lo requiere 
+    - Define los objetivos donde se jutifica el porque de lo plantaado
+    -
+
+    Objetivos
+    - Validar ideas y diseños
+    - Realizar A/B test
+    - Buscar soluciones mas alla de los limites tecnicos.
+
+    Grado de detalle
+    -lo-fi: Poco detalle, mas esquematico, menos atractio visualmente
+    -hi fi: mayor detalle
+    http://capptivate.co/
+
+    lorenipsum
+
+    Entorno: Poco se tiene casi en cuenta, ¿como deberia ser el prototipo?
+    lo-fi: Cierto conocimiento de los usuarios
+    hi-fi: conocer los gustos, dolencias y particularidads 
+
+    Prototipos en papel
+    test y evaluación de prototipos
+    	Actores
+    		fascilitador
+    		usuarios
+    		observador: o grabar la sesion
+
+	Pomodoro, tecnica de concentracion y productividad
+	
+*********************************clases 3-4
+
+cross-linking:  Me ayuda a elegir la forma de presentacion dependiendo del dispositivo donde se carga la aplicacion.
+No siempre es efectivo, no entiene el motor sobre el que corre
+diseños liquidos
+responsive
+wathwpp
+
+responsive web desing: adaptaci´´on del contenido al dispositivo
+Pilares principales
+    imagenes
+    fuentes
+    sistema de columnas
+
+ Mockups o wireframes
+ - www.inyrtfsceskrtch.com
+ material desing
+ http://ionicframework.com/
+ pencil
+
+ splash screem en las apps, leer esta en el repositorio
+
+viewport
+wathwg
+
+
+
+
+
+
+
+    
+
