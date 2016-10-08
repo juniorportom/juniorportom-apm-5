@@ -162,14 +162,66 @@ Pilares principales
 
  splash screem en las apps, leer esta en el repositorio
 
-viewport
+viewport: revisar informacion
+
 wathwg
 
+estilos por defecto: se debe anejar medidas estandares, 960px
+
+media queries: especificaciones 3dss
+layauts
+    fuentes
+    imagenes que van en nuestro contenido
+ej boobstrap
+
+
+Patrones de diseño
+    * mostly fluid:  ej   http://mediaqueri.es/, organizar de la informacion mas relevante al menos relevante
+    * column drop:  ej  http://weenudge.com/,  se empaquetan los contenidos en columnas
+    * Layout shifter: cuando la aplicaciones nace primero para mobiles y despues se adaptan para pantallas mas grandes. Ej:  http://www.anderssonwise.com/
+    * Tiny tweaks: ej.  http://gingerwhale.com/, se basa en ajustar el tamaño de los elementos
+    * Off canvas: oculta secciones para presentar contenidos. Ej: m.facebook.com
+        Se debe tener bien definido los:
+        landscape orientation
+        portrait 
+        unidades de medida: relativa y absoluta, medidas em(medidas relativas) 0.5 em
+        1 pixel en una medida absoluta
+
+    Retina display: PIXEL 2 VECES MAS PEQUEÑO. 
+    responsive.js
+
+    herramientas: en google chrome usamos el F12, en modo de dispositivo
+    Firefox developer, son usuadas para ver el responsive de las aplicaciones
+
+    Eventos tipo tap
+
+    Progresive enhancement: Se tubo primero la aplicacion mobile, luego la mobile
+    graceful degradation:  Se tiene primero la version web, despues la mobile.
+
+
+    frameworks
+        skeleton
+        bootstrap
+        foundation
+
+Microdatos, 
+
+
+fuentes de google:  https://fonts.google.com/
+
+    IONIC angular
 
 
 
+font-size: 16px:
+Modelo de caja: se refiere a la forma en la que se ubican las propiedades de pading, border, margin posicion
 
+margin: 0 auto 0 auto;
+pading: 0 auto;
+border: 0;
 
-
+splatshscreem : 
     
+
+Como recomendación, es mejor usar inport en de las fuentes en el CSS en lugar de javascript
 
