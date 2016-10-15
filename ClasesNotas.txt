@@ -225,3 +225,26 @@ splatshscreem :
 
 Como recomendación, es mejor usar inport en de las fuentes en el CSS en lugar de javascript
 
+
+clases 5 -  6
+
+
+
+Versionado semantico
+    0.0.0
+    mejor: version estable
+    minor: mejora correccion
+    pack: actualización en software de terceros
+
+Comparaciones de java script
+    ""== false  true
+    ""===false  false
+
+TypeScript
+Meta lenguaje, que me ayuda y complementa a javascript
+nodejs
+    google engine + js = nodejs
+    javascript fuera del navegador
+
+nodejs.org
+lts = version estable y a la cual le ofrecen soporte  "Low Terminal support"
