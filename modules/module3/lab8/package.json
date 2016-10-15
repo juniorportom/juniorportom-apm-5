@@ -1,0 +1,19 @@
+{
+  "name": "lab8",
+  "version": "0.1.0",
+  "description": "lab8",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juniorportom/juniorportom-apm-5.git"
+  },
+  "author": "Reinaldo Portocarrero",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juniorportom/juniorportom-apm-5/issues"
+  },
+  "homepage": "https://github.com/juniorportom/juniorportom-apm-5#readme"
+}

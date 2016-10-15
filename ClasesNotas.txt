@@ -245,6 +245,139 @@ Meta lenguaje, que me ayuda y complementa a javascript
 nodejs
     google engine + js = nodejs
     javascript fuera del navegador
+    Tambien me permite crear aplicaciones web, no es recomendable para aplicaciones muy robustas
 
 nodejs.org
 lts = version estable y a la cual le ofrecen soporte  "Low Terminal support"
+
+Instalar nodejs, version lts
+platform fonga
+
+NPM, node package module.
+modulos JS
+https://www.npmjs.com/
+package.jason
+graydor
+semver.org
+
+Instalaciones de paquetes globales y locales
+
+- Instalación de paquetes globales      --NPM se instala cuando se isntala el nodejs. En versiones anteriores si tocaba instalarlos por aparte
+        npm install -g typescript
+        npm instal -g cordova
+        npm instal -g ionic
+        Si es en plataformas unix o mac, se debe instalar con sudo
+
+v. node
+v. npm
+
+fongav "phonegap"  version privada de cordova
+
+
+Empezar ionic.
+
+    ionic start labxx black --ts --v2
+
+Generar packega .jason de forma manual
+npm init
+    
+/***************************** Ejemplo de creacion de package.jeson a mano *************************************************/
+
+C:\Users\Administrador\Documents\GitHub\juniorportom-apm-5\modules\module3\lab6>
+npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help json` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg> --save` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+name: (lab6)
+version: (1.0.0) 0.1.0
+description: Lab6
+entry point: (index.js)
+test command:
+git repository: https://github.com/juniorportom/juniorportom-apm-5
+keywords:
+author: Reinaldo Portocarrero
+license: (ISC) MIT
+About to write to C:\Users\Administrador\Documents\GitHub\juniorportom-apm-5\mod
+ules\module3\lab6\package.json:
+
+{
+  "name": "lab6",
+  "version": "0.1.0",
+  "description": "Lab6",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/juniorportom/juniorportom-apm-5.git"
+  },
+  "author": "Reinaldo Portocarrero",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/juniorportom/juniorportom-apm-5/issues"
+  },
+  "homepage": "https://github.com/juniorportom/juniorportom-apm-5#readme"
+}
+
+
+Is this ok? (yes) yes
+
+C:\Users\Administrador\Documents\GitHub\juniorportom-apm-5\modules\module3\lab6>
+
+/***************************** Ejemplo de creacion de package.jeson a mano *************************************************/
+
+
+tsc -v  version de typescript
+tsc --init    Crea archivo tsconfig.json
+
+.ts   Extensión para arcrivos typescript
+
+VSCode  herramienta de visual estudio. Para escribir typeScript.
+
+Para sublime, instalar el package control 
+
+Se busca en google package control install, y se selecciona el script de la pagina de la version correpondiente "Ejemplo sublime 3" y se coloca en el sublime en el modo de consola.
+view-->show console
+
+intelligent herramienta paga, editor de codigo
+
+>tsc index.ts                  Realiza el transpirin hacia javascript
+tsc name.ts
+tsc -w   me realiza los cambios de ts a javascript de forma automatica.
+
+TypeScript no permite hacer herencia multiple.  solo un extends o se impmenta de una 
+
+DART  herramienta privativa de google.
+TypeScript de microsoft.
+
+type script, para estructura de codigo.
+
+Angular 2.  Dueño google, proyecto en desarrollo
+Usa typeScript para definir los elementos de su arquitectura.
+
+
+package.json, gestion de dependencias, puedo ejecutar comandos, version de la aplicacion y script de arranque
+ En la linea "start" del package, se tiene referenciado  
+
+
+ npm install  --> instala dependencias locales
+ npm install --save-dev    --> instala dependecias de desarrollador.
+ npm install --save === nmp install  , sirve de la misma forma
+
+ npm start,   se encargara de iniciar el servidor y la aplicación.
+
+modele.js  archivo de modulos
+tsconfig.json  especifificación de la forma de typing
+typings,jason   
+directorio app "appcomponent"
+AppComponent { }  nunca se debe cambiar, siempre va definido de la misma forma
+
+Archivos SCSS  "SAS"
