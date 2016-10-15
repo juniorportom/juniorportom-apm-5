@@ -1,0 +1,318 @@
+Los elementos en línea definidos por HTML son: a, abbr, acronym, b, basefont, bdo, big, br, cite, code, dfn, em, font, i, img, input, kbd, label, q, s, samp, select, small, span, strike, strong, sub, sup, textarea, tt, u, var.
+
+Los elementos de bloque definidos por HTML son: address, blockquote, center, dir, div, dl, fieldset, form, h1, h2, h3, h4, h5, h6, hr, isindex, menu, noframes, noscript, ol, p, pre, table, ul.
+
+Los siguientes elementos también se considera que son de bloque: dd, dt, frameset, li, tbody, td, tfoot, th, thead, tr.
+
+Los siguientes elementos pueden ser en línea y de bloque según las circunstancias: button, del, iframe, ins, map, object, script.
+
+---- Funciones java script
+Textos:
+	.length  =longituds de la cadena	
+	concat   Concatena 2 cadenas  ej: mensaje1.concat(" Mundo"); 
+	toUpperCase
+	toLowerCase
+	charAt(posicion)
+	indexOf(caracter)
+	lastIndexOf(caracter)
+	substring(inicio, final)
+	split(separador)
+
+Arreglos
+	concat()
+	join(separador)
+	pop(), elimina el último elemento del array y lo devuelve
+	push(), añade un elemento al final del array
+	shift(), elimina el primer elemento del array y lo devuelve
+	unshift(), añade un elemento al principio del array
+	reverse(), modifica un array colocando sus elementos en el orden inverso a su posición original
+	
+Numeros
+	NaN, (del inglés, "Not a Number") JavaScript emplea el valor NaN para indicar un valor numérico no definido (por ejemplo, la división 0/0).
+	isNaN(), permite proteger a la aplicación de posibles valores numéricos no definidos
+	Infinity, hace referencia a un valor numérico infinito y positivo (también existe el valor –Infinity para los infinitos negativos)
+	toFixed(digitos), devuelve el número original con tantos decimales como los indicados por el parámetro digitos y realiza los redondeos necesarios
+	
+intrucciones 
+	break     Romper ciclo
+	continue		Continuar con la siguiente iteración del ciclo
+	
+DOM
+	Para obtener nodos del html se puede usar:
+	- document.getElementsByTagName retorna la lista de elementos que se solicite. EJ: var parrafos = document.getElementsByTagName("p");
+	- document.getElementsByName   ej: var parrafoEspecial = document.getElementsByName("especial");		<p name="especial">...</p>
+	- document.getElementById  Ej: var cabecera = document.getElementById("cabecera");
+			<div id="cabecera">
+				<a href="/" id="logo">...</a>
+			</div>
+
+crear un parrafo desde javascript
+		// Crear nodo de tipo Element
+		var parrafo = document.createElement("p");
+		
+		// Crear nodo de tipo Text
+		var contenido = document.createTextNode("Hola Mundo!");
+		
+		// Añadir el nodo Text como hijo del nodo Element
+		parrafo.appendChild(contenido);
+		
+		// Añadir el nodo Element como hijo de la pagina
+		document.body.appendChild(parrafo);
+		
+Eliminar un nodo.
+		var parrafo = document.getElementById("provisional");
+		parrafo.parentNode.removeChild(parrafo);
+ 
+		<p id="provisional">...</p>
+	
+Para accede a los atributos se usa el elemento y se usa punto, para llegar a la profundidad deseada.
+EJ:
+1.	var enlace = document.getElementById("enlace");
+	alert(enlace.href); // muestra http://www...com
+ 
+	<a id="enlace" href="http://www...com">Enlace</a>
+	
+	
+2.	var imagen = document.getElementById("imagen");
+	alert(imagen.style.margin);
+ 
+	<img id="imagen" style="margin:0; border:0;" src="logo.png" />
+	
+3.  var parrafo = document.getElementById("parrafo");
+	alert(parrafo.style.fontWeight);  // muestra "bold"
+ 
+	<p id="parrafo" style="font-weight: bold;">...</p>
+	
+4.  var parrafo = document.getElementById("parrafo");
+	alert(parrafo.class); // muestra "undefined"
+	alert(parrafo.className); // muestra "normal"
+	
+	<p id="parrafo" class="normal">...</p>
+	
+Eventos:
+
+
+Evento 			Descripción																Elementos para los que está definido
+			
+onblur 			Deseleccionar el elemento 												<button>, <input>, <label>, <select>, <textarea>, <body> 
+onchange 		Deseleccionar un elemento que se ha modificado 							<input>, <select>, <textarea> 
+onclick 		Pinchar y soltar el ratón 												Todos los elementos 
+ondblclick 		Pinchar dos veces seguidas con el ratón 								Todos los elementos 
+onfocus 		Seleccionar un elemento 												<button>, <input>, <label>, <select>, <textarea>, <body> 
+onkeydown 		Pulsar una tecla (sin soltar) 											Elementos de formulario y <body> 
+onkeypress 		Pulsar una tecla 														Elementos de formulario y <body> 
+onkeyup 		Soltar una tecla pulsada 												Elementos de formulario y <body> 
+onload 			La página se ha cargado completamente 									<body> 
+onmousedown 	Pulsar (sin soltar) un botón del ratón 									Todos los elementos 
+onmousemove 	Mover el ratón 															Todos los elementos 
+onmouseout 		El ratón "sale" del elemento (pasa por encima de otro elemento) 		Todos los elementos 
+onmouseover 	El ratón "entra" en el elemento (pasa por encima del elemento) 			Todos los elementos 
+onmouseup 		Soltar el botón que estaba pulsado en el ratón 							Todos los elementos 
+onreset 		Inicializar el formulario (borrar todos sus datos) 						<form> 
+onresize 		Se ha modificado el tamaño de la ventana del navegador 					<body> 
+onselect 		Seleccionar un texto 													<input>, <textarea> 
+onsubmit 		Enviar el formulario 													<form> 
+onunload 		Se abandona la página (por ejemplo al cerrar el navegador) 				<body> 
+
+Formularios
+
+para accederlos se usa su atributo nombre
+	var formularioPrincipal = document.formulario;
+	var formularioSecundario = document.otro_formulario;
+ 
+	<form name="formulario" >
+		...
+	</form>
+ 
+	<form name="otro_formulario" >
+		...
+	</form>
+	
+Los elementos de los formularios también se pueden acceder directamente mediante su atributo name
+
+	var formularioPrincipal = document.formulario;
+	var primerElemento = document.formulario.elemento;
+	
+	<form name="formulario">
+	<input type="text" name="elemento" />
+	</form>
+
+Propiedades utiles de formularios:
+	type: indica el tipo de elemento que se trata. Para los elementos de tipo <input> (text, button, checkbox, etc.) 
+	form: es una referencia directa al formulario al que pertenece el elemento. Así, para acceder al formulario de un elemento, se puede utilizar document.getElementById("id_del_elemento").form
+	name: obtiene el valor del atributo name de XHTML. Solamente se puede leer su valor, por lo que no se puede modificar.
+	permite leer y modificar el valor del atributo value de XHTML. Para los campos de texto (<input type="text"> y <textarea>) obtiene el texto que ha escrito el usuario. Para los botones obtiene el texto que se muestra en el botón. Para los elementos checkbox y radiobutton no es muy útil
+	
+Eventos mas importantes en formularios
+	onclick: evento que se produce cuando se pincha con el ratón sobre un elemento. Normalmente se utiliza con cualquiera de los tipos de botones que permite definir XHTML (<input type="button">, <input type="submit">, <input type="image">).
+	onchange: evento que se produce cuando el usuario cambia el valor de un elemento de texto (<input type="text"> o <textarea>). También se produce cuando el usuario selecciona una opción en una lista desplegable (<select>). Sin embargo, el evento sólo se produce si después de realizar el cambio, el usuario pasa al siguiente campo del formulario, lo que técnicamente se conoce como que "el otro campo de formulario ha perdido el foco".
+	onfocus: evento que se produce cuando el usuario selecciona un elemento del formulario.
+	onblur: evento complementario de onfocus, ya que se produce cuando el usuario ha deseleccionado un elemento por haber seleccionado otro elemento del formulario. Técnicamente, se dice que el elemento anterior "ha perdido el foco".
+
+Elementos
+	*** El valor del texto mostrado por estos elementos se obtiene y se establece directamente mediante la propiedad value
+		<input type="text" id="texto" />
+		var valor = document.getElementById("texto").value;
+		
+		<textarea id="parrafo"></textarea>
+		var valor = document.getElementById("parrafo").value;
+
+	*** Radiobutton
+
+	Cuando se dispone de un grupo de radiobuttons, generalmente no se quiere obtener el valor del atributo value de alguno de ellos, sino que lo importante es conocer cuál de todos los radiobuttons se ha seleccionado. La propiedad checked devuelve true para el radiobutton seleccionado y false en cualquier otro caso. Si por ejemplo se dispone del siguiente grupo de radiobuttons:
+	
+		<input type="radio" value="si" name="pregunta" id="pregunta_si"/> SI
+		<input type="radio" value="no" name="pregunta" id="pregunta_no"/> NO
+		<input type="radio" value="nsnc" name="pregunta" id="pregunta_nsnc"/> NS/NC
+	
+	El siguiente código permite determinar si cada radiobutton ha sido seleccionado o no:
+	
+		var elementos = document.getElementsByName("pregunta");
+		
+		for(var i=0; i<elementos.length; i++) {
+		alert(" Elemento: " + elementos[i].value + "\n Seleccionado: " + elementos[i].checked);
+		}
+		
+	*** checkbox
+	 se debe comprobar cada checkbox de forma independiente del resto. El motivo es que los grupos de radiobutton son mutuamente excluyentes y sólo se puede seleccionar uno de ellos cada vez. Por su parte, los checkbox se pueden seleccionar de forma independiente respecto de los demás
+		<input type="checkbox" value="condiciones" name="condiciones" id="condiciones"/> He leído y acepto las condiciones
+		<input type="checkbox" value="privacidad" name="privacidad" id="privacidad"/> He leído la política de privacidad
+		
+		Utilizando la propiedad checked, es posible comprobar si cada checkbox ha sido seleccionado:
+		
+		var elemento = document.getElementById("condiciones");
+		alert(" Elemento: " + elemento.value + "\n Seleccionado: " + elemento.checked);
+		
+		elemento = document.getElementById("privacidad");
+		alert(" Elemento: " + elemento.value + "\n Seleccionado: " + elemento.checked);
+
+	*** Select --  Listas
+	Las listas desplegables (<select>) son los elementos en los que es más difícil obtener su valor. Si se dispone de una lista desplegable como la siguiente:
+
+		<select id="opciones" name="opciones">
+		<option value="1">Primer valor</option>
+		<option value="2">Segundo valor</option>
+		<option value="3">Tercer valor</option>
+		<option value="4">Cuarto valor</option>
+		</select>
+	
+		// Obtener la referencia a la lista
+		var lista = document.getElementById("opciones");
+		
+		// Obtener el índice de la opción que se ha seleccionado
+		var indiceSeleccionado = lista.selectedIndex;
+		// Con el índice y el array "options", obtener la opción seleccionada
+		var opcionSeleccionada = lista.options[indiceSeleccionado];
+		
+		// Obtener el valor y el texto de la opción seleccionada
+		var textoSeleccionado = opcionSeleccionada.text;
+		var valorSeleccionado = opcionSeleccionada.value;
+		
+		alert("Opción seleccionada: " + textoSeleccionado + "\n Valor de la opción: " + valorSeleccionado);
+		
+		Se puede resumir como 
+		
+		var lista = document.getElementById("opciones");
+ 
+		// Obtener el valor de la opción seleccionada
+		var valorSeleccionado = lista.options[lista.selectedIndex].value;
+		
+		// Obtener el texto que muestra la opción seleccionada
+		var valorSeleccionado = lista.options[lista.selectedIndex].text;
+
+		*** Asignar foco.   Para asignar el foco a un elemento de XHTML, se utiliza la función focus(). 
+		
+			document.getElementById("primero").focus();
+ 
+			<form id="formulario" action="#">
+			<input type="text" id="primero" />
+			</form>
+			
+			Con el siguiente codigo se le puede dar foco al primer elemento del primer formulario de la pagina
+			
+			if(document.forms.length > 0) {
+				for(var i=0; i < document.forms[0].elements.length; i++) {
+					var campo = document.forms[0].elements[i];
+					if(campo.type != "hidden") {
+					campo.focus();
+					break;
+					}
+				}
+			}
+			
+		*** Evitar el envío doble de formularios
+		<form id="formulario" action="#">
+		  ...
+		  <input type="button" value="Enviar" onclick="this.disabled=true; this.value=’Enviando...’; this.form.submit()" />
+		</form>
+		
+		OJO:  El botón del ejemplo anterior está definido mediante un botón de tipo <input type="button" />, ya que el código JavaScript mostrado no funciona correctamente con un botón de tipo <input type="submit" />. Si se utiliza un botón de tipo submit, el botón se deshabilita antes de enviar el formulario y por tanto el formulario acaba sin enviarse.
+		
+		*** Limitar el numero de caracteres en un texarea
+		
+		function limita(maximoCaracteres) {
+			var elemento = document.getElementById("texto");
+			if(elemento.value.length >= maximoCaracteres ) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}
+		
+		<textarea id="texto" onkeypress="return limita(100);"></textarea>
+		
+		**** Restringir caracteres ingresados a camoos de texto
+		
+			function permite(elEvento, permitidos) {
+				// Variables que definen los caracteres permitidos
+				var numeros = "0123456789";
+				var caracteres = " abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ";
+				var numeros_caracteres = numeros + caracteres;
+				var teclas_especiales = [8, 37, 39, 46];
+				// 8 = BackSpace, 46 = Supr, 37 = flecha izquierda, 39 = flecha derecha
+				
+				
+				// Seleccionar los caracteres a partir del parámetro de la función
+				switch(permitidos) {
+					case 'num':
+					permitidos = numeros;
+					break;
+					case 'car':
+					permitidos = caracteres;
+					break;
+					case 'num_car':
+					permitidos = numeros_caracteres;
+					break;
+				}
+				
+				// Obtener la tecla pulsada 
+				var evento = elEvento || window.event;
+				var codigoCaracter = evento.charCode || evento.keyCode;
+				var caracter = String.fromCharCode(codigoCaracter);
+				
+				// Comprobar si la tecla pulsada es alguna de las teclas especiales
+				// (teclas de borrado y flechas horizontales)
+				var tecla_especial = false;
+				for(var i in teclas_especiales) {
+					if(codigoCaracter == teclas_especiales[i]) {
+					tecla_especial = true;
+					break;
+					}
+				}
+				
+				// Comprobar si la tecla pulsada se encuentra en los caracteres permitidos
+				// o si es una tecla especial
+				return permitidos.indexOf(caracter) != -1 || tecla_especial;
+				}
+				
+				// Sólo números
+				<input type="text" id="texto" onkeypress="return permite(event, 'num')" />
+				
+				// Sólo letras
+				<input type="text" id="texto" onkeypress="return permite(event, 'car')" />
+				
+				// Sólo letras o números
+				<input type="text" id="texto" onkeypress="return permite(event, 'num_car')" />
+
+		

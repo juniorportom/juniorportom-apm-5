@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<script type="text/javascript" src="months.js"></script>
+<title>El primer script</title>
+ 
+	
+</head>
+ 
+<body>
+<div id="contenidos2" style="width:150px; height:60px; border:thin solid silver">
+  Sección de contenidos...
+</div>
+
+<div id="contenidos" style="width:150px; height:60px; border:thin solid silver" onmouseover="document.getElementById('contenidos').style.borderColor='black';" onmouseout="document.getElementById('contenidos').style.borderColor='silver';">
+  Sección de contenidos...
+</div>
+
+<div id="contenidos3" style="width:150px; height:60px; border:thin solid silver" onmouseover="this.style.borderColor='black';" onmouseout="this.style.borderColor='silver';">
+  Sección de contenidos...
+</div>
+
+<input type="button" value="Pinchame y verás" onclick="alert('Gracias por pinchar');" />
+
+<input type="button" value="Pinchame y verás" onclick="muestraMensaje()" />
+
+<div style="width:150px; height:60px; border:thin solid silver" onmouseover="resalta(this)" onmouseout="resalta(this)">
+  Sección de contenidos...
+  
+  
+</div>
+  
+
+<br/>
+<input id="pinchable" type="button" value="Pinchame y verás" />
+
+<br/>
+  <div id="seccion" style="width:150px; height:60px; border:thin solid silver">
+  Sección de contenidos...
+</div>
+
+<div id="info"></div>
+
+<p>Esta página contiene el primer script</p>
+</body>
+</html>
