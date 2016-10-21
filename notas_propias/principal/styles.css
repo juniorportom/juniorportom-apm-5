@@ -1,0 +1,43 @@
+body{
+	background-color: white;
+	color: orange;
+	font-family: "Fjalla One", Arial, "Monaco", sans-serif;
+    font-size: 16px;
+    
+}
+/*h1{
+	color: blue;
+}
+p{
+	font-style: italic;
+}*/
+img{
+	style="width:304px;height:228px;
+}
+#footer{
+ margin-top: 500px;
+}
+
+
+@media screen and (min-width: 0) and (max-width: 480px) {
+	body{
+		color: red;
+	}
+ 
+}
+
+
+@media screen and (min-width: 481px) and (max-width: 765px) {
+	body{
+		color: green;
+	}
+ 
+}
+
+
+@media screen and (min-width: 766px) and (max-width: 991px) {
+	body{
+		color: blue;
+	}
+ 
+}
