@@ -410,5 +410,5 @@ model
 
 callback en javaScript:  Funcion que ocurre antes de que ocurra una funcion, parecido a una funcion anonima
 
-SPA = Single page applicant
+SPA = Single page application
 SPI: Single page interface
