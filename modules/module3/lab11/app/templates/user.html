@@ -1,0 +1,18 @@
+ <h3>Sali de aca</h3><br>
+<h1>{{user.id}}</h1><br />
+ <h2>{{user.name}}</h2><br />
+ <h2>{{user.address}}</h2><br />
+ <h2>{{user.phone}}</h2><br />
+ <h3>Sali de aca</h3>
+
+<div>
+	<hr />
+	<label for="">Name: </label>
+	<input type="text" [(ngModel)]="user.name" placeholder="Name"><br>
+	<label>address: </label><br />
+    <textarea [(ngModel)]="user.address" placeholder="address"></textarea><br />
+    <label>Type: </label><br />
+    <input [(ngModel)]="user.phone" placeholder="phone"><br />
+    <label>Id: </label><br />
+    <input [(ngModel)]="user.id" placeholder="id"><br />
+</div>

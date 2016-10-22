@@ -376,8 +376,39 @@ package.json, gestion de dependencias, puedo ejecutar comandos, version de la ap
 
 modele.js  archivo de modulos
 tsconfig.json  especifificación de la forma de typing
-typings,jason   
+typings,jason  Herramientas externas para test sobre codigo 
 directorio app "appcomponent"
 AppComponent { }  nunca se debe cambiar, siempre va definido de la misma forma
 
 Archivos SCSS  "SAS"
+systemjs.config.jason  maneja la inyeccion de dependencias, modulos importantes  ayuda acargar la aplicacion y permite que se cargue de orma dinamica
+
+main ---> boobstrap - module ---> app
+
+Single page interface ****** buscar
+
+minificacion:  Accion de eliminar espacios y saltos para hacerlo mas liviano
+
+
+modulos  app.module  no se cambia el nombre ni sus elementos  son el core de angular
+    - export
+    - import
+    - providers
+    - bootstrap
+    - declarations
+
+Pagina de angular:   https://angular.io/docs/ts/latest/quickstart.html
+
+stackoverflow.com    Pagina para buscar soluciones de errores 
+
+model
+[(ngModel)]  Hacer referencia
+[product]  Atributos modificables
+(click) Metodos privados no se pueden modificar 
+
+@Injectable():  Injecccion de dependecias
+
+callback en javaScript:  Funcion que ocurre antes de que ocurra una funcion, parecido a una funcion anonima
+
+SPA = Single page applicant
+SPI: Single page interface

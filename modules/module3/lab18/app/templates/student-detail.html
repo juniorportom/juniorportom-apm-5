@@ -1,0 +1,16 @@
+<div *ngIf="student">
+    <hr />
+    <label>Name Student: </label><br />
+    <input [(ngModel)]="student.name" placeholder="name"><br />
+    <label>Id Student: </label><br />
+    <input [(ngModel)]="student.id" placeholder="tipo"><br />
+    <label>Grade: </label><br />
+    <input [(ngModel)]="student.grade" placeholder="tipo"><br />
+    <label>Classess: </label>
+    <ul>
+    <li *ngFor="let class of student.classes" 
+    >
+        <span>{{class}}</span> 
+    </li>
+</ul>
+</div>

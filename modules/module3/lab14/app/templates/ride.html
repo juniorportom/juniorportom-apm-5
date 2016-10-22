@@ -1,0 +1,21 @@
+<h1>{{ title }}</h1>
+<br>
+<label>Units:</label> 
+
+<input #box (keyup.enter)="ride.units=box.value" >
+<label (click)="onSelect(0)"> {{ride.units}} </label><br>
+<label>Festive:</label> 
+<label (click)="onSelect(1)"> 1900 </label><br>
+<label>Airport:</label> 
+<label (click)="onSelect(2)"> 3900 </label><br>
+<label>App:</label> 
+<label (click)="onSelect(3)"> 700 </label><br>
+<label>Pip:</label> 
+<label (click)="onSelect(4)"> 700 </label><br>
+
+
+<div *ngIf="total">
+<hr />
+    <label>Value: </label><br />
+    <input [(ngModel)]="total" placeholder="total"><br />    
+</div>
