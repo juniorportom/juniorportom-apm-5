@@ -1,0 +1,8 @@
+<h1>{{ title }}</h1>
+<div *ngIf="lineItem">
+    <hr />
+    <label>Line Number: </label><br />
+    <input [(ngModel)]="lineItem.lineNumber" placeholder="lineNumber"><br />
+    <label>Purchase Price: </label><br />
+    <input [(ngModel)]="lineItem.purchasePrice" placeholder="purchasePrice"><br />
+</div>

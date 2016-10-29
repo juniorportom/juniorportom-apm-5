@@ -1,0 +1,18 @@
+<h1>{{ title }}</h1>
+<div *ngIf="customer">
+    <hr />
+    <label>Name: </label><br />
+    <input [(ngModel)]="customer.name" placeholder="name"><br />
+    <label>Id: </label><br />
+    <input [(ngModel)]="customer.id" placeholder="id"><br />
+    <h1>Invoices</h1>
+<ul>
+    <li *ngFor="let invoice of customer.salesInvoice">
+        <span>{{invoice.id}}</span> 
+        <button (click)="gotoInvoiceDetail(invoice.id)">View Invoice</button>
+    </li>
+</ul>
+
+</div>
+
+

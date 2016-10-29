@@ -411,4 +411,29 @@ model
 callback en javaScript:  Funcion que ocurre antes de que ocurra una funcion, parecido a una funcion anonima
 
 SPA = Single page application
-SPI: Single page interface
+SPI = Single page interface
+
+
+SPI
+    * Nueva forma de desarrollo de aplicaciones
+    * Se trabaja solo sobre una pagina, sin pasar entre ellas
+    * 
+Ajax:
+    * Asincronus javascript and xml
+    * 
+
+
+json  JavaScipt object notation
+    *   S
+
+BSON
+
+rxjs
+
+peticiones http
+    get
+    post
+    delete
+    put
+    patch
+    
