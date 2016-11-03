@@ -5,14 +5,29 @@
     <input [(ngModel)]="customer.name" placeholder="name"><br />
     <label>Id: </label><br />
     <input [(ngModel)]="customer.id" placeholder="id"><br />
-    <h1>Invoices</h1>
 <ul>
+    <strong>Invoices</strong>
     <li *ngFor="let invoice of customer.salesInvoice">
-        <span>{{invoice.id}}</span> 
-        <button (click)="gotoInvoiceDetail(invoice.id)">View Invoice</button>
+        <span>ID: {{invoice.id}} </span>
+        <span>Amount: {{invoice.invoiceAmount}}</span> 
+        <span>Tax: {{invoice.tax}}</span>  
+        <ul>
+            <strong>Line Items</strong>
+            <li *ngFor="let line of invoice.lineItem">
+                <span>line Number: {{line.lineNumber}} </span> 
+                <span>price: {{line.purchasePrice}}</span> 
+                <ul>
+                    <strong>Products</strong>
+                    <li *ngFor="let product of line.product">
+                        <span>Id: {{product.id}} </span> 
+                        <span>Name: {{product.name}}</span> 
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!--button (click)="gotoInvoiceDetail(invoice.id)">View Invoice</button-->
     </li>
 </ul>
-
 </div>
 
 

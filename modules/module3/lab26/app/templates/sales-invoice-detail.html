@@ -1,14 +1,25 @@
 <h1>{{ title }}</h1>
-<div *ngIf="product">
+<div *ngIf="salesInvoice">
     <hr />
-    <label>Name: </label><br />
-    <input [(ngModel)]="product.name" placeholder="name"><br />
-    <label>Description: </label><br />
-    <textarea [(ngModel)]="product.description" placeholder="description"></textarea><br />
-    <label>Type: </label><br />
-    <input [(ngModel)]="product.type" placeholder="tipo"><br />
-    <label>Price: </label><br />
-    <input [(ngModel)]="product.price" placeholder="precio"><br />
-    <label>Quantity: </label><br />
-    <input [(ngModel)]="product.quantity" placeholder="cantidad"><br />
+    <label>Id: </label><br />
+    <input [(ngModel)]="salesInvoice.id" placeholder="id"><br />
+    <label>Amout: </label><br />
+    <input [(ngModel)]="salesInvoice.invoiceAmount" placeholder="amout"><br />
+    <label>Tax: </label><br />
+    <input [(ngModel)]="salesInvoice.tax" placeholder="tax"><br />    
+    <ul>
+    	<strong>Line Items</strong>
+	    <li *ngFor="let lineItem of salesInvoice.lineItem">
+	        <span>Number: {{lineItem.lineNumber}} </span> 
+	        <span>Price: {{lineItem.purchasePrice}}</span> 
+	        <ul>
+	        	<strong>Productos</strong>
+	        	<li *ngFor="let product of lineItem.product">
+	        		<span>Id: {{product.id}} </span> 
+	        		<span>Name: {{product.name}}</span> 
+	        	</li>
+	        </ul>
+	    </li>
+	</ul>
 </div>
+

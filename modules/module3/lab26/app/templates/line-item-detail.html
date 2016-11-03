@@ -4,5 +4,12 @@
     <label>Line Number: </label><br />
     <input [(ngModel)]="lineItem.lineNumber" placeholder="lineNumber"><br />
     <label>Purchase Price: </label><br />
-    <input [(ngModel)]="lineItem.purchasePrice" placeholder="purchasePrice"><br />
+    <input [(ngModel)]="lineItem.purchasePrice" placeholder="purchasePrice"><br />    
+    <ul>
+        <strong>Productos</strong>
+	    <li *ngFor="let product of lineItem.product">
+	        <span>Id: {{product.id}} </span> 
+	        <span>Name: {{product.name}}</span> 
+	    </li>
+	</ul>
 </div>
