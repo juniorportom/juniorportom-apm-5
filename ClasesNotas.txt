@@ -431,9 +431,86 @@ BSON
 rxjs
 
 peticiones http
-    get
-    post
-    delete
-    put
-    patch
+    get  Consulta
+    post  Para crear
+    delete  para eliminar
+    put  para actualizar
+    patch  para actualizar, un solo registro, o elemento
     
+Rest
+    No es un framework
+    Acceso end to end
+    Arquitectura orientada al servicio (web services) para moviles
+    Premisas
+        0- Fango de informacion:  
+        1. Recurso
+        2. Vervoes
+        3. Controloes hypermedia
+
+
+api/v1/user/list            get
+api/v1/user/create          post
+api/v1/user/update          put
+api/v1/user/update          delete
+
+
+oauth2  protocolo de seguridad para rest
+firebase
+uuid
+gateway api
+
+ej api:
+https://www.themoviedb.org/documentation/api
+
+NGINX        servidor de aplicaciones
+
+postman, herramienta de chrome, para probar servivios rest
+
+npm install -g cordova ionic
+
+cors chrome plugin plugin para peticiones de servidor locales
+
+PhoneGap  Adove
+Cordova  apche
+
+hooks: Para versiones que se deben manejar para versiones no estables de android
+platforms:  Plataformas que soporta cordova
+wwww: Todo lo que haga para cordoba va sobre este directorio
+plugins: 
+
+
+dalvik,  java virtial machine
+graudolt  ant
+
+
+comandos
+global
+npm install -g cordova ionic
+dentro del proyecto
+    1. cordova create lab1 com.app.lab1 "lab1"       
+    2. cordova platform add android         para agregar plataforma
+    3. cordova platform rm android          remover plataforma
+
+ANDROID_HOME
+
+
+android sdk
+
+
+edb devices
+
+xcode para ios
+
+ngcordova   leer documentacion,  ionic ya implenete ngcordova como ionicnative
+
+
+comandos ionic
+1. ionic start lab3 blank --ts --v2 --id com.app.lab3 --appname "lab3"
+2. ionic serve --lab
+3. ionic start lab2 sidemenu
+3. ionic start lab3 tabs
+
+ionic start lab1 blank --ts --v2 --id com.app.lab1 --appname "lab1"
+ionic start lab2 sidemenu --ts --v2 --id com.app.lab2 --appname "lab2"
+ionic start lab4 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
+materialpalette.com, para la paleta de colores

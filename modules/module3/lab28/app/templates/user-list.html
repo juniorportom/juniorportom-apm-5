@@ -1,0 +1,20 @@
+<h1>{{ title }}</h1>
+
+<div>
+    <label>User name:</label> <input #userName />
+    <button (click)="add(userName.value); userName.value=''">
+        Add
+    </button>
+</div>
+
+
+<hr />
+<ul>
+    <li *ngFor="let user of users"
+        [class.pepito]="user === selected"
+        (click)="onSelect(user)">
+        <span>{{user.id}}</span> {{user.name}}
+    </li>
+</ul>
+
+<user-detail [user]="selected"></user-detail>
