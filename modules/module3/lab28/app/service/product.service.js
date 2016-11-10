@@ -13,28 +13,53 @@ var http_1 = require("@angular/http");
 require('rxjs/add/operator/map');
 var Rx_1 = require('rxjs/Rx');
 var ProductService = (function () {
+    //private headers : Headers = new Headers({'Content-Type': 'application/json'});
     function ProductService(http) {
         this.http = http;
-        this.productsURI = 'http://138.68.0.83:7070/api/v1/product';
-        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        this.productsURI = 'http://138.68.0.83:7070/api/v1/product/';
+        this.headers = new http_1.Headers();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
+        //this.headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
+        //this.headers.append('Access-Control-Allow-Headers', 'Content-Type');
+        //this.headers.append('Access-Control-Allow-Methods', 'GET');
+        //this.headers.append('Access-Control-Allow-Origin', '*');
     }
+    //getProducts(): Observable<Product[]> {
+    //   return this.http.get(this.productsURI)
+    //        .map(response => response.json().data as Product[])
+    //        .catch(this.handleError);
+    //}
     ProductService.prototype.getProducts = function () {
-        var url = this.productsURI + "/list";
+        var url = this.productsURI + 'list';
         return this.http.get(url)
-            .map(function (response) { response; console.log("Esta es la respuesta: " + response); })
+            .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     ProductService.prototype.update = function (product) {
-        var url = this.productsURI + "/" + product.id;
+        var url = this.productsURI + 'update/' + product.id;
         return this.http
             .put(url, JSON.stringify(product), { headers: this.headers })
             .map(function () { return product; })
             .catch(this.handleError);
     };
+    //create(name: string): Observable<Product> {
+    //    const url = this.productsURI + 'create';
+    //    return this.http
+    //        .post(url, JSON.stringify({name: name}), {headers: this.headers})
+    //        .map(res => <Product>res.json())
+    //        .catch(this.handleError);
+    //}
     ProductService.prototype.create = function (name) {
-        return this.http
-            .post(this.productsURI, JSON.stringify({ name: name }), { headers: this.headers })
-            .map(function (res) { return res.json().data; })
+        var toAdd = JSON.stringify({ 'name': name });
+        var url = this.productsURI + 'create';
+        return this.http.post(url, toAdd, { headers: this.headers })
+            .map(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
+    ProductService.prototype.delete = function (product) {
+        var url = this.productsURI + 'delete/' + product.id;
+        return this.http.delete(url)
             .catch(this.handleError);
     };
     ProductService.prototype.handleError = function (error) {

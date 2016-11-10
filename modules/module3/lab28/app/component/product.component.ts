@@ -48,4 +48,5 @@ export class ProductComponent {
                 this.selected = null;
             });
     }
+    
 }

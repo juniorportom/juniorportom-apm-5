@@ -11,8 +11,8 @@
     <hr />
     <label>Name: </label><br />
     <input [(ngModel)]="product.name" placeholder="name"><br />
-    <label>Description: </label><br />
-    <textarea [(ngModel)]="product.description" placeholder="description"></textarea><br />
+    <label>URL: </label><br />
+    <textarea [(ngModel)]="product.url" placeholder="url"></textarea><br />
     <label>Type: </label><br />
     <input [(ngModel)]="product.type" placeholder="tipo"><br />
     <label>Price: </label><br />
@@ -20,4 +20,5 @@
     <label>Quantity: </label><br />
     <input [(ngModel)]="product.quantity" placeholder="cantidad"><br />
     <button (click)="save()">Save</button>
+    <button (click)="delete()">delete</button>
 </div>

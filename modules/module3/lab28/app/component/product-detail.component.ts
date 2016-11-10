@@ -21,5 +21,12 @@ export class ProductDetailComponent {
                 response => {console.log(response)},
                 err => { console.log(err)});
     }
+
+    delete(): void {
+        this.productService.delete(this.product)
+        .subscribe(
+                response => {console.log(response)},
+                err => { console.log(err)});           
+    }
 }
 

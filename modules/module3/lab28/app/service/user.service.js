@@ -19,7 +19,7 @@ var UserService = (function () {
         this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
     }
     UserService.prototype.getUsers = function () {
-        var url = this.usersURI + "/list";
+        var url = 'http://138.68.0.83:7070/api/v1/user/list';
         return this.http.get(url)
             .map(function (response) { return response.json().data; })
             .catch(this.handleError);

@@ -18,7 +18,7 @@ export class AppComponent {
 
     }
 
-    getProducts() {
+     getProducts() {
         this.productService.getProducts()
             .subscribe(
             products => {
@@ -28,8 +28,9 @@ export class AppComponent {
             error => {
                 console.log(error);
             }
-        );
+            );
     }
+
 
     ngOnInit(): void {
         this.getProducts();

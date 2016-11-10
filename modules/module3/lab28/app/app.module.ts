@@ -13,10 +13,10 @@ import { UserDetailComponent } from './component/user-detail.component';
 
 import {HttpModule} from "@angular/http";
 import {InMemoryWebApiModule} from "angular2-in-memory-web-api";
-import {InMemoryProductService} from "./mock/in-memory-product.service";
+//import {InMemoryProductService} from "./mock/in-memory-product.service";
 import {ProductService} from "./service/product.service";
 
-import {InMemoryUserService} from "./mock/in-memory-user.service";
+//import {InMemoryUserService} from "./mock/in-memory-user.service";
 import {UserService} from "./service/user.service";
 
 
@@ -25,9 +25,9 @@ import {UserService} from "./service/user.service";
       BrowserModule,
       FormsModule,
       HttpModule,
-      AppRoutingModule,
-      InMemoryWebApiModule.forRoot(InMemoryProductService),
-      InMemoryWebApiModule.forRoot(InMemoryUserService)
+      AppRoutingModule//,
+      //InMemoryWebApiModule.forRoot(InMemoryProductService),
+      //InMemoryWebApiModule.forRoot(InMemoryUserService)
   ],
   declarations: [
       AppComponent,

@@ -19,6 +19,10 @@ var ProductDetailComponent = (function () {
         this.productService.update(this.product)
             .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
     };
+    ProductDetailComponent.prototype.delete = function () {
+        this.productService.delete(this.product)
+            .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', product_1.Product)

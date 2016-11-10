@@ -13,7 +13,7 @@ export class UserService {
     constructor(private http: Http) { }
 
     getUsers(): Observable<User[]> {
-        const url = `${this.usersURI}/list`;
+        const url = 'http://138.68.0.83:7070/api/v1/user/list';
         return this.http.get(url)
             .map(response => response.json().data as User[])
             .catch(this.handleError);
