@@ -11,4 +11,24 @@
   <p>
     If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
   </p>
+
+<h1>{{ title }}</h1>
+
+<div>
+    <label>Product name:</label> <input #productName />
+    <button (click)="add(productName.value); productName.value=''">
+        Add
+    </button>
+</div>
+
+
+<hr />
+<ul>
+    <li *ngFor="let product of products"
+        [class.pepito]="product === selected"
+        (click)="onSelect(product)">
+        <span>{{product.id}}</span> {{product.name}}
+    </li>
+</ul>
+  
 </ion-content>
