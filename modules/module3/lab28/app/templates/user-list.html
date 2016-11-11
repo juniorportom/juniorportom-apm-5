@@ -1,11 +1,11 @@
 <h1>{{ title }}</h1>
 
-<div>
+<!--div>
     <label>User name:</label> <input #userName />
     <button (click)="add(userName.value); userName.value=''">
         Add
     </button>
-</div>
+</div-->
 
 
 <hr />
@@ -13,7 +13,7 @@
     <li *ngFor="let user of users"
         [class.pepito]="user === selected"
         (click)="onSelect(user)">
-        <span>{{user.id}}</span> {{user.name}}
+        <span>{{user.id}}</span> {{user.firstname}}
     </li>
 </ul>
 

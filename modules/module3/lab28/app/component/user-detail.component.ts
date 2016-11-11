@@ -21,5 +21,12 @@ export class UserDetailComponent {
                 response => {console.log(response)},
                 err => { console.log(err)});
     }
+
+    delete(): void {
+        this.userService.delete(this.user)
+        .subscribe(
+                response => {console.log(response)},
+                err => { console.log(err)});           
+    }
 }
 

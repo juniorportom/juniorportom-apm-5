@@ -7,31 +7,41 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class UserService {
 
-    private usersURI = 'http://138.68.0.83:7070/api/v1/user';
-    private headers = new Headers({'Content-Type': 'application/json'});
+    private usersURI = 'http://138.68.0.83:7070/api/v1/user/';
+    private headers:Headers;//({'Content-Type': 'application/json'});
 
-    constructor(private http: Http) { }
+    constructor(private http: Http) { 
+        this.headers = new Headers();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
+    }
 
     getUsers(): Observable<User[]> {
-        const url = 'http://138.68.0.83:7070/api/v1/user/list';
+        const url = this.usersURI + 'list';
         return this.http.get(url)
-            .map(response => response.json().data as User[])
+            .map(response => <User[]>response.json())
             .catch(this.handleError);
     }
 
     update(user: User): Observable<User> {
-        const url = `${this.usersURI}/${user.id}`;
+        const url = this.usersURI + 'update/' + user.email;
         return this.http
             .put(url, JSON.stringify(user), {headers: this.headers})
             .map(() => user)
             .catch(this.handleError);
     }
 
-    create(name: string): Observable<User> {
-
+    create(email: string): Observable<User> {
+        const url = this.usersURI + 'create/' + email;
         return this.http
-            .post(this.usersURI, JSON.stringify({name: name}), {headers: this.headers})
-            .map(res => res.json().data)
+            .post(this.usersURI, JSON.stringify({email: email}), {headers: this.headers})
+            .map(res => <User>res.json())
+            .catch(this.handleError);
+    }
+
+    delete (user: User): Observable<any>{
+        const url = this.usersURI + 'delete/' + user.email;
+        return this.http.delete(url)
             .catch(this.handleError);
     }
 

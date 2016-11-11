@@ -19,6 +19,10 @@ var UserDetailComponent = (function () {
         this.userService.update(this.user)
             .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
     };
+    UserDetailComponent.prototype.delete = function () {
+        this.userService.delete(this.user)
+            .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', user_1.User)

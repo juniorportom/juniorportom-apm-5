@@ -15,26 +15,34 @@ var Rx_1 = require('rxjs/Rx');
 var UserService = (function () {
     function UserService(http) {
         this.http = http;
-        this.usersURI = 'http://138.68.0.83:7070/api/v1/user';
-        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        this.usersURI = 'http://138.68.0.83:7070/api/v1/user/';
+        this.headers = new http_1.Headers();
+        this.headers.append('Content-Type', 'application/json');
+        this.headers.append('Accept', 'application/json');
     }
     UserService.prototype.getUsers = function () {
-        var url = 'http://138.68.0.83:7070/api/v1/user/list';
+        var url = this.usersURI + 'list';
         return this.http.get(url)
-            .map(function (response) { return response.json().data; })
+            .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
     UserService.prototype.update = function (user) {
-        var url = this.usersURI + "/" + user.id;
+        var url = this.usersURI + 'update/' + user.email;
         return this.http
             .put(url, JSON.stringify(user), { headers: this.headers })
             .map(function () { return user; })
             .catch(this.handleError);
     };
-    UserService.prototype.create = function (name) {
+    UserService.prototype.create = function (email) {
+        var url = this.usersURI + 'create/' + email;
         return this.http
-            .post(this.usersURI, JSON.stringify({ name: name }), { headers: this.headers })
-            .map(function (res) { return res.json().data; })
+            .post(this.usersURI, JSON.stringify({ email: email }), { headers: this.headers })
+            .map(function (res) { return res.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.delete = function (user) {
+        var url = this.usersURI + 'delete/' + user.email;
+        return this.http.delete(url)
             .catch(this.handleError);
     };
     UserService.prototype.handleError = function (error) {
