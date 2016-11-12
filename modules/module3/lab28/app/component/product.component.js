@@ -10,8 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var product_service_1 = require("../service/product.service");
+var router_1 = require("@angular/router");
 var ProductComponent = (function () {
-    function ProductComponent(productService) {
+    function ProductComponent(router, productService) {
+        this.router = router;
         this.productService = productService;
         this.title = "los productos del Año";
     }
@@ -29,6 +31,7 @@ var ProductComponent = (function () {
     };
     ProductComponent.prototype.onSelect = function (product) {
         this.selected = product;
+        this.router.navigate(['product/detail/', this.selected.id]);
     };
     ProductComponent.prototype.add = function (name) {
         var _this = this;
@@ -48,7 +51,7 @@ var ProductComponent = (function () {
             templateUrl: 'app/templates/product-list.html',
             providers: [product_service_1.ProductService]
         }), 
-        __metadata('design:paramtypes', [product_service_1.ProductService])
+        __metadata('design:paramtypes', [router_1.Router, product_service_1.ProductService])
     ], ProductComponent);
     return ProductComponent;
 }());

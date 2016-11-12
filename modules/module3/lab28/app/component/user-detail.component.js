@@ -9,30 +9,42 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var user_1 = require('../model/user');
 var user_service_1 = require("../service/user.service");
+var router_1 = require("@angular/router");
+var router_2 = require("@angular/router");
 var UserDetailComponent = (function () {
-    function UserDetailComponent(userService) {
+    function UserDetailComponent(router, userService, route) {
+        this.router = router;
         this.userService = userService;
+        this.route = route;
     }
+    UserDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            var email = params['email'];
+            _this.userService.getUser(email).subscribe(function (user) { return _this.user = user; }),
+                function (error) {
+                    console.log(error);
+                };
+        });
+    };
     UserDetailComponent.prototype.save = function () {
+        var _this = this;
         this.userService.update(this.user)
-            .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
+            .subscribe(function (response) { console.log(response); _this.router.navigate(['user/']); }, function (err) { console.log(err); });
     };
     UserDetailComponent.prototype.delete = function () {
+        var _this = this;
         this.userService.delete(this.user)
-            .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
+            .subscribe(function (response) { console.log(response); _this.router.navigate(['user/']); }, function (err) { console.log(err); });
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', user_1.User)
-    ], UserDetailComponent.prototype, "user", void 0);
     UserDetailComponent = __decorate([
         core_1.Component({
             selector: 'user-detail',
-            templateUrl: 'app/templates/user-detail.html'
+            templateUrl: 'app/templates/user-detail.html',
+            providers: [user_service_1.UserService]
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService])
+        __metadata('design:paramtypes', [router_2.Router, user_service_1.UserService, router_1.ActivatedRoute])
     ], UserDetailComponent);
     return UserDetailComponent;
 }());

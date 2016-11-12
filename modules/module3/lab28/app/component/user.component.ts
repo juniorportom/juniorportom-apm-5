@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+//import { Component } from '@angular/core';
 import { User } from '../model/user';
 import {UserService} from "../service/user.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'user-app',
@@ -14,7 +16,7 @@ export class UserComponent {
 
     users: User[];
 
-    constructor(private userService: UserService) {
+    constructor(private router: Router, private userService: UserService) {
 
     }
 
@@ -37,12 +39,13 @@ export class UserComponent {
 
     onSelect(user: User){
         this.selected = user;
+        this.router.navigate(['user/detail/', this.selected.email]);
     }
 
-    add(name: string): void {
-        name = name.trim();
-        if (!name) { return; }
-        this.userService.create(name)
+    add(email: string): void {
+        email = email.trim();
+        if (!email) { return; }
+        this.userService.create(email)
             .subscribe(user => {
                 this.users.push(user);
                 this.selected = null;

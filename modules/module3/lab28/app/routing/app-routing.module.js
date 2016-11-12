@@ -21,7 +21,7 @@ var routes = [
     { path: 'product', component: product_component_1.ProductComponent },
     { path: 'product/detail/:id', component: product_detail_component_1.ProductDetailComponent },
     { path: 'user', component: user_component_1.UserComponent },
-    { path: 'user/detail/:id', component: user_detail_component_1.UserDetailComponent }
+    { path: 'user/detail/:email', component: user_detail_component_1.UserDetailComponent }
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {

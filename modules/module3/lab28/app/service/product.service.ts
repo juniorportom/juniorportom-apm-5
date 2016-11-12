@@ -37,6 +37,14 @@ export class ProductService {
             .catch(this.handleError);
     }
 
+    getProduct(id:number): Observable<Product> {
+        const url = this.productsURI + 'detail/' + id;
+        return this.http.get(url)
+           // .map(response => {response; console.log("Esta es la respuesta: " + response)})
+            .map(response => <Product>response.json())
+            .catch(this.handleError);
+    }
+
     update(product: Product): Observable<Product> {
         const url = this.productsURI + 'update/' + product.id;
         return this.http

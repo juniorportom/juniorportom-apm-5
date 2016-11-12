@@ -36,6 +36,12 @@ var ProductService = (function () {
             .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
+    ProductService.prototype.getProduct = function (id) {
+        var url = this.productsURI + 'detail/' + id;
+        return this.http.get(url)
+            .map(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
     ProductService.prototype.update = function (product) {
         var url = this.productsURI + 'update/' + product.id;
         return this.http

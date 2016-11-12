@@ -17,7 +17,7 @@ export class HomePage {
 
     products: Product[];
 
-  constructor(public navCtrl: NavController, private productService: ProductService) {
+  constructor( public navCtrl: NavController, private productService: ProductService) {
     
   }
 
@@ -31,7 +31,7 @@ export class HomePage {
             error => {
                 console.log(error);
             }
-            );
+        );
     }
 
     ngOnInit(): void {
@@ -40,6 +40,8 @@ export class HomePage {
 
     onSelect(product: Product){
         this.selected = product;
+        this.navCtrl.push('product-detail.html', {id:number => this.selected.id});
+        
     }
 
     add(name: string): void {

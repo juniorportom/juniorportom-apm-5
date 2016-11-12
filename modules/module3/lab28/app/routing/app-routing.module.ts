@@ -17,7 +17,7 @@ const routes: Routes = [
     { path: 'product', component: ProductComponent },
     { path: 'product/detail/:id', component: ProductDetailComponent },
     { path: 'user', component: UserComponent },
-    { path: 'user/detail/:id', component: UserDetailComponent }
+    { path: 'user/detail/:email', component: UserDetailComponent }
     
 ];
 

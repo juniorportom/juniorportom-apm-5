@@ -10,8 +10,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var user_service_1 = require("../service/user.service");
+var router_1 = require("@angular/router");
 var UserComponent = (function () {
-    function UserComponent(userService) {
+    function UserComponent(router, userService) {
+        this.router = router;
         this.userService = userService;
         this.title = "Modulo de usuario";
     }
@@ -29,14 +31,15 @@ var UserComponent = (function () {
     };
     UserComponent.prototype.onSelect = function (user) {
         this.selected = user;
+        this.router.navigate(['user/detail/', this.selected.email]);
     };
-    UserComponent.prototype.add = function (name) {
+    UserComponent.prototype.add = function (email) {
         var _this = this;
-        name = name.trim();
-        if (!name) {
+        email = email.trim();
+        if (!email) {
             return;
         }
-        this.userService.create(name)
+        this.userService.create(email)
             .subscribe(function (user) {
             _this.users.push(user);
             _this.selected = null;
@@ -48,7 +51,7 @@ var UserComponent = (function () {
             templateUrl: 'app/templates/user-list.html',
             providers: [user_service_1.UserService]
         }), 
-        __metadata('design:paramtypes', [user_service_1.UserService])
+        __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
     ], UserComponent);
     return UserComponent;
 }());

@@ -510,7 +510,22 @@ comandos ionic
 3. ionic start lab2 sidemenu
 3. ionic start lab3 tabs
 
-ionic start lab1 blank --ts --v2 --id com.app.lab1 --appname "lab1"
+ionic start lab6 blank --ts --v2 --id com.app.lab6 --appname "lab6"
 ionic start lab2 sidemenu --ts --v2 --id com.app.lab2 --appname "lab2"
 ionic start lab4 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
 materialpalette.com, para la paleta de colores
+
+ionic platform add android
+
+ionic run android --target=ip soket
+
+
+herramienta para ver uso de disco de forma distribuida "space snifer"
+
+
+    "build": "ionic-app-scripts build",
+"serve": "ionic-app-scripts serve",
+"watch": "ionic-app-scripts watch"
+
+ionic g provider service
+ionic g page product-detail

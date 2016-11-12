@@ -26,6 +26,12 @@ var UserService = (function () {
             .map(function (response) { return response.json(); })
             .catch(this.handleError);
     };
+    UserService.prototype.getUser = function (email) {
+        var url = this.usersURI + 'profile/' + email;
+        return this.http.get(url)
+            .map(function (response) { return response.json(); })
+            .catch(this.handleError);
+    };
     UserService.prototype.update = function (user) {
         var url = this.usersURI + 'update/' + user.email;
         return this.http
@@ -34,9 +40,9 @@ var UserService = (function () {
             .catch(this.handleError);
     };
     UserService.prototype.create = function (email) {
-        var url = this.usersURI + 'create/' + email;
+        var url = this.usersURI + 'sign-up';
         return this.http
-            .post(this.usersURI, JSON.stringify({ email: email }), { headers: this.headers })
+            .post(url, JSON.stringify({ email: email }), { headers: this.headers })
             .map(function (res) { return res.json(); })
             .catch(this.handleError);
     };

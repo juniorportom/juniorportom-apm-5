@@ -9,30 +9,44 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var product_1 = require('../model/product');
 var product_service_1 = require("../service/product.service");
+var router_1 = require("@angular/router");
+var router_2 = require("@angular/router");
 var ProductDetailComponent = (function () {
-    function ProductDetailComponent(productService) {
+    function ProductDetailComponent(router, productService, route) {
+        //private productService: ProductService,        
+        this.router = router;
         this.productService = productService;
+        this.route = route;
     }
+    ProductDetailComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.forEach(function (params) {
+            var id = +params['id'];
+            _this.productService.getProduct(id).subscribe(function (product) { return _this.product = product; }),
+                function (error) {
+                    console.log(error);
+                };
+        });
+    };
     ProductDetailComponent.prototype.save = function () {
+        var _this = this;
         this.productService.update(this.product)
-            .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
+            .subscribe(function (response) { console.log(response); _this.router.navigate(['product/']); }, function (err) { console.log(err); });
     };
     ProductDetailComponent.prototype.delete = function () {
+        var _this = this;
         this.productService.delete(this.product)
-            .subscribe(function (response) { console.log(response); }, function (err) { console.log(err); });
+            .subscribe(function (response) { console.log(response); _this.router.navigate(['product/']); }, function (err) { console.log(err); });
+        this.router.navigate(['product/']);
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', product_1.Product)
-    ], ProductDetailComponent.prototype, "product", void 0);
     ProductDetailComponent = __decorate([
         core_1.Component({
             selector: 'product-detail',
-            templateUrl: 'app/templates/product-detail.html'
+            templateUrl: 'app/templates/product-detail.html',
+            providers: [product_service_1.ProductService]
         }), 
-        __metadata('design:paramtypes', [product_service_1.ProductService])
+        __metadata('design:paramtypes', [router_2.Router, product_service_1.ProductService, router_1.ActivatedRoute])
     ], ProductDetailComponent);
     return ProductDetailComponent;
 }());

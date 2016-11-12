@@ -23,6 +23,14 @@ export class UserService {
             .catch(this.handleError);
     }
 
+    getUser(email:string): Observable<User> {
+        const url = this.usersURI + 'profile/' + email;
+        return this.http.get(url)
+           // .map(response => {response; console.log("Esta es la respuesta: " + response)})
+            .map(response => <User>response.json())
+            .catch(this.handleError);
+    }
+
     update(user: User): Observable<User> {
         const url = this.usersURI + 'update/' + user.email;
         return this.http
@@ -32,9 +40,9 @@ export class UserService {
     }
 
     create(email: string): Observable<User> {
-        const url = this.usersURI + 'create/' + email;
+        const url = this.usersURI + 'sign-up';
         return this.http
-            .post(this.usersURI, JSON.stringify({email: email}), {headers: this.headers})
+            .post(url, JSON.stringify({email: email}), {headers: this.headers})
             .map(res => <User>res.json())
             .catch(this.handleError);
     }

@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+//import { Component } from '@angular/core';
 import { Product } from '../model/product';
 import {ProductService} from "../service/product.service";
+import {Router} from "@angular/router";
+
 
 @Component({
     selector: 'product-app',
     templateUrl: 'app/templates/product-list.html',
     providers: [ProductService]
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
     title: string = "los productos del Año";
 
     selected: Product;
 
     products: Product[];
 
-    constructor(private productService: ProductService) {
+    constructor(private router: Router, private productService: ProductService) {
 
     }
 
@@ -37,6 +40,7 @@ export class ProductComponent {
 
     onSelect(product: Product){
         this.selected = product;
+        this.router.navigate(['product/detail/', this.selected.id]);
     }
 
     add(name: string): void {
