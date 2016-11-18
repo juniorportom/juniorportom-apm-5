@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<!-- saved from url=(0093)https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter -->
+<html lang="es" dir="ltr" class="redesign " data-ffo-opensanslight="true" data-ffo-opensans="true"><head prefix="og: http://ogp.me/ns#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./Array.prototype.filter() - JavaScript _ MDN_files/analytics.js.descarga"></script><script type="text/javascript" async="" src="./Array.prototype.filter() - JavaScript _ MDN_files/geo2.js.descarga"></script>
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script>(function(d) { d.className = d.className.replace(/\bno-js/, ''); })(document.documentElement);</script>
+  
+    
+  
+  <script src="./Array.prototype.filter() - JavaScript _ MDN_files/237572123.js.descarga"></script>
+  
+
+  
+  <title>Array.prototype.filter() - JavaScript | MDN</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index, follow">
+    <link rel="home" href="https://developer.mozilla.org/es/">
+    <link rel="copyright" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#copyright">
+  
+
+  
+    
+    
+    <link href="./Array.prototype.filter() - JavaScript _ MDN_files/mdn.fbe297e5e96c.css" rel="stylesheet" type="text/css">
+
+    
+  
+    <link href="./Array.prototype.filter() - JavaScript _ MDN_files/wiki.d9818563511b.css" rel="stylesheet" type="text/css">
+
+    
+
+    <!-- common social tags -->
+    
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png">
+    <meta property="og:site_name" content="Mozilla Developer Network">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:image" content="https://developer.cdn.mozilla.net/static/img/opengraph-logo.dc4e08e2f6af.png">
+    <meta name="twitter:site" content="@MozDevNet">
+    <meta name="twitter:creator" content="@MozDevNet">
+    <link rel="search" type="application/opensearchdescription+xml" href="https://developer.mozilla.org/es/search/xml" title="Mozilla Developer Network">
+  
+
+  <!-- third-generation iPad with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://developer.cdn.mozilla.net/static/img/favicon144.a6e4162070f4.png">
+  <!-- iPhone with high-resolution Retina display: -->
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://developer.cdn.mozilla.net/static/img/favicon114.0e9fabd44f85.png">
+  <!-- first- and second-generation iPad: -->
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://developer.cdn.mozilla.net/static/img/favicon72.8ff9d87c82a0.png">
+  <!-- non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
+  <link rel="apple-touch-icon-precomposed" href="https://developer.cdn.mozilla.net/static/img/favicon57.a2490b9a2d76.png">
+  <!-- basic favicon -->
+  
+    
+  
+  <link rel="shortcut icon" href="https://developer.cdn.mozilla.net/static/img/favicon32.e02854fdcf73.png">
+  <!--[if IE]>
+  <meta http-equiv="imagetoolbar" content="no">
+  <script type="text/javascript" src="https://developer.cdn.mozilla.net/static/build/js/html5shiv.3948ccddab6f.js" charset="utf-8"></script>
+  <![endif]-->
+
+  
+  <link rel="alternate" type="application/json" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$json">
+  <link rel="canonical" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter">
+
+  
+    
+      <link rel="alternate" hreflang="en-US" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="ca" href="https://developer.mozilla.org/ca/docs/Web/JavaScript/Referencia/Objectes_globals/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="de" href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="fr" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="ja" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="ko" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="nl" href="https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="pl" href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="pt-BR" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/filtro" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="ru" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="th" href="https://developer.mozilla.org/th/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="zh-CN" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+      <link rel="alternate" hreflang="zh-TW" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Array.prototype.filter()">
+    
+  
+
+  <!-- document-specific social tags -->
+  <meta property="og:title" content="Array.prototype.filter()">
+  <meta property="og:url" content="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter">
+  <meta name="twitter:url" content="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter">
+  <meta name="twitter:title" content="Array.prototype.filter()">
+  
+  <meta property="og:description" content="El metodo filter() crea un nuevo arreglo con todos los elementos que pasen la prueba implementada por la función dada.">
+  <meta name="description" content="El metodo filter() crea un nuevo arreglo con todos los elementos que pasen la prueba implementada por la función dada.">
+  <meta name="twitter:description" content="El metodo filter() crea un nuevo arreglo con todos los elementos que pasen la prueba implementada por la función dada.">
+  
+
+  
+  <script type="text/javascript">
+    
+      var document_saved = 0;
+    
+  </script>
+
+
+
+  
+    
+
+<script type="text/javascript">
+
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36116321-5', 'mozilla.org');
+    ga('set', 'anonymizeIp', true);
+
+    
+
+    // dimension9 == "Section editing"
+    
+        ga('set', 'dimension9', 'Enabled');
+    
+        // dimension12 == 'Page Revision"
+        ga('set', 'dimension12', '912605');
+
+    (function() {
+        // http://cfsimplicity.com/61/removing-analytics-clutter-from-campaign-urls
+        var win = window;
+        var removeUtms = function(){
+            var location = win.location;
+            if (location.href.indexOf('utm') != -1 && win.history.replaceState) {
+                win.history.replaceState({}, '', location.pathname);
+            }
+        };
+
+        ga('send', 'pageview', {'hitCallback': removeUtms});
+    })();
+</script>
+
+  
+<script async="" data-manual="true" src="./Array.prototype.filter() - JavaScript _ MDN_files/syntax-prism.7a66ddfa68bf.js.descarga"></script></head>
+<body data-slug="Web/JavaScript/Referencia/Objetos_globales/Array/filter" contextmenu="edit-history-menu" data-search-url="" class="document  ">
+
+  <script type="text/javascript">
+    (function(win) {
+        'use strict';
+
+        
+            (function(){
+  var FLAGS = {
+    'compat_api': false,'iperceptions': false,'kumaediting': false,'page_move': false,'registration_disabled': false,'search_suggestions': false,'section_edit': true,'sg_task_completion': false,'spam_admin_override': false,'spam_checks_enabled': true,'spam_spammer_override': false,'spam_submissions_enabled': false,'spam_testing_mode': false,'wiki_samples': true,'wiki_spam_exempted': false,'wiki_spam_training': false
+    },
+    SWITCHES = {
+    'wiki_error_on_delete': false,'wiki_force_immediate_rendering': false,'enable_optimizely': true,'welcome_email': true,'application_ACAO': true,'store_revision_ips': true,'dumb_doc_urls': true,'newsletter': true,'newsletter_article': true
+    },
+    SAMPLES = {
+    
+    };
+  window.waffle = {
+    "flag_is_active": function waffle_flag(flag_name) {
+      
+      return !!FLAGS[flag_name];
+    },
+    "switch_is_active": function waffle_switch(switch_name) {
+      
+      return !!SWITCHES[switch_name];
+    },
+    "sample_is_active": function waffle_sample(sample_name) {
+      
+      return !!SAMPLES[sample_name];
+    },
+    "FLAGS": FLAGS,
+    "SWITCHES": SWITCHES,
+    "SAMPLES": SAMPLES
+  };
+})();
+
+        
+
+        // This needs to be set before ckeditor.js loads
+        window.CKEDITOR_BASEPATH = '/static/js/libs/ckeditor/build/ckeditor/';
+
+        // This represents the site configuration
+        win.mdn = {
+            // Properties and settings for CKEditor will go here
+            ckeditor: {},
+            // Feature test results and methods will be placed here
+            features: {},
+            // The path to static assets (images, CSS, JS) in MDN
+            staticPath: 'https://developer.cdn.mozilla.net/static/',
+            // Optimizely API
+            optimizely: win['optimizely'] || [],
+            // Site notifications
+            
+            notifications: [],
+            
+            // Wiki-specific settings will be placed here
+            wiki: {
+                autosuggestTitleUrl: '/es/docs/get-documents'
+            },
+            // Assets that need to be dynamically injected
+            assets: {
+                css: {
+                    'editor-content': ['https://developer.cdn.mozilla.net/static/build/styles/editor-content.50e1e1191368.css',],
+                    'wiki-compat-tables': ['https://developer.cdn.mozilla.net/static/build/styles/wiki-compat-tables.a042fac0d66c.css',]
+                },
+                js: {
+                    'syntax-prism': ['https://developer.cdn.mozilla.net/static/build/js/syntax-prism.7a66ddfa68bf.js',],
+                    'wiki-compat-tables': ['https://developer.cdn.mozilla.net/static/build/js/wiki-compat-tables.14ce5dcb2c3d.js',]
+                }
+            }
+        };
+    })(this);
+</script>
+
+  
+
+  <ul id="nav-access">
+    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#document-main" id="skip-main">Saltar al contenido principal</a></li>
+    <li><a id="skip-language" href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#language">Seleccionar idioma</a></li>
+    <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#q" id="skip-search">Saltar a la búsqueda</a></li>
+  </ul>
+
+  <!-- Header -->
+  <header id="main-header"><div class="center">
+
+    <div id="tabzilla">
+        <a href="https://www.mozilla.org/" class="no-track">mozilla</a>
+    </div>
+
+    <div class="clear header-clear"></div>
+
+
+    <a href="https://developer.mozilla.org/es/" class="logo">Mozilla Developer Network</a>
+
+
+    <div id="nav-sec">
+        
+                  <ul>
+                  <li><div class="login">
+    
+      
+       <a href="https://developer.mozilla.org/users/github/login/?next=%2Fes%2Fdocs%2FWeb%2FJavaScript%2FReferencia%2FObjetos_globales%2FArray%2Ffilter" class="login-link js-login-link" data-service="GitHub">
+        Registrarse
+        <i class="icon-github" aria-hidden="true"></i>
+      </a>
+    
+</div></li>
+                </ul>
+        
+    </div>
+
+    <nav id="main-nav" role="navigation"><ul><li><a href="https://developer.mozilla.org/es/docs/Web">Tecnologías web<i aria-hidden="true" class="icon-caret-down"></i></a>
+
+        <div class="submenu submenu-cols-2 js-submenu" id="nav-platform-submenu">
+          <div class="submenu-column">
+            <div class="title">Tecnologías</div>
+            <ul>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/HTML">HTML</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/CSS">CSS</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript">JavaScript</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/Guide/Graphics">Gráficos</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/HTTP">HTTP</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/API">API / DOM</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Mozilla/Add-ons/WebExtensions">WebExtensions</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/MathML">MathML</a></li>
+            </ul>
+          </div><div class="submenu-column last">
+            <div class="title">Referencias y guías</div>
+            <ul>
+              <li><a href="https://developer.mozilla.org/es/docs/Learn">Aprender desarrollo web</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/Tutorials">Tutoriales</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/Reference">Referencias</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/Guide">Guías para desarrolladores</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web/Accessibility">Accesibilidad</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Games">Desarrollo de juegos</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Web">...más documentos</a></li>
+            </ul>
+          </div>
+        </div>
+      </li><li><a href="https://developer.mozilla.org/es/docs/Zones">Mozilla Docs<i aria-hidden="true" class="icon-caret-down"></i></a>
+
+        <div class="submenu js-submenu" id="nav-zones-submenu">
+          <div class="submenu-column">
+            <ul>
+              <li><a href="https://developer.mozilla.org/es/docs/Mozilla/Add-ons">Complementos</a></li>
+              <li><a href="https://developer.mozilla.org/es/docs/Mozilla/Firefox">Firefox</a></li>
+            </ul>
+          </div>
+        </div>
+      </li><li><a href="https://developer.mozilla.org/es/docs/Tools">Herramientas para desarrolladores</a></li><li><a href="https://developer.mozilla.org/es/docs/MDN/Feedback">Comentarios<i aria-hidden="true" class="icon-caret-down"></i></a>
+
+        <div class="submenu js-submenu" id="nav-contact-submenu" aria-hidden="true" style="z-index: 99998;">
+          <div class="submenu-column">
+            <ul>
+                <li><a href="https://support.mozilla.org/">Obtén ayuda de Firefox<i aria-hidden="true" class="icon-external-link"></i></a></li>
+                <li><a href="http://stackoverflow.com/">Obtén ayuda de desarrollo web<i aria-hidden="true" class="icon-external-link"></i></a></li>
+            </ul>
+            <ul>
+              <li><a href="https://developer.mozilla.org/es/docs/MDN/Community">Únete a la comunidad de MDN</a></li>
+              <li><a target="_blank" href="https://bugzilla.mozilla.org/form.doc?bug_file_loc=https%3A//developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter">Denuncia un problema de contenido<i aria-hidden="true" class="icon-external-link"></i></a></li>
+              <li><a target="_blank" href="https://bugzilla.mozilla.org/form.mdn">Informar de un error. <i aria-hidden="true" class="icon-external-link"></i></a></li>
+            </ul>
+          </div>
+        <button type="button" class="submenu-close transparent"><span class="offscreen">Cerrar submenú</span><i aria-hidden="true" class="icon-remove-sign"></i></button></div>
+
+      </li><li class="nav-search-link"><a href="https://developer.mozilla.org/es/search" title="Search"><i aria-hidden="true" class="icon-search"></i></a></li><li class="main-nav-search"><form action="https://developer.mozilla.org/es/search" method="get" role="search">
+        <div class="search-wrap">
+          <label for="main-q" class="offscreen">Buscar</label>
+          <input type="search" id="main-q" name="q" placeholder="Buscar" data-value="" value="">
+          <span class="search-trigger"><i aria-hidden="true" class="icon-search"></i></span>&nbsp;
+          <button type="submit" class="offscreen">Buscar</button>
+        </div>
+      </form></li></ul></nav>
+  </div></header>
+
+  <!-- Content will go here -->
+  <main id="content"><div class="center clear">
+  
+
+   <!-- end is_zone -->
+
+
+    <div class="wiki-main-content" id="document-main" role="main"><div class="center">
+      
+      <div class="article-meta">
+        <!-- action buttons -->
+        
+
+  
+    
+    
+  
+
+  
+    
+  
+
+  
+
+  <ul class="page-buttons" data-sticky="false">
+      
+      <li><button id="languages-menu" class="transparent" aria-haspopup="true" aria-owns="languages-menu-submenu" aria-expanded="false"><span>Idiomas</span><i aria-hidden="true" class="icon-language"></i></button>
+
+        <div class="submenu js-submenu" id="languages-menu-submenu">
+          <div class="submenu-column">
+            <ul id="translations">
+              
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Inglés (EE.UU.)">English (US) (en-US)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ca/docs/Web/JavaScript/Referencia/Objectes_globals/Array/filter" title="Catalán">Català (ca)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Alemán">Deutsch (de)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/filter" title="Francés">Français (fr)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Japonés">日本語 (ja)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Coreano">한국어 (ko)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/nl/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Neerlandés">Nederlands (nl)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/filter" title="Polaco">Polski (pl)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/filtro" title="Portugués (Brasil)">Português (do&nbsp;Brasil) (pt-BR)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Ruso">Русский (ru)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/th/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Tailandés">ไทย (th)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Chino (simplificado)">中文 (简体) (zh-CN)</a></bdi></li>
+                
+                  <li><bdi><a rel="internal" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/filter" title="Chino (tradicional)">正體中文 (繁體) (zh-TW)</a></bdi></li>
+                
+              
+
+              
+            </ul>
+          </div>
+        </div>
+      </li>
+
+      
+      <li class="page-buttons-edit"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit" class="button" data-optimizely-hook="button-edit-doc" id="edit-button">Editar<i aria-hidden="true" class="icon-pencil"></i></a></li>
+      
+
+        
+
+        <li><button id="advanced-menu" class="only-icon" aria-haspopup="true" aria-owns="advanced-menu-submenu" aria-expanded="false"><span>Avanzado</span><i aria-hidden="true" class="icon-cog"></i></button>
+        <div class="submenu js-submenu" id="advanced-menu-submenu">
+          <!-- this page -->
+          <div class="submenu-column">
+            <div class="title">Avanzado</div>
+            <ul>
+                <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$history" rel="nofollow, noindex">Historial</a></li>
+                
+                
+                
+
+
+                
+
+                
+                
+                
+                <li class="page-print"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" onclick="return window.print();">Imprimir este artículo</a></li>
+            </ul>
+          </div>
+        </div>
+  </li></ul>
+
+        <!-- crumbs -->
+        
+  <nav class="crumbs" role="navigation"><ol xmlns:v="http://rdf.data-vocabulary.org/#" aria-label="hilos de araña">
+    <li typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/es" rel="v:url" property="v:title">MDN</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/es/docs/Web" rel="v:url" property="v:title">Tecnología Web para desarrolladores</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript" rel="v:url" property="v:title">JavaScript</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia" rel="v:url" property="v:title">Referencia de JavaScript</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales" rel="v:url" property="v:title">Objetos globales</a></li>
+    
+      <li class="crumb" typeof="v:Breadcrumb"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array" rel="v:url" property="v:title">Array</a></li>
+    
+    <li class="crumb" typeof="v:Breadcrumb" property="v:title">Array.prototype.filter()</li>
+  </ol></nav>
+      </div>
+
+      <!-- heading -->
+      <div id="wiki-document-head" class="document-head">
+          <span class="from-search-previous-box">
+            <a class="button from-search-previous only-icon disabled" title="Resultado anterior de la búsqueda" data-empty-title="No hay resultados anteriores de la búsqueda"><i aria-hidden="true" class="icon-chevron-left"></i></a>
+          </span>
+          <span class="from-search-navigate-wrap">
+            <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="from-search-navigate"><span class="from-search-navigate-up"><i aria-hidden="true" class="icon-double-angle-up"></i></span><span class="from-search-navigate-down"><i aria-hidden="true" class="icon-double-angle-down"></i></span></a>
+          </span>
+          <div class="from-search-toc submenu">
+            <span class="title">Los resultados de tu búsqueda</span>
+            <ol></ol>
+          </div>
+          <span class="from-search-next-box">
+            <a class="button from-search-next only-icon disabled" title="Siguiente resultado de la búsqueda" data-empty-title="No hay resultados anteriores de la búsqueda"><i aria-hidden="true" class="icon-chevron-right"></i></a>
+          </span>
+
+        
+        <div class="contributor-avatars" data-all-text="ver todos los colaboradores" data-alternate-message="ocultar colaboradores">
+            <ul>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/es/profiles/vltamara" title="Ver perfil: vltamara">
+                <img src="./Array.prototype.filter() - JavaScript _ MDN_files/87f961d76a4ca3d7980e8dcf54f81e33" class="avatar loaded" height="34" width="34" alt="vltamara"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/es/profiles/averdion" title="Ver perfil: averdion">
+                <img src="./Array.prototype.filter() - JavaScript _ MDN_files/bab0289b1a232c2eb0059bac93b57a21" class="avatar loaded" height="34" width="34" alt="averdion"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/es/profiles/li0t" title="Ver perfil: li0t">
+                <img src="./Array.prototype.filter() - JavaScript _ MDN_files/69040bbbb65682f4fc1f88eed6c55c60" class="avatar loaded" height="34" width="34" alt="li0t"></a>
+                </li>
+            
+                <li class="shown">
+                <a href="https://developer.mozilla.org/es/profiles/matajm" title="Ver perfil: matajm">
+                <img src="./Array.prototype.filter() - JavaScript _ MDN_files/86a5f43adbde2f2f09648c217ad6cc77" class="avatar loaded" height="34" width="34" alt="matajm"></a>
+                </li>
+            
+            </ul>
+        </div>
+        
+
+        <h1><wbr>Array<wbr>.prototype<wbr>.filter()</h1>
+
+      </div>
+      
+
+      <!-- start the main content container -->
+        <div id="wiki-column-container" class="wiki-right-present wiki-left-present">
+
+          <!-- content row with three strips -->
+          <div class="column-container column-container-reverse">
+
+            
+              <!-- TOC, approvals, etc -->
+              <div class="column-strip wiki-column" id="wiki-right">
+              
+              <!-- table of contents -->
+              <div id="toc" class="toc toggleable" style="width: auto; max-height: none; top: 0px;">
+                <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#toc" class="title toggler" data-open-icon="icon-plus" data-closed-icon="icon-minus" aria-haspopup="true">En este artículo<i class="icon-minus"></i></a>
+                <ol class="toggle-container">
+                  <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Summary" rel="internal">Resumen</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Syntax" rel="internal">Sintaxis</a><ol><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Parameters" rel="internal">Parametros</a></li></ol></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Description" rel="internal">Descripción</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Examples" rel="internal">Ejemplo</a><ol><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Example:_Filtering_out_all_small_values" rel="internal">Ejemplo: Sacando&nbsp;todos los valores pequeños</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Ejemplo_Filtrar_entradas_inválidas_en_JSON" rel="internal">Ejemplo: Filtrar entradas inválidas en&nbsp;JSON</a></li></ol></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Polyfill" rel="internal">Polyfill</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Specifications" rel="internal">Especificaciones</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#Browser_compatibility" rel="internal">Compatibilidad en navegadores</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#See_also" rel="internal">Vease también</a>
+                </li></ol>
+              </div>
+              
+              </div>
+            
+
+            
+            
+              
+            
+
+            <!-- center: main article content -->
+            <div id="wiki-content" class="column-half wiki-column text-content">
+
+              
+
+              
+
+              
+                
+                
+                
+              
+              
+
+              <!-- just the article content -->
+              <article id="wikiArticle">
+                
+                  
+                    <p></p><section id="Quick_Links" class="Quick_links"><!-- --></section><p></p>
+
+<h2 name="Summary" id="Summary">Resumen<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Summary" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<p>El metodo <strong>filter()</strong> crea un nuevo arreglo&nbsp;con todos los elementos que pasen la prueba implementada por la función dada.</p>
+
+<h2 name="Syntax" id="Syntax">Sintaxis<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Syntax" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<pre class="syntaxbox"><code><var>arr</var>.filter(<var>callback</var>[, <var>thisArg</var>])</code></pre>
+
+<h3 name="Parameters" id="Parameters">Parametros</h3>
+
+<dl>
+ <dt><code>callback</code></dt>
+ <dd>Función para poner a prueba a cada elemento del array. &nbsp;Retorna <code>true</code> para mantener el elemento, <code>false</code> de otra manera.</dd>
+ <dt><code>thisArg</code></dt>
+ <dd>Opcional. Usa el valor como <code>this</code> cuando es ejecutado el <code>callback</code>.</dd>
+</dl>
+
+<h2 name="Description" id="Description">Descripción<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Description" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<p><code>filter</code> llama la&nbsp;función dada&nbsp;<code>callback</code>&nbsp; por&nbsp;cada elemento&nbsp;del&nbsp;arreglo&nbsp;, y construye un nuevo arreglo con todos los valores para los cuales&nbsp; <code>callback</code> retorna un valor verdadero. <code>callback</code> es invocada&nbsp;solo para&nbsp;indices del arreglo que tengan asignado&nbsp;un valor. No es invocada&nbsp;para&nbsp;indices que hayan sido&nbsp;borrados o a los que no se les haya&nbsp;asignado valor alguno. Los elementos del arreglo que no pasen la prueba <code>callback</code>&nbsp; simplemente se saltan, y no son incluidos en el nuevo arreglo.</p>
+
+<p><code>callback</code> es invocada&nbsp;con tres argumentos:</p>
+
+<ol>
+ <li>El valor de cada elemento</li>
+ <li>El indice del elemento</li>
+ <li>El objeto Array que está&nbsp;siendo atravesado</li>
+</ol>
+
+<p>Si un parametro <code>thisArg</code> es dado&nbsp;a&nbsp;<code>filter()</code>, este será&nbsp;pasado a <code>callback</code> cuando sea invocada, para usarlo como&nbsp;valor <code>this</code>.&nbsp; De lo contrario , el valor <code>undefined</code> será pasado como valor <code>this</code> .&nbsp; El valor <code>this</code>&nbsp; observable en últimas&nbsp;&nbsp;por&nbsp;<code>callback</code>&nbsp;se&nbsp;determina&nbsp;conforme a las <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this">las normas habituales para determinar el <em>this </em>visto por una función.</a></p>
+
+<p><code>filter()</code> no hace mutar el arreglo&nbsp;sobre el cual es llamado.</p>
+
+<p>El rango de elementos procesados por <code>filter()</code> se establece antes de la primera invocación de&nbsp; <code>callback</code>. Los elementos que se añadan al arreglo después de que comience la llamada a&nbsp;<code>filter()</code>&nbsp;no serán visitados por&nbsp;<code>callback</code>. Si se modifica&nbsp;o elimina&nbsp;un elemento&nbsp;existente&nbsp;del arreglo, &nbsp;su&nbsp;valor cuando pase&nbsp;a&nbsp;<code>callback</code> será el que tengan&nbsp;cuando <code>filter()</code>&nbsp;lo&nbsp;visite; los elementos que son eliminado no son visitados.</p>
+
+<h2 name="Examples" id="Examples">Ejemplo<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Examples" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<h3 name="Example:_Filtering_out_all_small_values" id="Example:_Filtering_out_all_small_values">Ejemplo: Sacando&nbsp;todos los valores pequeños</h3>
+
+<p>El siguiente ejemplo usa <code>filter()</code> para crear un arreglo&nbsp;filtrado que excluye todos&nbsp;los elementos con valores inferiores a&nbsp;10.</p>
+
+<pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token keyword">function</span> <span class="token function">esSuficientementeGrande</span><span class="token punctuation">(</span>elemento<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> elemento <span class="token operator">&gt;=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">var</span> filtrados <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">12</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">130</span><span class="token punctuation">,</span> <span class="token number">44</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>esSuficientementeGrande<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// filtrados es [12, 130, 44]</span><span class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Ejemplo_Filtrar_entradas_inválidas_en_JSON">Ejemplo: Filtrar entradas inválidas en&nbsp;JSON</h3>
+
+<p>El siguiente ejemplo emplea <code>filter()</code>&nbsp;para crear un json filtrado con&nbsp;todos lo elementos cuya identificación se numérica y no sea cero ni <code>NaN</code>.</p>
+
+<pre><code>var arr = [
+  { id: 15 },
+  { id: -1 },
+  { id: 0 },
+  { id: 3 },
+  { id: 12.2 },
+  { },
+  { id: null },
+  { id: NaN },
+  { id: 'undefined' }
+];
+
+var entradasInvalidas = 0;
+
+function filtrarPorID(obj) {
+  if ('id' in obj &amp;&amp; typeof(obj.id) === 'number' &amp;&amp; !isNaN(obj.id)) {
+    return true;
+  } else {
+    entradasInvalidas++;
+    return false;
+  }
+}
+
+var arrPorID = arr.filter(filtrarPorID);
+
+console.log('Arreglo Filtrado\n', arrPorID); 
+// [{ id: 15 }, { id: -1 }, { id: 0 }, { id: 3 }, { id: 12.2 }]
+
+console.log('Número de Entradas Invalidas = ', entradasInvalidas); 
+// 4</code></pre>
+
+<h2 name="Polyfill" id="Polyfill">Polyfill<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Polyfill" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<p><code>filter()</code> se añadió&nbsp;a la norma ECMA-262 en la 5ta&nbsp;edición; Como tal puede&nbsp;no&nbsp;estar presente en todas las implementaciones de la norma. Puedes sobrellevarlo&nbsp;insertando el siguiente codigo al comienzo de su programas, para permitir&nbsp;el uso de <code>filter()</code> en implementaciones de&nbsp;ECMA-262 que no lo soporten de forma nativa. Este algoritmo es exactamente el especificado&nbsp;en ECMA-262, 5ta&nbsp;edición, supone que&nbsp;&nbsp;<code>fn.call</code> evalua al valor original de <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/call" title="Llama a una función con un valor this asignado y argumentos provistos de forma individual."><code>Function.prototype.call</code></a>, y que <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/push" title="Transforma un array añadiendole los elementos proporcionados y devolviendo la nueva longitud del array."><code>Array.prototype.push</code></a> tiene su valor original.</p>
+
+<pre class="brush: js">if (!Array.prototype.filter) {
+  Array.prototype.filter = function(fun/*, thisArg*/) {
+    'use strict';
+
+    if (this === void 0 || this === null) {
+      throw new TypeError();
+    }
+
+    var t = Object(this);
+    var len = t.length &gt;&gt;&gt; 0;
+    if (typeof fun !== 'function') {
+      throw new TypeError();
+    }
+
+    var res = [];
+    var thisArg = arguments.length &gt;= 2 ? arguments[1] : void 0;
+    for (var i = 0; i &lt; len; i++) {
+      if (i in t) {
+        var val = t[i];
+
+        <code>// NOTE: Technically this should Object.defineProperty at
+        //       the next index, as push can be affected by
+        //       properties on Object.prototype and Array.prototype.
+        //       But that method's new, and collisions should be
+        //       rare, so use the more-compatible alternative.</code>
+        if (fun.call(thisArg, val, i, t)) {
+          res.push(val);
+        }
+      }
+    }
+
+    return res;
+  };
+}
+</pre>
+
+<h2 name="Specifications" id="Specifications">Especificaciones<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Specifications" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<table class="standard-table">
+ <tbody>
+  <tr>
+   <th scope="col">Especificación</th>
+   <th scope="col">Estado</th>
+   <th scope="col">Comentario</th>
+  </tr>
+  <tr>
+   <td><a href="http://www.ecma-international.org/ecma-262/5.1/#sec-15.4.4.20" class="external external-icon" lang="en" hreflang="en">ECMAScript 5.1 (ECMA-262)<br><small lang="es">The definition of 'Array.prototype.filter' in that specification.</small></a></td>
+   <td><span class="spec-Standard">Standard</span></td>
+   <td>Definición Inicial. implementado en JavaScript 1.6.</td>
+  </tr>
+  <tr>
+   <td><a href="http://www.ecma-international.org/ecma-262/6.0/#sec-array.prototype.filter" class="external external-icon" lang="en" hreflang="en">ECMAScript 2015 (6th Edition, ECMA-262)<br><small lang="es">The definition of 'Array.prototype.filter' in that specification.</small></a></td>
+   <td><span class="spec-Standard">Standard</span></td>
+   <td>&nbsp;</td>
+  </tr>
+ </tbody>
+</table>
+
+<h2 name="Browser_compatibility" id="Browser_compatibility">Compatibilidad en navegadores<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#Browser_compatibility" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<div><div class="htab"> 
+    <a name="AutoCompatibilityTable" id="AutoCompatibilityTable"></a> 
+    <ul> 
+        <li class="selected"><a>Desktop</a></li> 
+        <li><a>Mobile</a></li> 
+    </ul> 
+<div id="compat-desktop" style="display: block;">
+<table class="compat-table">
+ <tbody>
+  <tr>
+   <th>Característica</th>
+   <th>Chrome</th>
+   <th>Firefox (Gecko)</th>
+   <th>Internet Explorer</th>
+   <th>Opera</th>
+   <th>Safari</th>
+  </tr>
+  <tr>
+   <td>Soporte básico</td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+   <td><a href="https://developer.mozilla.org/en-US/Firefox/Releases/1.5" title="Released on 2005-11-25.">1.5</a> (1.8)</td>
+   <td>9</td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+  </tr>
+ </tbody>
+</table>
+</div><div id="compat-mobile" style="display: none;">
+<table class="compat-table">
+ <tbody>
+  <tr>
+   <th>Característica</th>
+   <th>Android</th>
+   <th>Chrome for Android</th>
+   <th>Firefox Mobile (Gecko)</th>
+   <th>IE Mobile</th>
+   <th>Opera Mobile</th>
+   <th>Safari Mobile</th>
+  </tr>
+  <tr>
+   <td>Soporte básico</td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+   <td>1.0 (1.8)</td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+   <td><span title="Please update this with the earliest version of support." style="color: #888;">(Yes)</span></td>
+  </tr>
+ </tbody>
+</table>
+</div></div></div>
+
+
+
+
+
+<h2 name="See_also" id="See_also">Vease también<a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#See_also" class="button section-edit only-icon"><i aria-hidden="true" class="icon-pencil"></i><span>Edit</span></a></h2>
+
+<ul>
+ <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach" title="El método forEach() ejecuta la función indicada una vez por cada elemento del arreglo."><code>Array.prototype.forEach()</code></a></li>
+ <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/every" title="El método every() verifica si todos los elementos en el arreglo pasan la prueba implementada por la función dada."><code>Array.prototype.every()</code></a></li>
+ <li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/some" title="El método some() verifica si algún elemento de un array cumple con el test implementado por la función brindada."><code>Array.prototype.some()</code></a></li>
+</ul>
+                  
+                
+              </article>
+
+              
+
+                <!-- contributors -->
+                <div class="wiki-block contributors">
+                  <h2 class="offscreen">Etiquetas y colaboradores del documento</h2>
+                  
+                  
+  <div class="tag-attach-list contributors-sub">
+    <i aria-hidden="true" class="icon-tags icon-fw"></i>
+    <strong>Etiquetas:</strong>&nbsp;
+    <ul class="tags tags-small">
+      
+        <li><a href="https://developer.mozilla.org/es/docs/tag/Arreglo">Arreglo</a></li>
+      
+    </ul>
+  </div>
+
+
+                  
+                    <div class="contributors-sub">
+                      <i aria-hidden="true" class="icon-group icon-fw"></i>&nbsp;<strong>Colaboradores en esta página:</strong> 
+        <a href="https://developer.mozilla.org/es/profiles/vltamara">vltamara</a>, 
+    
+        <a href="https://developer.mozilla.org/es/profiles/averdion">averdion</a>, 
+    
+        <a href="https://developer.mozilla.org/es/profiles/li0t">li0t</a>, 
+    
+        <a href="https://developer.mozilla.org/es/profiles/matajm">matajm</a>
+    
+                    </div>
+                  
+
+                  
+                    <div class="contributors-sub">
+                      <i aria-hidden="true" class="icon-clock-o icon-fw"></i>&nbsp;<strong>Última actualización por:</strong>
+                      <a href="https://developer.mozilla.org/es/profiles/vltamara">vltamara</a>,
+                      <time datetime="2015-09-06T11:39:54-07:00">6 sept. 2015 11:39:54</time>
+                    </div>
+                  
+                </div>
+              
+
+              
+                  <div class="newsletter-box">
+                    <div class="newsletter">
+    <form id="newsletterForm" name="newsletter-form" class="nodisable" action="https://www.mozilla.org/en-US/newsletter/" method="post">
+        <h2 class="newsletter-teaser">Aprender lo mejor del desarrollo web</h2>
+        <p class="newsletter-description">Subscríbete a nuestro boletín:</p>
+        <input type="hidden" id="fmt" name="fmt" value="H">
+        <input type="hidden" id="newsletterNewslettersInput" name="newsletters" value="app-dev">
+
+        <div id="newsletterErrors" class="newsletter-errors"></div>
+
+        <div id="newsletterEmail" class="form-group">
+            <label for="newsletterEmailInput" class="form-label offscreen">Correo electrónico</label>
+            <input type="email" id="newsletterEmailInput" name="email" class="form-input newsletter-input-email" required="" placeholder="you@example.com" size="30">
+        </div>
+
+        <div id="newsletterPrivacy" class="form-group form-group-agree hidden">
+            <input type="checkbox" id="newsletterPrivacyInput" name="privacy" required="">
+            <label for="newsletterPrivacyInput">
+            Estoy de acuerdo con que Mozilla administre mis datos según la <a href="https://www.mozilla.org/privacy/"> Política de privacidad</a>.
+            </label>
+        </div>
+        <div id="newsletterSubmit">
+            <button id="newsletter-submit" type="submit" class="button positive">Suscribirse</button>
+        </div>
+        
+        <p class="newsletter-lang">Por ahora, el boletín solo está disponible en inglés.</p>
+        
+    </form>
+    <div id="newsletterThanks" class="newsletter-thanks hidden">
+        <h2>¡Gracias! Comprueba tu correo para confirmar la subscripción.</h2>
+        <p>Si no has confirmado nunca una subscripción a boletines relacionados con Mozilla, tendrás que hacerlo. Comprueba tu correo o carpeta de spam para ver si recibiste un correo nuestro.
+        </p>
+    </div>
+    <button id="newsletterHide" type="button" class="only-icon newsletter-hide"><span>Ocultar registro al boletín</span><i aria-hidden="true" class="icon-times"></i></button>
+</div>
+                  </div>
+              
+            </div>
+
+            
+              <!-- quick links and zone subnav strip -->
+              <div id="wiki-left" class="column-strip wiki-column">
+
+              
+
+                
+
+                
+                  <!-- quick links -->
+                  
+  <div class="quick-links" id="quick-links">
+    <div class="title see-also">Ver también</div>
+    <ol><li><strong><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/">Standard built-in objects</a></strong></li><li><strong><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array"><code>Array</code></a></strong></li><li data-default-state="open" class="toggleable current" data-closed=""><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-down"></i><strong>Propriedades</strong></a><ol class="toggle-container" aria-expanded="true" style="display: block;"><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/prototype" title="La propiedad Array.prototype representa el prototipo para el constructor de Array."><code>Array.prototype</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/length" title="La propiedad length representa un entero de 32 bits, sin signo, que especifica el número de elementos en una matriz unidimensional."><code>Array.prototype.length</code></a></li></ol></li><li data-default-state="open" class="toggleable current" data-closed=""><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-down"></i><strong>Métodos</strong></a><ol class="toggle-container" aria-expanded="true" style="display: block;"><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/from" title="El método Array.from() crea una nueva instancia de Array a partir de un objeto iterable."><code>Array.from()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/isArray" title="El método Array.isArray() devuelve true si el objeto es un array, false si no lo es."><code>Array.isArray()</code></a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/observe" title="El método Array.observe() se utiliza para poder observar en forma asincrónica los cambios ocurridos en un vector, similar a Object.observe() para los objetos. Provee un flujo ordenado por orden de ocurrencia de los cambios ocurridos en el vector. Es equivalente a invocar Object.observe() con la lista de tipos aceptados: [&quot;add&quot;, &quot;update&quot;, &quot;delete&quot;, &quot;splice&quot;]."><code>Array.observe()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/of" title="El método Array.of() crea una nueva instancia Array con un número variable de elementos pasados como argumento, independientemente del número o del tipo."><code>Array.of()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/concat" title="concat creates a new array consisting of the elements in the object on which it is called, followed in order by, for each argument, the elements of that argument (if the argument is an array) or the argument itself (if the argument is not an array)."><code>Array.prototype.concat()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin" title="The copyWithin() method copies the sequence of array elements within the array to the position starting at target. The copy is taken from the index positions of the second and third arguments start and end. The end argument is optional and defaults to the length of the array."><code>Array.prototype.copyWithin()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/copyWithin$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/entries" title="The entries() method returns a new Array Iterator object that contains the key/value pairs for each index in the array."><code>Array.prototype.entries()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/entries$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/every" title="El método every() verifica si todos los elementos en el arreglo pasan la prueba implementada por la función dada."><code>Array.prototype.every()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/fill" title="El método fill()   rellenar todos los elementos de un arreglo desde el índice start hasta el índice end, con el valor estático de value."><code>Array.prototype.fill()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter" title="El metodo filter() crea un nuevo arreglo con todos los elementos que pasen la prueba implementada por la función dada."><code>Array.prototype.filter()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/find" title="El metodo find() retorna un valor del arreglo, si u elemento en el arreglo satisface la funcion de prueba prevista. En otro caso undefined es devuelto."><code>Array.prototype.find()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex" title="The findIndex() method returns an index in the array, if an element in the array satisfies the provided testing function. Otherwise -1 is returned."><code>Array.prototype.findIndex()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/forEach" title="El método forEach() ejecuta la función indicada una vez por cada elemento del arreglo."><code>Array.prototype.forEach()</code></a></li><li><span class="sidebar-icon"><span title="This is an experimental API that should not be used in production code."><i class="icon-beaker"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/includes" title="El método includes() determina si un arreglo incluye un elemento determinado, regresa true o false."><code>Array.prototype.includes()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/indexOf" title="Devuelve el primer índice en el que un se encuentra un elemento dado, o -1 si el elemento no se encuentra."><code>Array.prototype.indexOf()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/join" title="El método join() une todos los elementos de un arreglo en una cadena."><code>Array.prototype.join()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/keys" title="The keys() method returns a new Array Iterator that contains the keys for each index in the array."><code>Array.prototype.keys()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/keys$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf" title="The lastIndexOf() method returns the last index at which a given element can be found in the array, or -1 if it is not present. The array is searched backwards, starting at fromIndex."><code>Array.prototype.lastIndexOf()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/map" title="El método map() crea un nuevo array con los resultados de la llamada a la función indicada aplicados a cada uno de sus elementos."><code>Array.prototype.map()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/pop" title="El método pop() elimina el último elmenento de un array y lo devuelve."><code>Array.prototype.pop()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/push" title="Transforma un array añadiendole los elementos proporcionados y devolviendo la nueva longitud del array."><code>Array.prototype.push()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/reduce" title="El método reduce() aplica una función a un acumulador y a cada valor de un vector (de izquierda a derecha) para reducirlo a un único valor."><code>Array.prototype.reduce()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/reduceRight" title="Aplica una función simultáneamente contra un acumulador y cada elemento de un array (de derecha a izquierda) para reducirlo a un único valor."><code>Array.prototype.reduceRight()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/reverse" title="El metodo reverse() coloca al revés (inversamente) una matriz. El primer elemento pasa a ser el ultimo y el ultimo pasa a ser el primero."><code>Array.prototype.reverse()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/shift" title="El método shift() elimina el primer elemento del array y devuelve dicho elemento. Este método modifica la longitud del array."><code>Array.prototype.shift()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/slice" title="El medoto slice() devuelve una copia de una parte del array dentro de un nuevo array."><code>Array.prototype.slice()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/some" title="Editorial review completed."><code>Array.prototype.some()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/sort" title="El metodo sort() ordena los elementos de un array localmente y retorna el array. El ordenamiento no es necesariamente estable. El modo de ordenación por defecto responde a la posición del valor del string de acuerdo a su valor Unicode."><code>Array.prototype.sort()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/splice" title="El metodo splice() cambia el contenido de un array eliminando elementos existentes y/o agregando nuevos elementos."><code>Array.prototype.splice()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString" title="The toLocaleString() method returns a string representing the elements of the array. The elements are converted to Strings using their toLocaleString methods and these Strings are separated by a locale-specific String (such as a comma “,”)."><code>Array.prototype.toLocaleString()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/toLocaleString$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/toSource" title="The toSource() method returns a string representing the source code of the array."><code>Array.prototype.toSource()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/toSource$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/toString" title="El método toString() retorna una cadena de caracteres representando el array especificado y sus elementos."><code>Array.prototype.toString()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/unshift" title="El método unshift() agrega uno o más elementos al inicio del array, y devuelve la nueva longitud del array."><code>Array.prototype.unshift()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/values" title="The values() method returns a new Array Iterator object that contains the values for each index in the array."><code>Array.prototype.values()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/values$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/%40%40iterator" title="The initial value of the @@iterator property is the same function object as the initial value of the values() property."><code>Array.prototype[@@iterator]()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Array/%40%40iterator$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/unobserve" title="El método Array.unobserve() se utiliza para eliminar observadores asignados por Array.observe()."><code>Array.unobserve()</code></a></li></ol></li><li><strong>Inheritance:</strong></li><li><strong><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function"><code>Function</code></a></strong></li><li class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Propriedades</strong></a><ol class="toggle-container" style="display: none;"><li><span class="sidebar-icon"><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/arguments" title="Un objeto de tipo arreglo correspondiente a los argumentos pasados a la función."><code>Function.arguments</code></a></li><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/arity" title="The arity property used to return the number of arguments expected by the function, however, it no longer exists and has been replaced by the Function.prototype.length property."><code>Function.arity</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/arity$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></s></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/caller" title="La propiedad function.caller retorna la función que llamó a la función especificada."><code>Function.caller</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/displayName" title="The function.displayName property returns the display name of the function."><code>Function.displayName</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/displayName$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/length" title="La propiedad length especifica el numero de argumentos esperados por la función."><code>Function.length</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/name" title="The function.name property returns the name of the function."><code>Function.name</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/name$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/prototype" title="Un valor desde cuyas instancias de una clase particular son creados. Cada objeto que puede ser creado por la invocación a la función constructora posee una propiedad prototype asociada."><code>Function.prototype</code></a></li></ol></li><li class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Métodos</strong></a><ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/apply" title="El método apply() invoca una determinada función asignando explícitamente el objeto this y un arreglo o similar (array like object) como parámetros (arguments) para dicha función."><code>Function.prototype.apply()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/bind" title="El método bind() crea una nueva función, que cuando es llamada, asigna a su operador  this el valor entregado, con una secuencia de argumentos dados precediendo a cualquiera entregados cuando la función es llamada."><code>Function.prototype.bind()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/call" title="Llama a una función con un valor this asignado y argumentos provistos de forma individual."><code>Function.prototype.call()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/isGenerator" title="The isGenerator() method determines whether or not a function is a generator."><code>Function.prototype.isGenerator()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/isGenerator$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Function/toSource" title="El método toSource() devuelve un string representando el código fuente del objeto."><code>Function.prototype.toSource()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/toString" title="The toString() method returns a string representing the source code of the function."><code>Function.prototype.toString()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Function/toString$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li></ol></li><li><strong><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object"><code>Object</code></a></strong></li><li class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Propriedades</strong></a><ol class="toggle-container" style="display: none;"><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/count" title="La propiedad __count__ es usada para almacenar el número de propiedades enumerables de un objeto, pero esta ha sido eliminada."><code>Object.prototype.__count__</code></a></s></li><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/noSuchMethod" title="The __noSuchMethod__ property used to reference a function to be executed when a non-existent method is called on an object, but this function is no longer available."><code>Object.prototype.__noSuchMethod__</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/noSuchMethod$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></s></li><li><span class="sidebar-icon"><span title="This is an obsolete API and is no longer guaranteed to work."><i class="icon-trash"> </i></span></span><s class="obsoleteElement"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/Parent" title="The __parent__ property used to point to an object&#39;s context, but it has been removed."><code>Object.prototype.__parent__</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/Parent$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></s></li><li><span class="sidebar-icon"><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/proto" title="La propiedad __proto__ de Object.prototype es una propiedad llamada de acceso (una función getter y también función setter) que provee acceso al interior de [[Prototype]] (ya sea un objeto o null) del objeto a través del cual se accede a ella."><code>Object.prototype.__proto__</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/constructor" title="Retorna una referencia a la función del Object que creó el prototipo de la instancia. Note que el valor de esta propiedad es una referencia a la función misma, no a un string conteniendo el nombre de la función. El valor es solo de lectura para valores de primitivas tales como 1, true y &#39;test&#39;."><code>Object.prototype.constructor</code></a></li></ol></li><li class="toggleable" data-closed="true"><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter#" class="toggler" aria-haspopup="true"><i aria-hidden="true" class="icon-caret-right"></i><strong>Métodos</strong></a><ol class="toggle-container" style="display: none;"><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__" title="The __defineGetter__ method binds an object&#39;s property to a function to be called when that property is looked up."><code>Object.prototype.__defineGetter__()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineGetter__$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__" title="The __defineSetter__ method binds an object&#39;s property to a function to be called when an attempt is made to set that property."><code>Object.prototype.__defineSetter__()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__defineSetter__$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><span class="sidebar-icon"><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__" title="The __lookupGetter__ method returns the function bound as a getter to the specified property."><code>Object.prototype.__lookupGetter__()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupGetter__$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><span class="sidebar-icon"><span title="This deprecated API should no longer be used, but will probably still work."><i class="icon-thumbs-down-alt"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__" title="The __lookupSetter__ method returns the function bound as a setter to the specified property."><code>Object.prototype.__lookupSetter__()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/__lookupSetter__$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/hasOwnProperty" title="El método hasOwnProperty() devuelve un booleano indicando si el objeto tiene la propiedad especificada."><code>Object.prototype.hasOwnProperty()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/isPrototypeOf" title="The isPrototypeOf() method tests for an object in another object&#39;s prototype chain."><code>Object.prototype.isPrototypeOf()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/isPrototypeOf$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/propertyIsEnumerable" title="El método propertyIsEnumerable() regresa un Boleano indicando si la propiedad especificada es enumerable."><code>Object.prototype.propertyIsEnumerable()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString" title="The toLocaleString() method returns a string representing the object. This method is meant to be overridden by derived objects for locale-specific purposes."><code>Object.prototype.toLocaleString()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/toLocaleString$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/toSource" title="The toSource() method returns a string representing the source code of the object."><code>Object.prototype.toSource()</code></a> <a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Global_Objects/Object/toSource$translate" title="Nuestros voluntarios aún no han traducido este artículo al Español. ¡Únete a nosotros y ayuda a traducirlo!" style="opacity: 0.5;">[Traducir]</a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/toString" title="Devuelve una cadena que representa al objeto."><code>Object.prototype.toString()</code></a></li><li><span class="sidebar-icon"><span title="This API has not been standardized."><i class="icon-warning-sign"> </i></span></span><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/unwatch" title="Elimina un control establecido con el método watch() sobre una propiedad de un objeto."><code>Object.prototype.unwatch()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/valueOf" title="El método valueOf() retorna el valor primitivo del objeto especificado."><code>Object.prototype.valueOf()</code></a></li><li><a href="https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Object/watch" title="Controla si se asigna un valor a una propiedad y ejecuta una función cuando esto ocurre."><code>Object.prototype.watch()</code></a></li></ol></li></ol>
+  </div>
+                
+
+                <!-- approvals -->
+                
+
+              
+
+              </div>
+            
+          </div>
+        </div>
+      </div>
+    </div> <!-- ends "main-content" -->
+
+  <menu type="context" id="edit-history-menu">
+    <menuitem data-action="/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit" label="Editar página"></menuitem>
+    <menuitem data-action="/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$history" label="Ver historial de la página"></menuitem>
+  </menu>
+
+  </div></main>
+
+  <!-- Footer -->
+  <footer id="main-footer"><div class="center">
+    <div class="column-container">
+      <div class="column-main">
+        
+        <div class="contentinfo">
+          <p>© Mozilla Developer Network y colaboradores individuales de 2005-2016 .</p> <p>El contenido está disponible bajo <a href="https://developer.mozilla.org/en-US/docs/MDN/About#Copyrights_and_licenses">estas licencias</a>.</p>
+          <ul>
+            <li><a href="https://developer.mozilla.org/docs/MDN/About">Acerca de MDN</a></li>
+            <li><a href="https://www.mozilla.org/about/legal/terms/mozilla">Condiciones</a></li>
+            <li><a href="https://www.mozilla.org/privacy/websites/">Privacidad</a></li>
+            <li><a href="https://www.mozilla.org/privacy/websites/#cookies">Cookies</a></li>
+            <li><a href="https://github.com/mozilla/kuma">Contribuir en el código</a></li>
+          </ul>
+        </div>
+        
+      </div>
+      <div class="column-strip">
+        
+          
+  
+    <form class="languages go" method="get" action="https://developer.mozilla.org/es/docs/Web">
+      <label for="language">Otros idiomas:</label>
+      <select id="language" class="wiki-l10n" name="next" dir="ltr">
+        <option title="Español" value="/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter" selected="">
+          Español (es)
+        </option>
+        
+          <option title="Inglés (EE.UU.)" value="/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            English (US) (en-US)
+          </option>
+          <option title="Catalán" value="/ca/docs/Web/JavaScript/Referencia/Objectes_globals/Array/filter">
+            Català (ca)
+          </option>
+          <option title="Alemán" value="/de/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            Deutsch (de)
+          </option>
+          <option title="Francés" value="/fr/docs/Web/JavaScript/Reference/Objets_globaux/Array/filter">
+            Français (fr)
+          </option>
+          <option title="Japonés" value="/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            日本語 (ja)
+          </option>
+          <option title="Coreano" value="/ko/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            한국어 (ko)
+          </option>
+          <option title="Neerlandés" value="/nl/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            Nederlands (nl)
+          </option>
+          <option title="Polaco" value="/pl/docs/Web/JavaScript/Referencje/Obiekty/Array/filter">
+            Polski (pl)
+          </option>
+          <option title="Portugués (Brasil)" value="/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/filtro">
+            Português (do&nbsp;Brasil) (pt-BR)
+          </option>
+          <option title="Ruso" value="/ru/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            Русский (ru)
+          </option>
+          <option title="Tailandés" value="/th/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            ไทย (th)
+          </option>
+          <option title="Chino (simplificado)" value="/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            中文 (简体) (zh-CN)
+          </option>
+          <option title="Chino (tradicional)" value="/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/filter">
+            正體中文 (繁體) (zh-TW)
+          </option>
+      </select>
+      <noscript>&lt;button type="submit"&gt;Ir&lt;/button&gt;</noscript>
+    </form>
+  
+
+        
+      </div>
+    </div>
+  </div></footer>
+
+  <!-- site js -->
+  
+    
+    <!--[if lte IE 8]><script type="text/javascript" src="https://developer.cdn.mozilla.net/static/build/js/selectivizr.091e18cf669b.js" charset="utf-8"></script><![endif]-->
+
+    <form id="_persona_login" method="post" action="https://developer.mozilla.org/users/persona/signin" data-csrf-token-url="/users/persona/csrf" data-request="{&quot;siteName&quot;: &quot;Mozilla Developer Network&quot;, &quot;siteLogo&quot;: &quot;/static/img/opengraph-logo.png&quot;}" data-persona-script="https://login.persona.org/include.js">
+  <input type="hidden" name="csrfmiddlewaretoken" value="" id="_persona_csrf_token">
+  <input type="hidden" name="next" value="" id="_persona_next_url">
+  <input type="hidden" name="process" value="" id="_persona_process">
+  <input type="hidden" name="assertion" id="_persona_assertion">
+</form>
+
+
+    <script type="text/javascript" src="./Array.prototype.filter() - JavaScript _ MDN_files/main.1d36afa1ebbb.js.descarga" charset="utf-8"></script>
+    
+      <script>
+        if(window.mdn && mdn.analytics) mdn.analytics.trackOutboundLinks();
+      </script>
+    
+    
+    <script type="text/javascript" src="./Array.prototype.filter() - JavaScript _ MDN_files/javascript.254ba2e72457.js.descarga"></script>
+  
+    <script async="" type="text/javascript" src="./Array.prototype.filter() - JavaScript _ MDN_files/wiki.d85ddd33511e.js.descarga" charset="utf-8"></script>
+
+
+  
+
+  
+    <script type="text/javascript">
+        (function($) {
+            $('#wikiArticle').children('h2[id]').each(function() {
+                var id = $(this).attr('id');
+                var href = '/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/filter$edit#' + id;
+
+                $('<a>').attr({
+                    href: href,
+                    'class': 'button section-edit only-icon'
+                })
+                .append($('<i aria-hidden="true" class="icon-pencil"></i>'))
+                .append($('<span>'))
+                .find('span')
+                .text(gettext('Edit'))
+                .end()
+                .on('click', function(e) {
+                    e.preventDefault();
+
+                    mdn.analytics.trackEvent({
+                        category: 'Section Edit',
+                        action: id
+                    }, function() {
+                        window.location = href;
+                    });
+                })
+                .appendTo(this);
+            });
+        })(jQuery);
+    </script>
+  
+
+  
+
+  
+    <script async="" type="text/javascript" src="./Array.prototype.filter() - JavaScript _ MDN_files/newsletter.7cd3274169f2.js.descarga" charset="utf-8"></script>
+  
+
+
+
+</body></html>

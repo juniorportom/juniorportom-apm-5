@@ -1,0 +1,114 @@
+Terminología Git
+Términos importantes al trabajar con GIT:
+•	Repositorio: Las diferentes versiones en el tiempo.
+•	Commit: Confirmar cambios sobre el código.
+•	Branch: Línea de código por separado con su propia historia.
+•	Master: Rama principal por default.
+•	Revision: Representa una versión del código fuente.
+•	Diff: Como si fuese un Delta, Sólo Cambios.
+•	Checkout: Crear una copia local del repositorio.
+•	Tag: Apunta a cierto espacio específico en el tiempo en una rama.
+Validar version de Git
+$git –version
+git 2.10.2
+# Configure el usuario que se utilizará por git
+# Claro utilice su nombre
+git config --global user.name "Su Nombre y Apellido - usuario github o bitbucket"
+# Luego el correo electrónico
+git config --global user.email "usuario@correo.com"
+#verificando configuración
+git config –list
+
+Ignorando archivos en GIT
+Generalmente es necesario omitir algunos archivos e incluso carpetas completas Git tiene dos formas:
+# A través del archivo .gitignore ubicado en la raíz del proyecto
+vim .gitignore # Sistemas operativos en base POSIX
+----------
+bin
+*pyc
+----------
+# A través del directorio .git en la ruta .git/info/exclude
+vim .git/info/exclude
+----------
+bin
+*pyc
+----------
+
+Pueden generar los .gitignore con herramientas en linea como gitignore.io
+
+# Inicializar un repositorio en Git
+git init
+# con add adjuntamos todos los archivos que encuentre en el repositorio Git 
+git add .
+# Haciendo commit de los archivos en el repositorio locas
+git commit -m "Initial commit"
+# Verificando con el Log de eventos de Git
+git log
+
+Comparando archivos por medio de diff
+# modificando archivos
+echo "creando novedad" > archivo01
+echo "Otra novedad sobre los archivos" > archivo02
+# Verificando cambios con el comando diff
+git diff
+# Commit de los cambios, -a carga los archivos modificados
+# cuidado pues no adiciona los nuevos archivos por defecto
+git commit -a -m "Algunos cambios"
+#Corrigiendo mensaje de un commit 
+git commit --amend -m "actualizando mensaje"
+Eliminando archivos
+# Creando un archivo
+touch eliminado.txt
+git add . && git commit -m "actualizando repositorio con eliminado.txt"
+# Eliminando archivo
+rm eliminado.txt
+# Pero de la forma estándar no funciona no actualiza el archivo eliminado en el repositorio
+git add . && git commit -m "a new file has been created"
+# de nuevo es necesario usar la opción "-a"
+git commit -a -m "se elimino el archivo eliminado.txt"
+# Pero en la vida real se hace así
+git add -A . 
+git commit -m "se elimino el archivo eliminado.txt"
+# Creando una rama con el comando checkout
+git checkout -b bug
+ Switched to a new branch "bug"
+# Otra Opción puede ser
+git branch bug
+git checkout bug
+Trabajando en la Rama llamada "bug"
+# Creando una rama con el comando checkout
+# Modificando el archivo1 con "solución del Bug"
+echo "Solucinando Bug" > archivo1
+# Cargando al estado staging area
+git add archivo1
+# Listo para enviar al repositorio remoto
+git commit -a -m 'Solucionando Bug en nueva Rama'
+# Enviando a nuestro servidor del repositorio
+git push origin master
+
+Merge de la Rama llamada "bug" y "master"
+# Volviendo a la rama "master"
+git checkout master
+Switched to branch 'master'
+# Haciendo merge en de "bug" en "master"
+git merge bug
+# Debe presentar la siguiente info 
+Updating HASH
+Fast-Forward
+archivo1 |     2 +-
+1 file changed, 1 insertion(+), 1 deletion(-) 
+
+
+Gestionando Ramificaciones (Branching) en GIT
+# Verificar ramas creadas
+$ git branch
+  bug
+* master
+# última confirmación de cambios en cada rama
+$ git branch -v
+# ramas que han sido fusionadas en la rama activa
+$ git branch --merged
+# ramas que contienen trabajos sin fusionar aún
+$ git branch --no-merged
+# Eliminar rama
+git branch -d testing     

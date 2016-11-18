@@ -10,7 +10,7 @@ import {ProductDetailPage} from '../product-detail/product-detail';
   providers: [Service]
 })
 export class HomePage {
-	title: string = "los productos del Año";
+	title: string = "Los productos del año";
 
 	selected: Product;
 
@@ -51,7 +51,8 @@ export class HomePage {
                 this.products.push(product);
                 this.selected = null;
             });
-    }
+    }   
+
 
 }
 

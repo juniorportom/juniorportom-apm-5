@@ -1,0 +1,6 @@
+Construir los respectivos modelos
+Construir mocks
+Construir componentes
+Construir Templates
+Construir Servicios
+Relacionar módulo

@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<!-- saved from url=(0049)https://mathiasbynens.be/notes/javascript-unicode -->
+<html lang="en" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>JavaScript has a Unicode problem · Mathias Bynens</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="./JavaScript has a Unicode problem · Mathias Bynens_files/css">
+  <link rel="manifest" href="https://mathiasbynens.be/.webmanifest">
+  <link rel="alternate" href="https://mathiasbynens.be/notes/javascript-unicode.atom" type="application/atom+xml" title="Atom feed for comments on this entry">
+ </head>
+ <body>
+  <header>
+   <h1><a href="https://mathiasbynens.be/">Mathias Bynens</a></h1>
+   <nav>
+    <h1>Navigation</h1>
+    <ul>
+     <li><a href="https://mathiasbynens.be/">Home</a></li>
+     <li><a href="https://mathiasbynens.be/notes">Archive</a></li>
+    </ul>
+   </nav>
+  </header>
+  <section id="content">
+   <nav><a href="https://mathiasbynens.be/notes/csp-reports" rel="prev">← Processing Content Security Policy violation reports</a><a href="https://mathiasbynens.be/notes/pbkdf2-hmac" rel="next">PBKDF2+HMAC hash collisions explained →</a></nav>
+   <article itemscope="" itemtype="http://schema.org/BlogPosting">
+    <header>
+     <h1 itemprop="headline">JavaScript has a Unicode problem</h1>
+     <p class="meta"><time datetime="2013-10-20" itemprop="datePublished">Published 20th October 2013</time> · tagged with <a href="https://mathiasbynens.be/notes#javascript">JavaScript</a>, <a href="https://mathiasbynens.be/notes#unicode">Unicode</a></p>
+    </header>
+    <div itemprop="articleBody">
+     <p>The way JavaScript handles Unicode is… surprising, to say the least. This write-up explains the pain points associated with Unicode in JavaScript, provides solutions for common problems, and explains how the ECMAScript 6 standard improves the situation.</p>
+     <h2 id="unicode-basics">Unicode basics</h2>
+     <p>Before we take a closer look at JavaScript, let’s make sure we’re all on the same page when it comes to Unicode.</p>
+     <p>It’s easiest to think of Unicode as a database that maps any symbol you can think of to a number called its <strong>code point</strong>, and to a unique name. That way, it’s easy to refer to specific symbols without actually using the symbol itself. Examples:</p>
+     <ul>
+      <li><code>A</code> is <a href="https://codepoints.net/U+0041">U+0041 LATIN CAPITAL LETTER A</a>.</li>
+      <li><code>a</code> is <a href="https://codepoints.net/U+0061">U+0061 LATIN SMALL LETTER A</a>.</li>
+      <li><code>©</code> is <a href="https://codepoints.net/U+00A9">U+00A9 COPYRIGHT SIGN</a>.</li>
+      <li><code>☃</code> is <a href="https://codepoints.net/U+2603">U+2603 SNOWMAN</a>.</li>
+      <li><code>💩</code> is <a href="https://codepoints.net/U+1F4A9">U+1F4A9 PILE OF POO</a>.</li>
+     </ul>
+     <p>Code points are usually formatted as hexadecimal numbers, zero-padded up to at least four digits, with a U+ prefix.</p>
+     <p>The possible code point values range from U+0000 to U+10FFFF. That’s over 1.1 million possible symbols. To keep things organised, Unicode divides this range of code points into 17 planes that consist of about 65 thousand code points each.</p>
+     <p>The first plane (U+0000 → U+FFFF) and is called the <strong>Basic Multilingual Plane or BMP</strong>, and it’s probably the most important one, as it contains all the most commonly used symbols. Most of the time you don’t need any code points outside of the BMP for text documents in English. Just like any other Unicode plane, it groups about 65 thousand symbols.</p>
+     <p>That leaves us about 1 million other code points (U+010000 → U+10FFFF) that live outside the BMP. The planes these code points belong to are called <strong>supplementary planes</strong>, or <strong>astral planes</strong>.</p>
+     <p><strong>Astral code points</strong> are pretty easy to recognize: if you need more than 4 hexadecimal digits to represent the code point, it’s an astral code point.</p>
+     <p>Now that we have a basic understanding of Unicode, let’s see how it applies to JavaScript strings.</p>
+     <h2 id="escape-sequences">Escape sequences</h2>
+     <p>You may have seen <a href="https://mathiasbynens.be/notes/javascript-escapes">things like this</a> before:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'\x41\x42\x43'</span><br><span class="string">'ABC'</span><br><br>&gt;&gt; <span class="string">'\x61\x62\x63'</span><br><span class="string">'abc'</span></code></pre>
+     <p>These are called <a href="https://mathiasbynens.be/notes/javascript-escapes#hexadecimal">hexadecimal escape sequences</a>. They consist of two hexadecimal digits that refer to the matching code point. For example, <code>\x41</code> represents <a href="https://codepoints.net/U+0041">U+0041 LATIN CAPITAL LETTER A</a>. These escape sequences can be used for code points in the range from U+0000 to U+00FF.</p>
+     <p>Also common is the following type of escape:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'\u0041\u0042\u0043'</span><br><span class="string">'ABC'</span><br><br>&gt;&gt; <span class="string">'I \u2661 JavaScript!'</span><br><span class="string">'I ♡ JavaScript!'</span></code></pre>
+     <p>These are called <a href="https://mathiasbynens.be/notes/javascript-escapes#unicode">Unicode escape sequences</a>. They consist of exactly 4 hexadecimal digits that represent a code point. For example, <code>\u2661</code> represents <a href="https://codepoints.net/U+2661">U+2661 WHITE HEART SUIT</a>. These escape sequences can be used for code points in the range from U+0000 to U+FFFF, i.e. the entire Basic Multilingual Plane.</p>
+     <p>But what about all the other planes — the astral planes? We need more than 4 hexadecimal digits to represent their code points… So how can we escape them?</p>
+     <p>In ECMAScript 6 this will be easy, since it introduces a new type of escape sequence: <a href="https://mathiasbynens.be/notes/javascript-escapes#unicode-code-point">Unicode code point escapes</a>. For example:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'\u{41}\u{42}\u{43}'</span><br><span class="string">'ABC'</span><br><br>&gt;&gt; <span class="string">'\u{1F4A9}'</span><br><span class="string">'💩'</span> <span class="comment">// U+1F4A9 PILE OF POO</span></code></pre>
+     <p>Between the braces you can use up to six hexadecimal digits, which is enough to represent all Unicode code points. So, by using this type of escape sequence, you can easily escape any Unicode symbol based on its code point.</p>
+     <p>For backwards compatibility with ECMAScript 5 and older environments, the unfortunate solution is to use surrogate pairs:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'\uD83D\uDCA9'</span><br><span class="string">'💩'</span> <span class="comment">// U+1F4A9 PILE OF POO</span></code></pre>
+     <p>In that case, each escape represents the code point of a surrogate half. Two surrogate halves form a single astral symbol.</p>
+     <p>Note that the surrogate code points don’t look anything like the original code point. <a href="https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae">There are formulas</a> to calculate the surrogates based on a given astral code point, and the other way around — to calculate the original astral code point based on its surrogate pair.</p>
+     <p>Using surrogate pairs, all astral code points (i.e. from U+010000 to U+10FFFF) can be represented… But the whole concept of using a single escape to represent BMP symbols, and two escapes for astral symbols, is confusing, and has lots of annoying consequences.</p>
+     <h2 id="counting-symbols">Counting symbols in a JavaScript string</h2>
+     <p>Let’s say you want to count the number of symbols in a given string, for example. How would you go about it?</p>
+     <p>My first thought would probably be to simply use the <code>length</code> property.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'A'</span>.length <span class="comment">// U+0041 LATIN CAPITAL LETTER A</span><br><span class="number">1</span><br><br>&gt;&gt; <span class="string">'A'</span> == <span class="string">'\u0041'</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="string">'B'</span>.length <span class="comment">// U+0042 LATIN CAPITAL LETTER B</span><br><span class="number">1</span><br><br>&gt;&gt; <span class="string">'B'</span> == <span class="string">'\u0042'</span><br><span class="literal">true</span></code></pre>
+     <p>In these examples, the <code>length</code> property of the string happens to reflect the number of characters. This makes sense: if we use escape sequences to represent the symbols, it’s obvious that we only need a single escape for each of these symbols. But this is not always the case! Here’s a slightly different example:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'𝐀'</span>.length <span class="comment">// U+1D400 MATHEMATICAL BOLD CAPITAL A</span><br><span class="number">2</span><br><br>&gt;&gt; <span class="string">'𝐀'</span> == <span class="string">'\uD835\uDC00'</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="string">'𝐁'</span>.length <span class="comment">// U+1D401 MATHEMATICAL BOLD CAPITAL B</span><br><span class="number">2</span><br><br>&gt;&gt; <span class="string">'𝐁'</span> == <span class="string">'\uD835\uDC01'</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="string">'💩'</span>.length <span class="comment">// U+1F4A9 PILE OF POO</span><br><span class="number">2</span><br><br>&gt;&gt; <span class="string">'💩'</span> == <span class="string">'\uD83D\uDCA9'</span><br><span class="literal">true</span></code></pre>
+     <p>Internally, JavaScript represents astral symbols as <a href="https://mathiasbynens.be/notes/javascript-encoding#surrogate-pairs">surrogate pairs</a>, and <a href="https://mathiasbynens.be/notes/javascript-encoding" title="JavaScript’s internal character encoding: UCS-2 or UTF-16?">it exposes the separate surrogate halves as separate “characters”</a>. If you represent the symbols using nothing but ECMAScript 5-compatible escape sequences, you’ll see that two escapes are needed for each astral symbol. This is confusing, because humans generally think in terms of <em>Unicode symbols</em> or <em>graphemes</em> instead.</p>
+     <h3 id="accounting-for-astral-symbols">Accounting for astral symbols</h3>
+     <p>Getting back to the question: how to accurately count the number of symbols in a JavaScript string? The trick is to account for surrogate pairs properly, and only count each pair as a single symbol. You could use something like this:</p>
+     <pre><code class="language-javascript hljs"><span class="keyword">var</span> regexAstralSymbols = <span class="regexp">/[\uD800-\uDBFF][\uDC00-\uDFFF]/g</span>;<br><br><span class="function"><span class="keyword">function</span> <span class="title">countSymbols</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">return</span> string<br>		<span class="comment">// Replace every surrogate pair with a BMP symbol.</span><br>		.replace(regexAstralSymbols, <span class="string">'_'</span>)<br>		<span class="comment">// …and *then* get the length.</span><br>		.length;<br>}</code></pre>
+     <p>Or, if you use <a href="https://mths.be/punycode">Punycode.js</a> (which ships with <a href="http://nodejs.org/">Node.js</a>), make use of its utility methods to convert between JavaScript strings and Unicode code points. The <code>punycode.ucs2.decode</code> method takes a string and returns an array of Unicode code points; one item for each symbol.</p>
+     <pre><code class="language-javascript hljs"><span class="function"><span class="keyword">function</span> <span class="title">countSymbols</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">return</span> punycode.ucs2.decode(string).length;<br>}</code></pre>
+     <p>In ES6 you can do something similar with <a href="https://mths.be/array-from"><code>Array.from</code></a> which uses <a href="https://mathiasbynens.be/notes/javascript-unicode#iterating-over-symbols">the string’s iterator</a> to split it into an array of strings that each contain a single symbol:</p>
+     <pre><code class="language-javascript hljs"><span class="function"><span class="keyword">function</span> <span class="title">countSymbols</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">return</span> <span class="built_in">Array</span>.from(string).length;<br>}</code></pre>
+     <p>Or, using the spread operator <code>...</code>:</p>
+     <pre><code class="language-javascript hljs"><span class="function"><span class="keyword">function</span> <span class="title">countSymbols</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">return</span> [...string].length;<br>}</code></pre>
+     <p>Using any of those implementations, we’re now able to count code points properly, which leads to more accurate results:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; countSymbols(<span class="string">'A'</span>) <span class="comment">// U+0041 LATIN CAPITAL LETTER A</span><br><span class="number">1</span><br><br>&gt;&gt; countSymbols(<span class="string">'𝐀'</span>) <span class="comment">// U+1D400 MATHEMATICAL BOLD CAPITAL A</span><br><span class="number">1</span><br><br>&gt;&gt; countSymbols(<span class="string">'💩'</span>) <span class="comment">// U+1F4A9 PILE OF POO</span><br><span class="number">1</span></code></pre>
+     <h3 id="accounting-for-lookalikes">Accounting for lookalikes</h3>
+     <p>But if we’re being really pedantic, counting the number of symbols in a string is even more complicated. Consider this example:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'mañana'</span> == <span class="string">'mañana'</span><br><span class="literal">false</span></code></pre>
+     <p>JavaScript is telling us that these strings are different, but visually, there’s no way to tell! So what’s going on there?</p>
+     <figure><a href="https://mothereff.in/js-escapes#1ma%C3%B1ana%20man%CC%83ana"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/js-escapes-manana.png" srcset="/_img/javascript-unicode/js-escapes-manana@2x.png 2x"></a></figure>
+     <p>As <a href="https://mothereff.in/js-escapes#1ma%C3%B1ana%20man%CC%83ana">my JavaScript escapes tool</a> would tell you, the reason is the following:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'ma\xF1ana'</span> == <span class="string">'man\u0303ana'</span><br><span class="literal">false</span><br><br>&gt;&gt; <span class="string">'ma\xF1ana'</span>.length<br><span class="number">6</span><br><br>&gt;&gt; <span class="string">'man\u0303ana'</span>.length<br><span class="number">7</span></code></pre>
+     <p>The first string contains <a href="https://codepoints.net/U+00F1">U+00F1 LATIN SMALL LETTER N WITH TILDE</a>, while the second string uses two separate code points (<a href="https://codepoints.net/U+006E">U+006E LATIN SMALL LETTER N</a> and <a href="https://codepoints.net/U+0303">U+0303 COMBINING TILDE</a>) to create the same glyph. That explains why they’re not equal, and why they have a different <code>length</code>.</p>
+     <p>However, if we want to count the number of symbols in these strings the same way a human being would, we’d expect the answer <code>6</code> for both strings, since that’s the number of visually distinguishable glyphs in each string. How can we make this happen?</p>
+     <p>In ECMAScript 6, the solution is fairly simple:</p>
+     <pre><code class="language-javascript hljs"><span class="function"><span class="keyword">function</span> <span class="title">countSymbolsPedantically</span>(<span class="params">string</span>) </span>{<br>	<span class="comment">// Unicode Normalization, NFC form, to account for lookalikes:</span><br>	<span class="keyword">var</span> normalized = string.normalize(<span class="string">'NFC'</span>);<br>	<span class="comment">// Account for astral symbols / surrogates, just like we did before:</span><br>	<span class="keyword">return</span> punycode.ucs2.decode(normalized).length;<br>}</code></pre>
+     <p>The <code>normalize</code> method on <code>String.prototype</code> performs <a href="http://unicode.org/reports/tr15/">Unicode normalization</a>, which accounts for these differences. If there is a single code point that represents the same glyph as another code point followed by a combining mark, it will normalize it to the single code point form.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; countSymbolsPedantically(<span class="string">'mañana'</span>) <span class="comment">// U+00F1</span><br><span class="number">6</span><br>&gt;&gt; countSymbolsPedantically(<span class="string">'mañana'</span>) <span class="comment">// U+006E + U+0303</span><br><span class="number">6</span></code></pre>
+     <p>For backwards compatibility with ECMAScript 5 and older environments, <a href="http://git.io/unorm">a <code>String.prototype.normalize</code> polyfill</a> can be used.</p>
+     <h3 id="accounting-for-other-combining-marks">Accounting for other combining marks</h3>
+     <p>This still isn’t perfect, though — code points with multiple combining marks applied to them always result in a single visual glyph, but may not have a normalized form, in which case normalization doesn’t help. For example:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'q\u0307\u0323'</span>.normalize(<span class="string">'NFC'</span>) <span class="comment">// `q̣̇`</span><br><span class="string">'q\u0307\u0323'</span><br><br>&gt;&gt; countSymbolsPedantically(<span class="string">'q\u0307\u0323'</span>)<br><span class="number">3</span> <span class="comment">// not 1</span><br><br>&gt;&gt; countSymbolsPedantically(<span class="string">'Z͑ͫ̓ͪ̂ͫ̽͏̴̙̤̞͉͚̯̞̠͍A̴̵̜̰͔ͫ͗͢L̠ͨͧͩ͘G̴̻͈͍͔̹̑͗̎̅͛́Ǫ̵̹̻̝̳͂̌̌͘!͖̬̰̙̗̿̋ͥͥ̂ͣ̐́́͜͞'</span>)<br><span class="number">74</span> <span class="comment">// not 6</span></code></pre>
+     <p>You could use <a href="https://github.com/mathiasbynens/esrever/blob/c32979673931a05b594d0a82ed821a59102faaba/esrever.js#L20">a regular expression</a> to remove any combining marks from the input string instead if a more accurate solution is needed.</p>
+     <pre><code class="language-javascript hljs"><span class="comment">// Regex generated by this script: https://github.com/mathiasbynens/esrever/blob/master/scripts/export-data.js</span><br><span class="keyword">var</span> regexSymbolWithCombiningMarks = <span class="regexp">/([\0-\u02FF\u0370-\u1DBF\u1E00-\u20CF\u2100-\uD7FF\uDC00-\uFE1F\uFE30-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF])([\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]+)/g</span>;<br><br><span class="function"><span class="keyword">function</span> <span class="title">countSymbolsIgnoringCombiningMarks</span>(<span class="params">string</span>) </span>{<br>	<span class="comment">// Remove any combining marks, leaving only the symbols they belong to:</span><br>	<span class="keyword">var</span> stripped = string.replace(regexSymbolWithCombiningMarks, <span class="function"><span class="keyword">function</span>(<span class="params">$0, symbol, combiningMarks</span>) </span>{<br>		<span class="keyword">return</span> symbol;<br>	});<br>	<span class="comment">// Account for astral symbols / surrogates, just like we did before:</span><br>	<span class="keyword">return</span> punycode.ucs2.decode(stripped).length;<br>}</code></pre>
+     <p>This function removes any combining marks, leaving only the symbols they belong to. Any unmatched combining marks (at the start of the string) are left intact. This solution works even in ECMAScript 3 environments, and it provides the most accurate results yet:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; countSymbolsIgnoringCombiningMarks(<span class="string">'q\u0307\u0323'</span>)<br><span class="number">1</span><br>&gt;&gt; countSymbolsIgnoringCombiningMarks(<span class="string">'Z͑ͫ̓ͪ̂ͫ̽͏̴̙̤̞͉͚̯̞̠͍A̴̵̜̰͔ͫ͗͢L̠ͨͧͩ͘G̴̻͈͍͔̹̑͗̎̅͛́Ǫ̵̹̻̝̳͂̌̌͘!͖̬̰̙̗̿̋ͥͥ̂ͣ̐́́͜͞'</span>)<br><span class="number">6</span></code></pre>
+     <h3 id="other-grapheme-clusters">Accounting for other types of grapheme clusters</h3>
+     <p>The above algorithm is still an oversimplification — it fails for grapheme clusters such as <code>நி</code> (<a href="https://codepoints.net/U+0BA8">U+0BA8 TAMIL LETTER NA</a> + <a href="https://codepoints.net/U+0BBF">U+0BBF TAMIL VOWEL SIGN I</a>), or Hangul made of conjoining Jamo such as <code>깍</code> (<a href="https://codepoints.net/U+1101" title="U+1101 HANGUL CHOSEONG SSANGKIYEOK"><code>ᄁ</code></a> + <a href="https://codepoints.net/U+1161" title="U+1161 HANGUL JUNGSEONG A"><code>ᅡ</code></a> + <a href="https://codepoints.net/U+11A8" title="U+11A8 HANGUL JONGSEONG KIYEOK"><code>ᆨ</code></a>), or other similar symbols.</p>
+     <p>Unicode Standard Annex #29 describes <a href="http://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries">an algorithm for determining grapheme cluster boundaries</a>. For a <em>completely</em> accurate solution that works for all Unicode scripts, implement this algorithm in JavaScript, and then count each grapheme cluster as a single symbol.</p>
+     <h2 id="reversing-strings">Reversing strings in JavaScript</h2>
+     <p>Here’s an example of a similar problem: reversing a string in JavaScript. How hard can it be, right? A common, very simple, solution to this problem is the following:</p>
+     <pre><code class="language-javascript hljs"><span class="comment">// naive solution</span><br><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">return</span> string.split(<span class="string">''</span>).reverse().join(<span class="string">''</span>);<br>}</code></pre>
+     <p>It seems to work fine in a lot of cases:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; reverse(<span class="string">'abc'</span>)<br><span class="string">'cba'</span><br><br>&gt;&gt; reverse(<span class="string">'mañana'</span>) <span class="comment">// U+00F1</span><br><span class="string">'anañam'</span></code></pre>
+     <p>However, it completely messes up strings that contain combining marks or astral symbols.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; reverse(<span class="string">'mañana'</span>) <span class="comment">// U+006E + U+0303</span><br><span class="string">'anãnam'</span> <span class="comment">// note: the `~` is now applied to the `a` instead of the `n`</span><br><br>&gt;&gt; reverse(<span class="string">'💩'</span>) <span class="comment">// U+1F4A9</span><br><span class="string">'��'</span> <span class="comment">// `'\uDCA9\uD83D'`, the surrogate pair for `💩` in the wrong order</span></code></pre>
+     <p>To reverse astral symbols correctly in ES6, <a href="https://mathiasbynens.be/notes/javascript-unicode#iterating-over-symbols">the string iterator</a> can be used in combination with <a href="https://mths.be/array-from"><code>Array.from</code></a>:</p>
+     <pre><code class="language-javascript hljs"><span class="comment">// slightly better solution that relies on ES6 StringIterator and `Array.from`</span><br><span class="function"><span class="keyword">function</span> <span class="title">reverse</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">return</span> <span class="built_in">Array</span>.from(string).reverse().join(<span class="string">''</span>);<br>}</code></pre>
+     <p>That still doesn’t solve the issues involving combining marks, though.</p>
+     <p>Luckily, a brilliant computer scientist named Missy Elliot came up with a <a href="https://www.youtube.com/watch?v=UODX_pYpVxk&amp;t=33s">bulletproof algorithm</a> that accounts for these issues. It goes:</p>
+     <blockquote cite="./JavaScript has a Unicode problem · Mathias Bynens_files/watch">
+      <p>I put my thang down, flip it, and reverse it. I put my thang down, flip it, and reverse it.</p>
+     </blockquote>
+     <p>And indeed: by swapping the position of any combining marks with the symbol they belong to, as well as reversing any surrogate pairs before further processing the string, <a href="https://mths.be/esrever">the issues are avoided successfully</a>. Thanks, Missy!</p>
+     <pre><code class="language-javascript hljs"><span class="comment">// using Esrever (https://mths.be/esrever)</span><br><br>&gt;&gt; esrever.reverse(<span class="string">'mañana'</span>) <span class="comment">// U+006E + U+0303</span><br><span class="string">'anañam'</span><br><br>&gt;&gt; esrever.reverse(<span class="string">'💩'</span>) <span class="comment">// U+1F4A9</span><br><span class="string">'💩'</span> <span class="comment">// U+1F4A9</span></code></pre>
+     <h2 id="string-methods">Issues with Unicode in string methods</h2>
+     <p>This behavior affects other string methods, too.</p>
+     <h3 id="code-point-to-symbol">Turning a code point into a symbol</h3>
+     <p><code>String.fromCharCode</code> allows you to create a string based on a Unicode code point. But it only works correctly for code points in the BMP range (i.e. from U+0000 to U+FFFF). If you use it with an astral code point, you’ll get an unexpected result.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="built_in">String</span>.fromCharCode(<span class="number">0x0041</span>) <span class="comment">// U+0041</span><br><span class="string">'A'</span> <span class="comment">// U+0041</span><br><br>&gt;&gt; <span class="built_in">String</span>.fromCharCode(<span class="number">0x1F4A9</span>) <span class="comment">// U+1F4A9</span><br><span class="string">''</span> <span class="comment">// U+F4A9, not U+1F4A9</span></code></pre>
+     <p>The only workaround is to <a href="https://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae">calculate the code points for the surrogate halves yourself</a>, and pass them as separate arguments.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="built_in">String</span>.fromCharCode(<span class="number">0xD83D</span>, <span class="number">0xDCA9</span>)<br><span class="string">'💩'</span> <span class="comment">// U+1F4A9</span></code></pre>
+     <p>If you don’t want to go through the trouble of calculating the surrogate halves, you could resort to <a href="https://mths.be/punycode">Punycode.js</a>’s utility methods once again:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; punycode.ucs2.encode([ <span class="number">0x1F4A9</span> ])<br><span class="string">'💩'</span> <span class="comment">// U+1F4A9</span></code></pre>
+     <p>Luckily, ECMAScript 6 introduces <code>String.fromCodePoint(codePoint)</code> which does handle astral symbols correctly. It can be used for any Unicode code point, i.e. from U+000000 to U+10FFFF.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="built_in">String</span>.fromCodePoint(<span class="number">0x1F4A9</span>)<br><span class="string">'💩'</span> <span class="comment">// U+1F4A9</span></code></pre>
+     <p>For backwards compatibility with ECMAScript 5 and older environments, use <a href="https://mths.be/fromcodepoint">a <code>String.fromCodePoint()</code> polyfill</a>.</p>
+     <h3 id="symbol-from-string">Getting a symbol out of a string</h3>
+     <p>If you use <code>String.prototype.charAt(position)</code> to retrieve the first symbol in the string containing the pile of poo character, you’ll only get the first surrogate half instead of the whole symbol.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'💩'</span>.charAt(<span class="number">0</span>) <span class="comment">// U+1F4A9</span><br><span class="string">'\uD83D'</span> <span class="comment">// U+D83D, i.e. the first surrogate half for U+1F4A9</span></code></pre>
+     <p>There’s a <a href="https://mail.mozilla.org/pipermail/es-discuss/2013-October/034240.html">proposal to introduce <code>String.prototype.at(position)</code> in ECMAScript 7</a>. It would be like <code>charAt</code> except it deals with full symbols instead of surrogate halves whenever possible.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'💩'</span>.at(<span class="number">0</span>) <span class="comment">// U+1F4A9</span><br><span class="string">'💩'</span> <span class="comment">// U+1F4A9</span></code></pre>
+     <p>For backwards compatibility with ECMAScript 5 and older environments, <a href="https://mths.be/at">a <code>String.prototype.at()</code> polyfill/prollyfill is available</a>.</p>
+     <h3 id="code-point-from-string">Getting a code point out of a string</h3>
+     <p>Similarly, if you use <code>String.prototype.charCodeAt(position)</code> to retrieve the code point of the first symbol in the string, you’ll get the code point of the first surrogate half instead of the code point of the pile of poo character.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'💩'</span>.charCodeAt(<span class="number">0</span>)<br><span class="number">0xD83D</span></code></pre>
+     <p>Luckily, ECMAScript 6 introduces <code>String.prototype.codePointAt(position)</code>, which is like <code>charCodeAt</code> except it deals with full symbols instead of surrogate halves whenever possible.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="string">'💩'</span>.codePointAt(<span class="number">0</span>)<br><span class="number">0x1F4A9</span></code></pre>
+     <p>For backwards compatibility with ECMAScript 5 and older environments, use <a href="https://mths.be/codepointat">a <code>String.prototype.codePointAt()</code> polyfill</a>.</p>
+     <h3 id="iterating-over-symbols">Iterating over all symbols in a string</h3>
+     <p>Let’s say you want to loop over every symbol in a string and do something with each separate symbol.</p>
+     <p>In ECMAScript 5 you’d have to write a lot of boilerplate code just to account for surrogate pairs:</p>
+     <pre><code class="language-javascript hljs"><span class="function"><span class="keyword">function</span> <span class="title">getSymbols</span>(<span class="params">string</span>) </span>{<br>	<span class="keyword">var</span> index = <span class="number">0</span>;<br>	<span class="keyword">var</span> length = string.length;<br>	<span class="keyword">var</span> output = [];<br>	<span class="keyword">for</span> (; index &lt; length - <span class="number">1</span>; ++index) {<br>		<span class="keyword">var</span> charCode = string.charCodeAt(index);<br>		<span class="keyword">if</span> (charCode &gt;= <span class="number">0xD800</span> &amp;&amp; charCode &lt;= <span class="number">0xDBFF</span>) {<br>			charCode = string.charCodeAt(index + <span class="number">1</span>);<br>			<span class="keyword">if</span> (charCode &gt;= <span class="number">0xDC00</span> &amp;&amp; charCode &lt;= <span class="number">0xDFFF</span>) {<br>				output.push(string.slice(index, index + <span class="number">2</span>));<br>				++index;<br>				<span class="keyword">continue</span>;<br>			}<br>		}<br>		output.push(string.charAt(index));<br>	}<br>	output.push(string.charAt(index));<br>	<span class="keyword">return</span> output;<br>}<br><br><span class="keyword">var</span> symbols = getSymbols(<span class="string">'💩'</span>);<br>symbols.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">symbol</span>) </span>{<br>	assert(symbol == <span class="string">'💩'</span>);<br>});</code></pre>
+     <p>Alternatively, you could use a regular expression like <code>var regexCodePoint = /[^\uD800-\uDFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDFFF]/g;</code> and iterate over the matches.</p>
+     <p>In ECMAScript 6, you can simply use <code>for…of</code>. The string iterator deals with whole symbols instead of surrogate pairs.</p>
+     <pre><code class="language-javascript hljs"><span class="keyword">for</span> (<span class="keyword">const</span> symbol <span class="keyword">of</span> <span class="string">'💩'</span>) {<br>	assert(symbol == <span class="string">'💩'</span>);<br>}</code></pre>
+     <p>Unfortunately there’s no way to polyfill this, as <code>for…of</code> is a grammar-level construct.</p>
+     <h3 id="other-issues">Other issues</h3>
+     <p>This behavior affects pretty much all string methods, including those that weren’t explicitly mentioned here (such as <code>String.prototype.substring</code>, <code>String.prototype.slice</code>, etc.) so be careful when using them.</p>
+     <h2 id="regex">Issues with Unicode in regular expressions</h2>
+     <h3 id="matching-code-points">Matching code points and Unicode scalar values</h3>
+     <p>The dot operator (<code>.</code>) in regular expressions only matches a single “character”… But since JavaScript exposes surrogate halves as separate “characters”, it won’t ever match an astral symbol.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/foo.bar/</span>.test(<span class="string">'foo💩bar'</span>)<br><span class="literal">false</span></code></pre>
+     <p>Let’s think about this for a second… What regular expression could we use to match any Unicode symbol? Any ideas? As demonstrated, <code>.</code> is not sufficient, because <a href="http://ecma-international.org/ecma-262/5.1/#sec-15.10.2.8">it doesn’t match line breaks</a> or whole astral symbols.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/^.$/</span>.test(<span class="string">'💩'</span>)<br><span class="literal">false</span></code></pre>
+     <p>To match line breaks correctly, we could use <code>[\s\S]</code> instead, but that still won’t match whole astral symbols.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/^[\s\S]$/</span>.test(<span class="string">'💩'</span>)<br><span class="literal">false</span></code></pre>
+     <p>As it turns out, the <strong>regular expression to match any Unicode code point</strong> is not very straight-forward at all:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/</span>.test(<span class="string">'💩'</span>) <span class="comment">// wtf</span><br><span class="literal">true</span></code></pre>
+     <p>Of course, you wouldn’t want to write these regular expressions by hand, let alone debug them. To generate the previous regex, I’ve used <a href="https://mths.be/regenerate"><em>Regenerate</em></a>, a library to easily create regular expressions based on a list of code points or symbols:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; regenerate().addRange(<span class="number">0x0</span>, <span class="number">0x10FFFF</span>).toString()<br><span class="string">'[\0-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]'</span></code></pre>
+     <p>From left to right, this regex matches BMP symbols, or surrogate pairs (astral symbols), or lone surrogates.</p>
+     <p>While lone surrogates are technically allowed in JavaScript strings, they don’t map to any symbols by themselves, and should be avoided. The term <a href="http://www.unicode.org/glossary/#unicode_scalar_value"><em>Unicode scalar values</em></a> refers to all code points except for surrogate code points. Here’s a regular expression is created that matches any Unicode scalar value:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; regenerate()<br>     .addRange(<span class="number">0x0</span>, <span class="number">0x10FFFF</span>)     <span class="comment">// all Unicode code points</span><br>     .removeRange(<span class="number">0xD800</span>, <span class="number">0xDBFF</span>) <span class="comment">// minus high surrogates</span><br>     .removeRange(<span class="number">0xDC00</span>, <span class="number">0xDFFF</span>) <span class="comment">// minus low surrogates</span><br>     .toRegExp()<br>/[\<span class="number">0</span>-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]/</code></pre>
+     <p><a href="https://mths.be/regenerate">Regenerate</a> is meant to be used as part of a build script, to create complex regular expressions while still keeping the script that generates them very readable and easily to maintain.</p>
+     <p>ECMAScript 6 <a href="http://norbertlindenberg.com/2012/05/ecmascript-supplementary-characters/#RegExp">will <del>hopefully</del> introduce</a> a <code>u</code> flag for regular expressions that causes the <code>.</code> operator to match whole code points instead of surrogate halves.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/foo.bar/</span>.test(<span class="string">'foo💩bar'</span>)<br><span class="literal">false</span><br><br>&gt;&gt; <span class="regexp">/foo.bar/u</span>.test(<span class="string">'foo💩bar'</span>)<br><span class="literal">true</span></code></pre>
+     <p>Note that <code>.</code> still won’t match line breaks, though. When the <code>u</code> flag is set, <code>.</code> is equivalent to the following backwards-compatible regular expression pattern:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; regenerate()<br>     .addRange(<span class="number">0x0</span>, <span class="number">0x10FFFF</span>) <span class="comment">// all Unicode code points</span><br>     .remove(  <span class="comment">// minus `LineTerminator`s (http://ecma-international.org/ecma-262/5.1/#sec-7.3):</span><br>       <span class="number">0x000A</span>, <span class="comment">// Line Feed &lt;LF&gt;</span><br>       <span class="number">0x000D</span>, <span class="comment">// Carriage Return &lt;CR&gt;</span><br>       <span class="number">0x2028</span>, <span class="comment">// Line Separator &lt;LS&gt;</span><br>       <span class="number">0x2029</span>  <span class="comment">// Paragraph Separator &lt;PS&gt;</span><br>     )<br>     .toString();<br><span class="string">'[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]'</span><br><br>&gt;&gt; <span class="regexp">/foo(?:[\0-\t\x0B\f\x0E-\u2027\u202A-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])bar/u</span>.test(<span class="string">'foo💩bar'</span>)<br><span class="literal">true</span></code></pre>
+     <h3 id="astral-ranges">Astral ranges in character classes</h3>
+     <p>Considering that <code>/[a-c]/</code> matches any symbol from <a href="https://codepoints.net/U+0061">U+0061 LATIN SMALL LETTER A</a> to <a href="https://codepoints.net/U+0063">U+0063 LATIN SMALL LETTER C</a>, it might seem like <code>/[💩-💫]/</code> would match any symbol from <a href="https://codepoints.net/U+1F4A9">U+1F4A9 PILE OF POO</a> to <a href="https://codepoints.net/U+1F4AB">U+1F4AB DIZZY SYMBOL</a>. This is however not the case:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/[💩-💫]/</span><br><span class="built_in">SyntaxError</span>: Invalid regular expression: Range out <span class="keyword">of</span> order <span class="keyword">in</span> character <span class="class"><span class="keyword">class</span></span></code></pre>
+     <p>The reason this happens is because that regular expression is equivalent to:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/[\uD83D\uDCA9-\uD83D\uDCAB]/</span><br><span class="built_in">SyntaxError</span>: Invalid regular expression: Range out <span class="keyword">of</span> order <span class="keyword">in</span> character <span class="class"><span class="keyword">class</span></span></code></pre>
+     <p>Instead of matching U+1F4A9, U+1F4AA, and U+1F4AB like we wanted to, instead the regex matches:</p>
+     <ul>
+      <li>U+D83D (a high surrogate), or…</li>
+      <li>the range from U+DCA9 to U+D83D (which is invalid, because the starting code point is greater than the code point marking the end of the range), or…</li>
+      <li>U+DCAB (a low surrogate).</li>
+     </ul>
+     <p>ECMAScript 6 allows you to opt in to the more sensical behavior by — once again — using the magical <code>/u</code> flag.</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; <span class="regexp">/[\uD83D\uDCA9-\uD83D\uDCAB]/u</span>.test(<span class="string">'\uD83D\uDCA9'</span>) <span class="comment">// match U+1F4A9</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[\u{1F4A9}-\u{1F4AB}]/u</span>.test(<span class="string">'\u{1F4A9}'</span>) <span class="comment">// match U+1F4A9</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[💩-💫]/u</span>.test(<span class="string">'💩'</span>) <span class="comment">// match U+1F4A9</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[\uD83D\uDCA9-\uD83D\uDCAB]/u</span>.test(<span class="string">'\uD83D\uDCAA'</span>) <span class="comment">// match U+1F4AA</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[\u{1F4A9}-\u{1F4AB}]/u</span>.test(<span class="string">'\u{1F4AA}'</span>) <span class="comment">// match U+1F4AA</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[💩-💫]/u</span>.test(<span class="string">'💪'</span>) <span class="comment">// match U+1F4AA</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[\uD83D\uDCA9-\uD83D\uDCAB]/u</span>.test(<span class="string">'\uD83D\uDCAB'</span>) <span class="comment">// match U+1F4AB</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[\u{1F4A9}-\u{1F4AB}]/u</span>.test(<span class="string">'\u{1F4AB}'</span>) <span class="comment">// match U+1F4AB</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/[💩-💫]/u</span>.test(<span class="string">'💫'</span>) <span class="comment">// match U+1F4AB</span><br><span class="literal">true</span></code></pre>
+     <p>Sadly, this solution isn’t backwards compatible with ECMAScript 5 and older environments. If that is a concern, you should use <a href="https://mths.be/regenerate"><em>Regenerate</em></a> to generate ES5-compatible regular expressions that deal with astral ranges, or astral symbols in general:</p>
+     <pre><code class="language-javascript hljs">&gt;&gt; regenerate().addRange(<span class="string">'💩'</span>, <span class="string">'💫'</span>)<br><span class="string">'\uD83D[\uDCA9-\uDCAB]'</span><br><br>&gt;&gt; <span class="regexp">/^\uD83D[\uDCA9-\uDCAB]$/</span>.test(<span class="string">'💩'</span>) <span class="comment">// match U+1F4A9</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/^\uD83D[\uDCA9-\uDCAB]$/</span>.test(<span class="string">'💪'</span>) <span class="comment">// match U+1F4AA</span><br><span class="literal">true</span><br><br>&gt;&gt; <span class="regexp">/^\uD83D[\uDCA9-\uDCAB]$/</span>.test(<span class="string">'💫'</span>) <span class="comment">// match U+1F4AB</span><br><span class="literal">true</span></code></pre>
+     <p class="note"><strong>Update:</strong> Another option is to transpile your code using <a href="https://github.com/mathiasbynens/regexpu"><em>regexpu</em></a> or a transpiler that includes regexpu. I wrote <a href="https://mathiasbynens.be/notes/es6-unicode-regex">a separate blog post with more details on Unicode-aware regular expressions in ES6</a>.</p>
+     <h2 id="bugs">Real-world bugs and how to avoid them</h2>
+     <p>This behavior leads to many issues. Twitter, for example, allows 140 characters per tweet, and their back-end doesn’t mind what kind of symbol it is — astral or not. But because the JavaScript counter on their website at some point simply read out the string’s <code>length</code> without accounting for surrogate pairs, it wasn’t possible to enter more than 70 astral symbols. (The bug has since been fixed.)</p>
+     <p>Many JavaScript libraries that deal with strings fail to account for astral symbols properly.</p>
+     <p>For example, when <em>Countable.js</em> was released, <a href="https://github.com/RadLikeWhoa/Countable/issues/9">it didn’t count astral symbols correctly</a>.</p>
+     <p><em>Underscore.string</em> has an implementation of <code>reverse</code> that <a href="https://github.com/epeli/underscore.string/issues/220">doesn’t handle combining marks or astral symbols</a>. (Use <a href="https://mths.be/esrever">Missy Elliot’s algorithm</a> instead.)</p>
+     <p>It also <a href="https://github.com/epeli/underscore.string/issues/218">incorrectly decodes HTML numeric entities for astral symbols</a>, such as <code>&amp;#x1F4A9;</code>. Lots of other HTML entity conversion <a href="https://github.com/pierreliefauche/htmlentities.js/issues/4">libraries</a> <a href="https://github.com/vokidas/html-pe/issues/1">have</a> <a href="https://github.com/substack/node-ent/pull/7">similar</a> <a href="https://github.com/fb55/node-entities/issues/11">problems</a>. (Until these bugs are fixed, consider using <a href="https://mths.be/he"><em>he</em></a> instead for all your HTML-encoding/decoding needs.)</p>
+     <p>These are all easy mistakes to make — after all, the way JavaScript handles Unicode is just plain annoying. This write-up already demonstrated how these bugs can be fixed; but how can we prevent them?</p>
+     <h2 id="poo-test">Introducing… The Pile of Poo Test™</h2>
+     <p>Whenever you’re working on a piece of JavaScript code that deals with strings or regular expressions in some way, <strong>just add a unit test that contains a pile of poo (<code>💩</code>) in a string</strong>, and see if anything breaks. It’s a quick, fun, and easy way to see if your code supports astral symbols. Once you’ve found a Unicode-related bug in your code, all you need to do is apply the techniques discussed in this post to fix it.</p>
+     <p>A good test string for Unicode support in general is the following: <code>Iñtërnâtiônàlizætiøn☃💩</code>. Its first 20 symbols are in the range from U+0000 to U+00FF, then there’s a symbol in the range from U+0100 to U+FFFF, and finally there’s an astral symbol (from the range of U+010000 to U+10FFFF).</p>
+     <p>TL;DR Go forth and submit pull requests with piles of poo in them. It’s the only way to <em>Unicode the Web Forward®</em>.</p>
+     <h2 id="slides">Slides</h2>
+     <p>This write-up summarizes the various presentations I’ve given on the subject of Unicode in JavaScript over the past few years. The slides I used for those talks are embedded below.</p>
+     <script src="./JavaScript has a Unicode problem · Mathias Bynens_files/ga.js.descarga"></script><div><iframe class="speakerdeck-iframe" frameborder="0" src="./JavaScript has a Unicode problem · Mathias Bynens_files/8b3823101a810131923b4e6fe937863a.html" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" style="border: 0px; background: transparent; margin: 0px; padding: 0px; border-radius: 5px; width: 750px; height: 624.5px;"></iframe></div>
+     <p>Want me to give this presentation at your meetup/conference? <a href="https://mathiasbynens.be/contact">Let’s talk.</a></p>
+     <h2 id="translations">Translations</h2>
+     <ul>
+      <li>Korean: <a href="http://ujinbot.blogspot.com/2013/10/blog-post.html">자바스크립트의 유니코드 문제</a> by Eugene Byun</li>
+     </ul>
+    </div>
+    <footer id="about">
+     <img src="./JavaScript has a Unicode problem · Mathias Bynens_files/24e08a9ea84deb17ae121074d0f17125" alt="" width="105" height="105" srcset="https://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=210 2x">
+     <h2>About me</h2>
+     <p>Hi there! I’m Mathias, a web standards enthusiast from Belgium. HTML, CSS, JavaScript, Unicode, performance, and security get me excited. If you managed to read this far without falling asleep, you should <a href="https://twitter.com/mathias" rel="me nofollow">follow me on Twitter</a> and <a href="https://github.com/mathiasbynens" rel="me nofollow">GitHub</a>.</p>
+    </footer>
+    <section id="comments">
+     <h1>Comments</h1>
+     <article id="comment-1" data-id="910" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/3ce3f6fc25037817b0b6eb72789e4365" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/3ce3f6fc25037817b0b6eb72789e4365?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://erik.eae.net/" rel="author nofollow" itemprop="name">Erik Arvidsson</a></span> wrote on <time datetime="2013-10-20T22:13" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-1" rel="bookmark" itemprop="url" title="Permanent link to comment 1 on “JavaScript has a Unicode problem”">20th October 2013 at 22:13</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Great post.</p>
+       <p>Unfortunately the <code>u</code> flag for regexps is probably not making it into ES6. The spec text is missing and there is no champion.</p>
+       <p>This might not be the right medium to ask but will you be the champion for this?</p>
+      </div>
+     </article>
+     <article id="comment-2" data-id="911" class="mathias" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/24e08a9ea84deb17ae121074d0f17125(1)" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://mathiasbynens.be/" rel="author" itemprop="name">Mathias</a></span> wrote on <time datetime="2013-10-20T22:24" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-2" rel="bookmark" itemprop="url" title="Permanent link to comment 2 on “JavaScript has a Unicode problem”">20th October 2013 at 22:24</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-1"><strong>Erik:</strong></a></p>
+       <blockquote>
+        <p>This might not be the right medium to ask but will you be the champion for this?</p>
+       </blockquote>
+       <p>Sounds like fun! What <em>exactly</em> does this entail, though? I’d definitely love to help out where I can. (Sent you an email.)</p>
+      </div>
+     </article>
+     <article id="comment-3" data-id="912" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/1b5088e074b3bf27ac244eb2ce1eaba5" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/1b5088e074b3bf27ac244eb2ce1eaba5?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://niloy.github.io/" rel="author nofollow" itemprop="name">Niloy Mondal</a></span> wrote on <time datetime="2013-10-21T13:29" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-3" rel="bookmark" itemprop="url" title="Permanent link to comment 3 on “JavaScript has a Unicode problem”">21st October 2013 at 13:29</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Why is ES6 introducing <code>fromCodePoint</code> — can’t we simply fix the code in <code>fromCharCode</code>?</p>
+      </div>
+     </article>
+     <article id="comment-4" data-id="913" class="mathias" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/24e08a9ea84deb17ae121074d0f17125(1)" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://mathiasbynens.be/" rel="author" itemprop="name">Mathias</a></span> wrote on <time datetime="2013-10-21T14:13" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-4" rel="bookmark" itemprop="url" title="Permanent link to comment 4 on “JavaScript has a Unicode problem”">21st October 2013 at 14:13</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-3"><strong>Niloy:</strong></a> Unfortunately, changing the behavior of all the existing string methods and properties would break backwards compatibility. Code that relies on the current behavior would break. Adding new methods and properties is the only option.</p>
+      </div>
+     </article>
+     <article id="comment-5" data-id="915" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/424d1153b8de1b01826acb949db816ad" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/424d1153b8de1b01826acb949db816ad?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Joshua Tenner</span></span> wrote on <time datetime="2013-10-22T14:35" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-5" rel="bookmark" itemprop="url" title="Permanent link to comment 5 on “JavaScript has a Unicode problem”">22nd October 2013 at 14:35</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-4"><strong>Mathias:</strong></a> I understand the reason for this, but it’s the same logic as: “My code is a pile of poo, instead of fixing it, I’m going to make more potential piles of poo, but it’s good piles of poo for now.”</p>
+       <p>Sarcasm aside, great article!</p>
+      </div>
+     </article>
+     <article id="comment-6" data-id="916" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/37881c0540fb86ebfa6c855e61021527" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/37881c0540fb86ebfa6c855e61021527?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://xanthir.com/" rel="author nofollow" itemprop="name">Tab Atkins Jr.</a></span> wrote on <time datetime="2013-10-22T17:51" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-6" rel="bookmark" itemprop="url" title="Permanent link to comment 6 on “JavaScript has a Unicode problem”">22nd October 2013 at 17:51</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-5"><strong>Joshua:</strong></a> Not quite. It’s not <em>your</em> code you’re worried about, it’s all the other millions of independent pieces of code relying on your code. We can’t fix all of them, so we have to leave the bad code in and just offer a migration path to something better.</p>
+      </div>
+     </article>
+     <article id="comment-7" data-id="917" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/5b3348465b6c46f3eaf9cf759d3e445d" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/5b3348465b6c46f3eaf9cf759d3e445d?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Josef</span></span> wrote on <time datetime="2013-10-23T15:29" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-7" rel="bookmark" itemprop="url" title="Permanent link to comment 7 on “JavaScript has a Unicode problem”">23rd October 2013 at 15:29</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Couldn’t the behavior be implemented with something like <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions_and_function_scope/Strict_mode">Strict Mode</a>?</p>
+      </div>
+     </article>
+     <article id="comment-8" data-id="918" class="mathias" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/24e08a9ea84deb17ae121074d0f17125(1)" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://mathiasbynens.be/" rel="author" itemprop="name">Mathias</a></span> wrote on <time datetime="2013-10-23T17:51" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-8" rel="bookmark" itemprop="url" title="Permanent link to comment 8 on “JavaScript has a Unicode problem”">23rd October 2013 at 17:51</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-7"><strong>Josef:</strong></a> No, as existing strict mode code relies on the behavior as well. You’d have to introduce yet another mode, but that complicates the language even more, and there is no point anyway since you could just add other methods and properties instead.</p>
+      </div>
+     </article>
+     <article id="comment-9" data-id="922" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/7dd8cf5ab16e43aad2185007fdd2fe47" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/7dd8cf5ab16e43aad2185007fdd2fe47?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://www.onenaught.com/" rel="author nofollow" itemprop="name">Anup</a></span> wrote on <time datetime="2013-10-27T08:25" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-9" rel="bookmark" itemprop="url" title="Permanent link to comment 9 on “JavaScript has a Unicode problem”">27th October 2013 at 08:25</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Thanks for this article. We discovered some of these issues a few weeks back when looking into what issues our app might have supporting Thai and weren’t sure how to proceed.</p>
+       <p>This article may give us a few useful things to pursue now. (We have to also ensure if we make changes to our JavaScript layer that our server layer supports such changes in a consistent way — e.g., simple-sounding string length validation we have in both layers…) </p>
+       <p>Thanks!</p>
+      </div>
+     </article>
+     <article id="comment-10" data-id="945" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/b928accd038cf24ef3f14cb5dd758b04" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/b928accd038cf24ef3f14cb5dd758b04?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Nicolas Joyard</span></span> wrote on <time datetime="2014-02-12T09:09" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-10" rel="bookmark" itemprop="url" title="Permanent link to comment 10 on “JavaScript has a Unicode problem”">12th February 2014 at 09:09</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Great article, thanks.</p>
+       <p>Of course fixing existing methods is not an option, but they could at least be changed to log warnings in browser consoles.</p>
+      </div>
+     </article>
+     <article id="comment-11" data-id="946" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/f6a35c85d26694e26bb92ea4d4262c77" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/f6a35c85d26694e26bb92ea4d4262c77?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://marijnhaverbeke.nl/" rel="author nofollow" itemprop="name">Marijn</a></span> wrote on <time datetime="2014-02-12T09:16" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-11" rel="bookmark" itemprop="url" title="Permanent link to comment 11 on “JavaScript has a Unicode problem”">12th February 2014 at 09:16</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Your combining marks regexp seems to miss most extending characters. Here’s the one CodeMirror uses: <a href="https://github.com/marijnh/CodeMirror/blob/b78c9d04fc8b3/lib/codemirror.js#L6780">https://github.com/marijnh/CodeMirror/blob/b78c9d04fc8b3/lib/codemirror.js#L6780</a> (which I generated from the Unicode database, including all code points marked <code>Gr_Ext</code>).</p>
+      </div>
+     </article>
+     <article id="comment-12" data-id="947" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/3e42479b6063be4a85f9974d2161dadf" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/3e42479b6063be4a85f9974d2161dadf?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Neil Rashbrook</span></span> wrote on <time datetime="2014-02-12T11:25" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-12" rel="bookmark" itemprop="url" title="Permanent link to comment 12 on “JavaScript has a Unicode problem”">12th February 2014 at 11:25</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Those regexps seem unnecessarily complicated. Take these examples:</p>
+       <pre><code class="hljs javascript">/[\<span class="number">0</span>-\uD7FF\uE000-\uFFFF]/<br><span class="regexp">/[\0-\uD7FF\uDC00-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF]/</span></code></pre>
+       <p>I would write them as:</p>
+       <pre><code class="hljs javascript">/[^\uD800-\uDFFF]/<br><span class="regexp">/[\uD800-\uDBFF][\uDC00-\uDFFF]|[\s\S]/</span></code></pre>
+      </div>
+     </article>
+     <article id="comment-13" data-id="948" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/37e41b18d16b51c1dfc8feb352969af3" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/37e41b18d16b51c1dfc8feb352969af3?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Nux</span></span> wrote on <time datetime="2014-02-14T23:11" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-13" rel="bookmark" itemprop="url" title="Permanent link to comment 13 on “JavaScript has a Unicode problem”">14th February 2014 at 23:11</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Hi. Just to let you know — Opera 12 works fine with combining marks (the ones from the section ‘Accounting for other combining marks’).</p>
+       <p>Also note that the real horror story is almost any other language. For example PHP handles Unicode horribly. You need a MultiByte library even for UTF-8, and it’s not available by default. That’s why UTF-16 doesn’t sound that much of a problem especially since most Unicode characters are not rendered even by the top browsers.</p>
+      </div>
+     </article>
+     <article id="comment-14" data-id="949" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/c28451c50cf996bd50cd5cfd59d8187a" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/c28451c50cf996bd50cd5cfd59d8187a?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://cscott.net/" rel="author nofollow" itemprop="name">C. Scott Ananian</a></span> wrote on <time datetime="2014-02-17T04:01" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-14" rel="bookmark" itemprop="url" title="Permanent link to comment 14 on “JavaScript has a Unicode problem”">17th February 2014 at 04:01</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>You say “there’s no way to polyfill this” when discussing <code>StringIterator</code> and <code>for…of</code> — but in fact <a href="https://github.com/paulmillr/es6-shim/blob/master/es6-shim.js">es6-shim</a> provides an effective polyfill by allowing you to access the <code>StringIterator</code> via <code>Array.from</code>. That is, once you load <code>es6-shim</code> you can iterate over the results of <code>Array.from(string)</code>.</p>
+      </div>
+     </article>
+     <article id="comment-15" data-id="950" class="mathias" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/24e08a9ea84deb17ae121074d0f17125(1)" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://mathiasbynens.be/" rel="author" itemprop="name">Mathias</a></span> wrote on <time datetime="2014-02-17T06:24" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-15" rel="bookmark" itemprop="url" title="Permanent link to comment 15 on “JavaScript has a Unicode problem”">17th February 2014 at 06:24</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-14"><strong>Scott:</strong></a> Sure, iterators can be implemented in ES5, but not the <code>for…of</code> syntax. As I said in the text:</p>
+       <blockquote>
+        <p>Unfortunately there’s no way to polyfill this, as <code>for…of</code> is a grammar-level construct.</p>
+       </blockquote>
+       <p>That said, what es6-shim is doing is really awesome. Keep up the nice work!</p>
+      </div>
+     </article>
+     <article id="comment-16" data-id="959" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/16d4be686da36a34b427924e844ff5f7" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/16d4be686da36a34b427924e844ff5f7?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">T1st3</span></span> wrote on <time datetime="2014-03-26T02:26" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-16" rel="bookmark" itemprop="url" title="Permanent link to comment 16 on “JavaScript has a Unicode problem”">26th March 2014 at 02:26</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Hopefully, JavaScript has no unicorn problem!</p>
+       <p>(worst comment ever)</p>
+      </div>
+     </article>
+     <article id="comment-17" data-id="978" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/b162e8b48dafde6c718a6a9a4d35c756" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/b162e8b48dafde6c718a6a9a4d35c756?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Donald</span></span> wrote on <time datetime="2014-06-02T15:51" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-17" rel="bookmark" itemprop="url" title="Permanent link to comment 17 on “JavaScript has a Unicode problem”">2nd June 2014 at 15:51</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>I’d like to save your presentation on my computer. Can I? I don’t see a function to do it.</p>
+      </div>
+     </article>
+     <article id="comment-18" data-id="1045" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/435941fe35e5108825ab3888516f553d" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/435941fe35e5108825ab3888516f553d?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">GottZ</span></span> wrote on <time datetime="2014-10-15T14:39" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-18" rel="bookmark" itemprop="url" title="Permanent link to comment 18 on “JavaScript has a Unicode problem”">15th October 2014 at 14:39</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-12"><strong>Neil Rashbrook:</strong></a> depends. if you want to match a specified number of chars, your short one would fail at astral symbols because it matches as two. if it does not matter how many chars you want to match you can just use . instead of your short one</p>
+      </div>
+     </article>
+     <article id="comment-19" data-id="1051" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/7d52e110c2afe0fdbfe61557fcf1b01f" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/7d52e110c2afe0fdbfe61557fcf1b01f?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Fabio</span></span> wrote on <time datetime="2014-11-05T17:33" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-19" rel="bookmark" itemprop="url" title="Permanent link to comment 19 on “JavaScript has a Unicode problem”">5th November 2014 at 17:33</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>I noticed in Firefox 32, the combining version of mañana incorrectly displays the tilde over the second a in the text above (but correctly over the n when pasted here...)</p>
+      </div>
+     </article>
+     <article id="comment-20" data-id="1059" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/ca81e7752b0cf77b817a39b0459eb7c7" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/ca81e7752b0cf77b817a39b0459eb7c7?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://ceestimmerman.blogspot.com/" rel="author nofollow" itemprop="name">Cees Timmerman</a></span> wrote on <time datetime="2014-12-04T19:32" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-20" rel="bookmark" itemprop="url" title="Permanent link to comment 20 on “JavaScript has a Unicode problem”">4th December 2014 at 19:32</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-19"><strong>Fabio:</strong></a> <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1107568">Reported</a>; thanks.</p>
+      </div>
+     </article>
+     <article id="comment-21" data-id="1116" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/ff0ae438397c244ca92a956079853a1d" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/ff0ae438397c244ca92a956079853a1d?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Orlin Georgiev</span></span> wrote on <time datetime="2015-07-05T14:49" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-21" rel="bookmark" itemprop="url" title="Permanent link to comment 21 on “JavaScript has a Unicode problem”">5th July 2015 at 14:49</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Thanks for the awesome article! Here is an implementation of UAX-29 that properly counts and splits graphemes, without any “over-simplifications”: <a href="https://github.com/orling/grapheme-splitter">https://github.com/orling/grapheme-splitter</a> You can include it in your article as someone may need it. I needed it, and since I found no publicly available JS implementation, had to roll this one on my own. No point in others reinventing the wheel, though!</p>
+      </div>
+     </article>
+     <article id="comment-22" data-id="1118" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/9cc044ca930365298a2c3ca83ee63088" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/9cc044ca930365298a2c3ca83ee63088?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Blizzardengle</span></span> wrote on <time datetime="2015-07-20T23:04" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-22" rel="bookmark" itemprop="url" title="Permanent link to comment 22 on “JavaScript has a Unicode problem”">20th July 2015 at 23:04</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>@Mathias: on your Git repo, would it be possible to point out you need to hex-escape your strings before encoding as well as use an <code>eval</code> on decoding? It took me a while to pick apart your demo page and figure that out.</p>
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-21"><strong>Orlin Georgiev:</strong></a> thanks for that comment and link. That was one route I was researching for a project that wasn’t covered in this article.</p>
+      </div>
+     </article>
+     <article id="comment-23" data-id="1128" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/3a211b7e4118b5281d7cac366dcf536f" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/3a211b7e4118b5281d7cac366dcf536f?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://www.one-agency.be/" rel="author nofollow" itemprop="name">Erik Evrard</a></span> wrote on <time datetime="2015-08-15T13:28" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-23" rel="bookmark" itemprop="url" title="Permanent link to comment 23 on “JavaScript has a Unicode problem”">15th August 2015 at 13:28</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Thanks for this excellent post. I learned a lot, and you actually solved a problem that has been bothering me for a while.</p>
+       <p>I wanted to parse an HTML file that contains an e with a diaeresis, and I couldn’t get a match with a JS regular expression. It turned out it was not <code>\u00CB</code> (2 bytes), but instead <code>e\u0308</code> (e with a combined diaeresis) (3 bytes). I had noticed that it matched 3 bytes instead of 2 (by using <code>/.{3}/</code>) but I couldn’t understand why. Your mañana example provided me with the hint that I needed!</p>
+       <p>Keep up the good work, your blog is outstanding.</p>
+       <p>Erik / Ghent, Belgium</p>
+      </div>
+     </article>
+     <article id="comment-24" data-id="1135" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/936383b387d6cc6d51279e429e5d7cd9" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/936383b387d6cc6d51279e429e5d7cd9?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Flimm</span></span> wrote on <time datetime="2015-09-11T17:44" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-24" rel="bookmark" itemprop="url" title="Permanent link to comment 24 on “JavaScript has a Unicode problem”">11th September 2015 at 17:44</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Great post! I would ask that you mention which REPL you’re using before showing your first REPL example. If you’re using Node’s REPL in the terminal, you could have all sorts of weird issues if your terminal isn’t set up correctly for non-ASCII characters. Also, I’d include these examples in the counting symbols section for completeness:</p>
+       <pre><code class="hljs php">&gt; <span class="string">'\u{1F4A9}'</span>.length<br><span class="number">2</span><br>&gt; <span class="string">'\u{1F4A9}'</span> === <span class="string">'\uD83D\uDCA9'</span><br><span class="keyword">true</span></code></pre>
+      </div>
+     </article>
+     <article id="comment-25" data-id="1149" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/4a1f42a59e40446158ce872818a963a3" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/4a1f42a59e40446158ce872818a963a3?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://www.mirbsd.org/mksh.htm" rel="author nofollow" itemprop="name">mirabilos</a></span> wrote on <time datetime="2015-11-24T18:19" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-25" rel="bookmark" itemprop="url" title="Permanent link to comment 25 on “JavaScript has a Unicode problem”">24th November 2015 at 18:19</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>No, U+nnnn has <em>exactly</em> four digits. Your PILE OF POO <em>must</em> be written as U-0001F4A9 instead (exactly eight digits); cf. <a href="https://twitter.com/mirabilos/status/657549753140514816">https://twitter.com/mirabilos/status/657549753140514816</a>.</p>
+      </div>
+     </article>
+     <article id="comment-26" data-id="1153" class="mathias" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/24e08a9ea84deb17ae121074d0f17125(1)" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/24e08a9ea84deb17ae121074d0f17125?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="https://mathiasbynens.be/" rel="author" itemprop="name">Mathias</a></span> wrote on <time datetime="2015-12-01T18:20" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-26" rel="bookmark" itemprop="url" title="Permanent link to comment 26 on “JavaScript has a Unicode problem”">1st December 2015 at 18:20</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-25"><strong>mirabilos:</strong></a> Only <a href="http://stackoverflow.com/a/1273709/96656">according to version 3 of the Unicode standard</a>, which dates back to 2000. Nowadays even the Unicode standard itself uses the <code>U+nnnn</code> notation for any code point.</p>
+      </div>
+     </article>
+     <article id="comment-27" data-id="1160" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/82cd05ed7ff041cad7e0ef7090a07563" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/82cd05ed7ff041cad7e0ef7090a07563?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Anthony Rutledge</span></span> wrote on <time datetime="2016-01-19T05:51" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-27" rel="bookmark" itemprop="url" title="Permanent link to comment 27 on “JavaScript has a Unicode problem”">19th January 2016 at 05:51</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Thank you for your great article on JavaScript’s Unicode problem. I do not have time to read all of it right now, but I will. I thoroughly enjoyed the slide show. Well done.</p>
+      </div>
+     </article>
+     <article id="comment-28" data-id="1225" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/b7b3345e2fdcc1c5c2bc83289a6c5aba" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/b7b3345e2fdcc1c5c2bc83289a6c5aba?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><a href="http://sodeve.net/" rel="author nofollow" itemprop="name">hardono</a></span> wrote on <time datetime="2016-04-15T12:23" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-28" rel="bookmark" itemprop="url" title="Permanent link to comment 28 on “JavaScript has a Unicode problem”">15th April 2016 at 12:23</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Thank you for the great work. I'm using your FromCodePoint function to solve encoded unicode string in my project (http://sodeve.net/sencha/json-table-editor)</p>
+      </div>
+     </article>
+     <article id="comment-29" data-id="1287" itemprop="comment" itemscope="" itemtype="http://schema.org/UserComments">
+      <header>
+       <div class="avatar"><img src="./JavaScript has a Unicode problem · Mathias Bynens_files/0679efb980c2c1a99c4223362b983e69" alt="" width="30" height="30" srcset="https://gravatar.com/avatar/0679efb980c2c1a99c4223362b983e69?s=60 2x"></div>
+       <p class="meta"><span itemprop="creator" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Edward J</span></span> wrote on <time datetime="2016-08-10T23:27" itemprop="commentTime"><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-29" rel="bookmark" itemprop="url" title="Permanent link to comment 29 on “JavaScript has a Unicode problem”">10th August 2016 at 23:27</a></time>:<span>&nbsp;</span><a href="https://mathiasbynens.be/notes/javascript-unicode#comment-text" title="Reply to this comment" class="comment-reply">(reply)</a></p>
+      </header>
+      <div itemprop="commentText">
+       <p>Thanks for your great detailed yet understandable explanation describing the JavaScript Unicode issue and ways to solve it. The code from your useful page allowed me to solved a problem with lengths of strings containing Unicode astral characters. By the way, it was good enough to be the first Google search result for my query “how to handle two code point unicode character string length in javascript?”.</p>
+      </div>
+     </article>
+    </section>
+    <section>
+     <h1>Leave a comment</h1>
+     <form method="post" action="https://mathiasbynens.be/notes/javascript-unicode">
+      <fieldset>
+       <legend>Comment on “JavaScript has a Unicode problem”</legend>
+       <p>
+        <label for="comment-name">Name <em>*</em></label>
+        <input type="text" name="comment-name" id="comment-name" required="">
+       </p>
+       <p>
+        <label for="comment-mail">Email <em>*</em></label>
+        <input type="email" name="comment-mail" id="comment-mail" required="" autocapitalize="off" autocorrect="off">
+       </p>
+       <p>
+        <label for="comment-site">Website</label>
+        <input type="url" name="comment-site" id="comment-site" autocapitalize="off" autocorrect="off">
+       </p>
+       <p><textarea rows="5" cols="50" name="comment-text" id="comment-text" required="" style="resize: none; overflow-y: hidden; height: 105px;"></textarea></p>
+       <p>Your input will be parsed as Markdown.</p>
+       <p style="display: none;">
+        <label for="comment-spam">Spammer? (Enter ‘no’) <em>*</em></label>
+        <input type="text" name="comment-spam" id="comment-spam" required="">
+       </p>
+       <p class="submit">
+        <input type="submit" name="submit" value="Add your comment">
+       </p>
+      </fieldset>
+     </form>
+    </section>
+   </article>
+  </section>
+  <footer>© 1988—2016 Mathias Bynens</footer>
+  <script src="./JavaScript has a Unicode problem · Mathias Bynens_files/jquery.min.js.descarga" integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk" crossorigin="anonymous"></script>
+  <script src="./JavaScript has a Unicode problem · Mathias Bynens_files/js"></script>
+ 
+<arclones><textarea rows="5" cols="50" required="" style="resize: none; overflow: hidden; line-height: 19.2px; text-decoration: none; letter-spacing: 0px; font-size: 12px; font-family: LucidaGrande, sans-serif; font-style: normal; font-weight: 400; text-transform: none; text-align: start; direction: ltr; word-spacing: 0px; padding: 4px; width: 750px; position: absolute; top: -9999px; left: -9999px; opacity: 0; height: 10px;" class="ar1479431872773" tabindex="-1"></textarea></arclones></body></html>

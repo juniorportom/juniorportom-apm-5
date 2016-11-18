@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Product } from '../../model/product';
 import {Service} from "../../providers/service";
 import { HomePage } from '../home/home';
+import { AlertController } from 'ionic-angular';
 
 /*
   Generated class for the ProductDetail page.
@@ -18,7 +19,7 @@ import { HomePage } from '../home/home';
 export class ProductDetailPage {
 	product: Product;
 
-  constructor(public navCtrl: NavController,  private service: Service, private param: NavParams) {}
+  constructor(public navCtrl: NavController,  private service: Service, private param: NavParams, public alertCtrl: AlertController) {}
 
   ionViewDidLoad() {
     console.log('Hello ProductDetailPage Page');
@@ -34,22 +35,71 @@ export class ProductDetailPage {
 
 
     save(): void {
-        this.service.update(this.product)
+      let prompt = this.alertCtrl.create({
+      title: 'Confirm Update',
+      message: "Do you want to update de data of this product?",
+     // inputs: [
+     //   {
+     //     name: 'title',
+     //     placeholder: 'Title'
+     //   },
+     // ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Accept',
+          handler: data => {
+
+            this.service.update(this.product)
             .subscribe(
                 response => {console.log(response); this.navCtrl.push(HomePage);},
                 err => { console.log(err)});
+            console.log('Accept clicked');
+          }
+        }
+      ]
+    });
+    prompt.present();
 
-          
     }
 
    delete(): void {
-        this.service.delete(this.product)
-        .subscribe(
-                response => {console.log(response); this.navCtrl.push(HomePage);},
-                err => { console.log(err)});    
-                
-    }
+      let prompt = this.alertCtrl.create({
+      title: 'Confirm Delete',
+      message: "Do you want to delete this product?",
+     // inputs: [
+     //   {
+     //     name: 'title',
+     //     placeholder: 'Title'
+     //   },
+     // ],
+      buttons: [
+        {
+          text: 'Cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Accept',
+          handler: data => {
 
+            this.service.delete(this.product)
+            .subscribe(
+                response => {console.log(response); this.navCtrl.push(HomePage);},
+                err => { console.log(err)});
+            console.log('Accept clicked');
+          }
+        }
+      ]
+    });
+    prompt.present();
+    }
 }
 
 

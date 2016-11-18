@@ -1,4 +1,4 @@
-html, me da estructura
+﻿html, me da estructura
 css, me da el estilo de la pagina
 javascript, me da dinamismo
 Conectividad: webSocket, comunicacion punto a punto, comunicacion en tiempo real
@@ -529,3 +529,13 @@ herramienta para ver uso de disco de forma distribuida "space snifer"
 
 ionic g provider service
 ionic g page product-detail
+
+
+
+Variables de entorn o para android:
+1. JAVA_HOME
+2. ANDROID_HOME 
+3. Incluir el java en el path y
+
+C:\Development\android-sdk\platform-tools
+C:\Development\android-sdk\tools
