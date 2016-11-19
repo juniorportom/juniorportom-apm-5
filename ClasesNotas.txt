@@ -510,9 +510,9 @@ comandos ionic
 3. ionic start lab2 sidemenu
 3. ionic start lab3 tabs
 
-ionic start lab6 blank --ts --v2 --id com.app.lab6 --appname "lab6"
-ionic start lab2 sidemenu --ts --v2 --id com.app.lab2 --appname "lab2"
-ionic start lab4 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
+ionic start lab8 blank --ts --v2 --id com.app.lab8 --appname "lab8"
+ionic start lab10 sidemenu --ts --v2 --id com.app.lab10 --appname "lab10"
+ionic start lab11 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
 materialpalette.com, para la paleta de colores
 
 ionic platform add android
@@ -527,8 +527,12 @@ herramienta para ver uso de disco de forma distribuida "space snifer"
 "serve": "ionic-app-scripts serve",
 "watch": "ionic-app-scripts watch"
 
-ionic g provider service
+ionic g provider product-service
 ionic g page product-detail
+
+ionic g page product-list
+ionic g page user-list
+ionic g page user-detail
 
 
 
@@ -539,3 +543,31 @@ Variables de entorn o para android:
 
 C:\Development\android-sdk\platform-tools
 C:\Development\android-sdk\tools
+
+siguiente paquete de Node.JS llamado RimRaf que les sirve para eliminar las carpetas contenidas node_modules y las siguientes opciones:
+
+npm install rimraf -g        instalar paquete global
+rimraf node_modules         ejecutar comando para borrar
+
+
+localstorage.set("key","valor");
+localstorage.get("key");
+
+ionic g page home
+ionic g page products
+ionic g page users
+
+
+agreagar plataforma android
+    ionic platform add android
+
+intalar plugins
+ionic plugin add "nombre plugin"
+    ionic plugin add cordova-plugin-network-information
+
+
+Orden para crear un proyecto de IONIC
+ 1. Crear proyecto (ya sea en blanco, menu, o tabs)
+ 2. Agregar la plataforma
+ 3. Instalar plugis.
+ 
