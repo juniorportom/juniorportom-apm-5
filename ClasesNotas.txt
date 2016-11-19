@@ -497,7 +497,7 @@ ANDROID_HOME
 android sdk
 
 
-edb devices
+adb devices
 
 xcode para ios
 
@@ -570,4 +570,14 @@ Orden para crear un proyecto de IONIC
  1. Crear proyecto (ya sea en blanco, menu, o tabs)
  2. Agregar la plataforma
  3. Instalar plugis.
- 
+
+
+ chrome://inspect
+
+ ionic build android
+
+ionic run android --target:
+
+para borrar plugins:
+
+ionic plugin rm "nombre plugin"
