@@ -505,12 +505,12 @@ ngcordova   leer documentacion,  ionic ya implenete ngcordova como ionicnative
 
 
 comandos ionic
-1. ionic start lab3 blank --ts --v2 --id com.app.lab3 --appname "lab3"
+1. ionic start lab4 blank --ts --v2 --id com.app.lab3 --appname "lab3"
 2. ionic serve --lab
 3. ionic start lab2 sidemenu
 3. ionic start lab3 tabs
 
-ionic start lab8 blank --ts --v2 --id com.app.lab8 --appname "lab8"
+ionic start lab3 blank --ts --v2 --id com.app.lab8 --appname "lab8"
 ionic start lab10 sidemenu --ts --v2 --id com.app.lab10 --appname "lab10"
 ionic start lab11 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
 materialpalette.com, para la paleta de colores
@@ -561,9 +561,13 @@ ionic g page users
 agreagar plataforma android
     ionic platform add android
 
+    ionic platform rm android
+
 intalar plugins
 ionic plugin add "nombre plugin"
     ionic plugin add cordova-plugin-network-information
+    ionic plugin add cordova-plugin-dialogs
+    ionic plugin add cordova-plugin-geolocation
 
 
 Orden para crear un proyecto de IONIC
@@ -580,4 +584,35 @@ ionic run android --target:
 
 para borrar plugins:
 
+
+git status
+git commit -am "delete files"
+
 ionic plugin rm "nombre plugin"
+git commit -am "delete files"
+
+
+Ionic native-- Plugins para ionic
+
+one signal -- push notification
+amazon
+five base
+
+
+ionic plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="el api key generado" --variable API_KEY_FOR_IOS="El api key generado"
+
+ionic plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_ANDROID="AIzaSyA0NmXZFt355PBU12NG4ISTG6CsJjbhu5c" --variable API_KEY_FOR_IOS="El api key generado"
+
+
+
+Execution failed for task ':mergeDebugResources'.
+> Error: Could not delete path 'C:\Users\Administrador\Documents\GitHub\juniorpo
+rtom-apm-5\modules\modulo8\lab2\platforms\android\build\intermediates\incrementa
+l\mergeDebugResources\merged.dir\values-ml'.
+
+Para correrlo sobre los emuladores del sdk de android se usa:
+    ionic emulate android
+
+
+AIzaSyA0NmXZFt355PBU12NG4ISTG6CsJjbhu5c
+AIzaSyCo1OcLbO1bEHWwJGubGliXBINdP7wPR4M
