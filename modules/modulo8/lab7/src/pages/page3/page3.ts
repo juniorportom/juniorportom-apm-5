@@ -17,21 +17,25 @@ export class Page3 {
   data: any = {latitude: '', longitude: ''};
 
   constructor(public navCtrl: NavController,  public storage: Storage) {
-    
-  }
-    
-  loadConfirm() {
-  	this.getInfo();
-    Dialogs.confirm('Estos son los valores de: Latitud = ' + this.data.latitude + ' y de longitud = ' + this.data.longitude, 'COnfirm', ['Entendido', 'Cancelar'])
-      .then((options) => console.log(options), (error) => console.log(error));
-  }
-
-  getInfo() {
     this.storage.get("coords").then(res => {
       console.log(res); 
       this.data.latitude = res['latitude']; 
       this.data.longitude = res['longitude']
     });
   }
+
+  loadConfirm() {
+  	//this.getInfo();
+    Dialogs.confirm('Estos son los valores de: Latitud = ' + this.data.latitude + ' y de longitud = ' + this.data.longitude, 'COnfirm', ['Entendido', 'Cancelar'])
+      .then((options) => console.log(options), (error) => console.log(error));
+  }
+
+  //getInfo() {
+  //  this.storage.get("coords").then(res => {
+  //    console.log(res); 
+  //    this.data.latitude = res['latitude']; 
+  //    this.data.longitude = res['longitude']
+  //  });
+  //}
 
 }
