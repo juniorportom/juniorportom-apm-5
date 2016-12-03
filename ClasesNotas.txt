@@ -511,8 +511,8 @@ comandos ionic
 3. ionic start lab3 tabs
 
 ionic start lab4 blank --ts --v2 --id com.app.lab8 --appname "lab8"
-ionic start lab7 sidemenu --ts --v2 --id com.app.lab10 --appname "lab10"
-ionic start lab11 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
+ionic start "product-app" sidemenu --ts --v2 --id com.app.lab10 --appname "lab10"
+ionic start lab8 tabs --ts --v2 --id com.app.lab4 --appname "lab4"
 materialpalette.com, para la paleta de colores
 
 ionic platform add android
@@ -523,7 +523,7 @@ ionic run android --target=ip soket
 herramienta para ver uso de disco de forma distribuida "space snifer"
 
 
-    "build": "ionic-app-scripts build",
+"build": "ionic-app-scripts build",
 "serve": "ionic-app-scripts serve",
 "watch": "ionic-app-scripts watch"
 
@@ -625,4 +625,13 @@ Mecanismos de almacenamiento en mobile
  - launch share
 
 
-ionic g page page3
+ionic g page user-detail
+
+
+ionic g provider service
+
+Scrum
+    que hice
+    que voy a hacer
+    que problemas tengo
+

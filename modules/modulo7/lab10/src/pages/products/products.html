@@ -17,6 +17,10 @@
 
 
 <ion-content padding>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
 	<ion-label fixed>Product name:</ion-label>
     <ion-input type="text" placeholder="Product name" #productName></ion-input>
 	<button ion-button color="dark"   (click)="add(productName.value); productName.value=''">Add</button>

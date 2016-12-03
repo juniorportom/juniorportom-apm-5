@@ -112,3 +112,67 @@ $ git branch --merged
 $ git branch --no-merged
 # Eliminar rama
 git branch -d testing     
+
+
+
+
+git init
+git config
+git help
+git status
+git add
+git commit
+git commit -m "messahe here"
+git branch "combre branch"   ex: git branch cat
+git checkout
+                git checkout master  "master branch"
+                git checkout cats             "cat branch"
+git merge
+                ex  git merge cat     toma todos los cambios del branch "cat" y los adiciona al branch master
+git push                               Para que los cambios realizaqdos en el repositorio local se ven tambien en git online.
+git pull                                 Cuando se quiere obtener los cambios mas recientes del repositorio
+ 
+Configuración inicial de gitguh
+ 
+                git config --global user.name "Your Name Here"
+                git config --global user.email "your_email@youremail.com"
+                Se crea el direcotio en la maquina local con el nombre que se quiere ej:
+                               mkdir ~/MyProject
+                Se ingresa al directorio
+                               cd ~/MyProject
+                git init
+ 
+Clonar o descargar
+                git clone https://github.com/YOUR-USERNAME/Spoon-Knife                                 "Se obtiene una copia de Spoon-Knife repository"
+                
+git remote -v                                    "Para ver la configuración actual del repositorio remoto para el clon"
+                Salida
+                               origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+                               origin  https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+ 
+git remote add upstream https://github.com/octocat/Spoon-Knife.git      
+git remote -v
+                Salida
+                               origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (fetch)
+                               origin    https://github.com/YOUR_USERNAME/YOUR_FORK.git (push)
+                               upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (fetch)
+                               upstream  https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (push)
+                               
+ 
+**** Create a new repository on GitHub
+ 
+git remote add origin https://github.com/cubeton/mynewrepository.git
+git push -u origin master
+ 
+**** Push a branch to GitHub
+ 
+git push origin my-new-branch
+ 
+**** Create a Pull Request (PR)
+ 
+git pull origin master
+git log
+
+git pull origin "nombre branch"
+git checkout roseroe
+git branch roseroe

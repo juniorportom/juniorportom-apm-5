@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { User } from '../../model/user';
-import {UserService} from "../../providers/user-service";
-import { Users } from '../users/users';
+import {UserService} from "../../providers/service";
+import { HomePage } from '../home/home';
 import { AlertController } from 'ionic-angular';
 import { NavController, ModalController, ViewController, NavParams } from 'ionic-angular';
 
@@ -25,11 +25,16 @@ export class UserDetail {
   ionViewDidLoad() {
     console.log('Hello UserDetailPage Page');
 
-    let email = this.param.get('email');
-            this.userService.getUser(email).subscribe(user=>this.user=user),
-                error => {
-                console.log(error);
-  		}
+    let id = this.param.get('id');
+    		console.log('Id en detail: ' + id);
+
+            this.userService
+            .openDatabase().then(()=>{
+            	this.userService.getUser(id).then(user => {
+            	this.user = user;
+            	console.log('Despues de la consulta: ' + user);
+            })            
+  		})
 	}
 
     
@@ -54,11 +59,10 @@ export class UserDetail {
           text: 'Accept',
           handler: data => {
 
-            this.userService.update(this.user)
-            .subscribe(
+            this.userService.update(this.user).then(
                 response => {console.log(response);
-                  //this.viewCtrl.dismiss(); 
-                  this.navCtrl.push(Users);
+                  this.viewCtrl.dismiss(); 
+                  //this.navCtrl.push(HomePage);
                   
                 },
                 err => { console.log(err)});
@@ -96,10 +100,10 @@ export class UserDetail {
           handler: data => {
 
             this.userService.delete(this.user)
-            .subscribe(
+            .then(
                 response => {console.log(response); 
-                  //this.viewCtrl.dismiss();
-                  this.navCtrl.push(Users);  
+                  this.viewCtrl.dismiss();
+                  //this.navCtrl.push(HomePage);  
                                   
                 },
                 err => { console.log(err)});
@@ -117,4 +121,3 @@ export class UserDetail {
   }
 
 }
-
