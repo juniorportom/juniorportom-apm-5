@@ -1,4 +1,4 @@
-﻿html, me da estructura
+html, me da estructura
 css, me da el estilo de la pagina
 javascript, me da dinamismo
 Conectividad: webSocket, comunicacion punto a punto, comunicacion en tiempo real
@@ -628,10 +628,21 @@ Mecanismos de almacenamiento en mobile
 ionic g page user-detail
 
 
-ionic g provider service
+ionic g provider product-service
 
 Scrum
     que hice
     que voy a hacer
     que problemas tengo
+
+
+
+ionic g page login
+ionic g page forgot-password
+ionic g page profile-detail
+ionic g page edit-profile
+ionic g page home
+ionic g page edit-product
+ionic g page create-product
+ionic g page product-detail
 
