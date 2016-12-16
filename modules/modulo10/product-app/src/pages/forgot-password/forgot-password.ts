@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import {UserService} from "../../providers/user-service";
 import { User } from '../../model/user';
-import {Login} from '../login/login';
+import {OptionsPage} from '../options/options';
+import {CustomValidators} from '../../validators/custom-validator';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {UserServiceDb} from '../../providers/user-service-db';
+
 
 /*
   Generated class for the ForgotPassword page.
@@ -16,25 +20,30 @@ import {Login} from '../login/login';
 })
 export class ForgotPassword {
 	user: User = new User();
+  fPassForm: FormGroup;
 
-  constructor(public navCtrl: NavController, private param: NavParams, private userService: UserService, public alertCtrl: AlertController) {}
+  constructor(public navCtrl: NavController, private param: NavParams, private userService: UserService, 
+    public alertCtrl: AlertController, public formBuilder: FormBuilder, private userServiceDb: UserServiceDb) {
+    let email = this.param.get('email');
+    this.user.email = email;  
+    this.fPassForm = this.forgotPasswordForm();
+  }
 
   ionViewDidLoad() {
-    console.log('Hello ForgotPasswordPage Page');
-    let email = this.param.get('email');
-    this.user.email = email;
+    console.log('Hello ForgotPasswordPage Page');      
+  }
+
+  public forgotPasswordForm() {
+    return this.formBuilder.group({
+      Email: [this.user.email, [Validators.required, Validators.minLength(6), CustomValidators.emailValidator]],
+      Password: ['', [Validators.required, Validators.minLength(6), CustomValidators.passwordValidator]]
+    });
   }
 
   changePassword(): void {
       let prompt = this.alertCtrl.create({
       title: 'Confirmar Cambio de Contraseña',
       message: "Quiere cambiar su contraseña?",
-     // inputs: [
-     //   {
-     //     name: 'title',
-     //     placeholder: 'Title'
-     //   },
-     // ],
       buttons: [
         {
           text: 'Cancelar',
@@ -45,20 +54,21 @@ export class ForgotPassword {
         {
           text: 'Aceptar',
           handler: data => {
-
-
-          	
+            this.user.email = this.fPassForm.value.Email;
+            this.user.password = this.fPassForm.value.Password;          	
             this.userService.forgotPassword(this.user.password, this.user.email).subscribe(user=>{
             	this.user=user;
+               this.userServiceDb.update(this.user)
+                  .then(user => {
+                      this.navCtrl.push(OptionsPage);
+                      });
             	console.log(user);
-            	this.navCtrl.push(Login);
-
+            	//this.navCtrl.push(OptionsPage);
             }),
                 error => {
                 console.log(error);
             } 
             console.log('Accept clicked');
-            //this.viewCtrl.dismiss(); 
           }
         }
       ]
