@@ -57,8 +57,6 @@ export class MyApp {
         .then(() => this.userServiceDb.createTable())
         .then(()=> {
           this.fillDataBase();
-          this.syncProducts();
-          this.syncUsers();
           this.sessionActive();
         })
     });
@@ -93,7 +91,8 @@ export class MyApp {
                         this.insertProductsRowsEmpty();
                       }else{
                         this.insertProductsRows();
-                      }                     
+                      } 
+                      this.syncProducts();                    
                     }
                   )
             },
@@ -114,6 +113,7 @@ export class MyApp {
                       }else{
                         this.insertUsersRows();
                       }
+                      this.syncUsers();
                     }
                   )
             },
