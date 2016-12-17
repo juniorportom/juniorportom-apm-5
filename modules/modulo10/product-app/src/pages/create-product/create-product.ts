@@ -84,7 +84,14 @@ export class CreateProduct {
             });
            }).catch((error) => {
            console.log('Error getting location', error);
-          }); 
+          }).catch((error) => {
+           console.log('Error sevice api location', error);
+           this.product.sync = false;
+           this.productServiceDb.create(this.product)
+                  .then(productDb => {
+                      this.navCtrl.push(Home);
+                      });
+          });  
             console.log('Accept clicked');
           }
         }

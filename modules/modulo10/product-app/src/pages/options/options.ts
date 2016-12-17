@@ -14,16 +14,17 @@ import {Login} from '../login/login';
   templateUrl: 'options.html'
 })
 export class OptionsPage {
-
+  
   constructor(public navCtrl: NavController, private viewCtrl: ViewController) {}
 
   ionViewDidLoad() {
     console.log('Hello OptionsPage Page');
   }
 
+  
   goToRegister()
   {
-  	this.navCtrl.push(RegisterUser);
+    this.navCtrl.push(RegisterUser);
   }
 
   goToLogin()

@@ -12,7 +12,7 @@ import {Product} from "../model/product";
 @Injectable()
 export class ProductService {
 
- private productsURI = 'http://138.68.0.83:7070/api/v1/product/';
+ private productsURI = 'http://138.68.0.84:7070/api/v1/product/';
     private headers : Headers; 
 
     constructor(private http: Http) { 

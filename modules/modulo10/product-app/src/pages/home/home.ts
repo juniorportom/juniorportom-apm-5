@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ViewController } from 'ionic-angular';
 import {ProductService} from "../../providers/product-service";
+import {ProductServiceDb} from '../../providers/product-service-db';
 import { Product } from '../../model/product';
 import {ProductDetail} from '../product-detail/product-detail';
 import {CreateProduct} from '../create-product/create-product';
@@ -22,7 +23,7 @@ export class Home {
 
     products: Product[];
 
-  constructor(public navCtrl: NavController, private productService: ProductService, public storage: Storage, private viewCtrl: ViewController) {}
+  constructor(public navCtrl: NavController, private productService: ProductService, private productServiceDb: ProductServiceDb, public storage: Storage, private viewCtrl: ViewController) {}
 
   ionViewWillEnter() {
         this.viewCtrl.showBackButton(false);
@@ -38,9 +39,13 @@ export class Home {
             products => {
                 this.products = products;
             },
-
             error => {
-                console.log(error);
+                console.log('Error Service REST: '+ error);
+                this.productServiceDb.getAll()
+                .then(products => {
+                  console.log(products);
+                  this.products = products;
+                })
             }
         );
     }

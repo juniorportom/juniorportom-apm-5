@@ -14,7 +14,7 @@ export class MyApp {
   constructor(platform: Platform, private userService: UserService) {
     platform.ready().then(() => {
       StatusBar.styleDefault();
-      Splashscreen.hide();
+      Splashscreen.show();
        this.userService.openDatabase()
         .then(() => this.userService.createTable())
         .then(() => {

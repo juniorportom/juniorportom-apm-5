@@ -37,7 +37,7 @@ export class ProductServiceDb {
   }
 
   getAll(){
-    let query = 'SELECT * FROM product order by id asc;';
+    let query = 'SELECT * FROM product order by id asc';
     return this.db.executeSql(query, [])
       .then(response => {
         let products = [];
@@ -69,19 +69,19 @@ export class ProductServiceDb {
 
 
   getProduct(id:number){  	
-    let query = 'SELECT * FROM product where _id = ?;';
+    let query = 'SELECT * FROM product where _id = ?';
     return this.db.executeSql(query, [id]).then(product => {    	
     	return Promise.resolve(product.rows.item(0));
     	})
   }  
 
   delete(product: Product){
-    let query = 'DELETE FROM product where _id = ?;';
+    let query = 'DELETE FROM product where _id = ?';
     return this.db.executeSql(query, [product._id]);
   }
 
   getSyncRows(){
-    let query = 'SELECT * FROM product where sync = 0;';
+    let query = 'SELECT * FROM product where sync = 0';
     return this.db.executeSql(query, [])
       .then(response => {
         let products = [];

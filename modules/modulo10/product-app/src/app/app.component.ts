@@ -31,8 +31,7 @@ export class MyApp {
   userAux: User;
 
 
-  constructor(public platform: Platform, public storage: Storage, private productServiceDb: ProductServiceDb, private userServiceDb: UserServiceDb,
-            private productService: ProductService, private userService: UserService) {
+  constructor(public platform: Platform, public storage: Storage, private productServiceDb: ProductServiceDb, private userServiceDb: UserServiceDb, private productService: ProductService, private userService: UserService) {
     //this.sessionActive();
     this.initializeApp();
 
@@ -56,11 +55,12 @@ export class MyApp {
         .then(() => this.userServiceDb.openDatabase())
         .then(() => this.userServiceDb.createTable())
         .then(()=> {
-          this.fillDataBase();
           this.sessionActive();
+          this.fillDataBase();
         })
     });
   }
+
 
   openPage(page) {
     // Reset the content nav to have just this page
@@ -84,10 +84,12 @@ export class MyApp {
             .subscribe(
             products => {
                 this.products = products;
+                console.log('products: '+ this.products);
                 this.productServiceDb.getAll()
                 .then(productsDb =>(this.productsDb = productsDb))
                 .then(value => {
-                      if(this.productsDb.length < 1){
+                      console.log('lengt prod: '+ this.productsDb.length);
+                      if(this.productsDb.length === 0){
                         this.insertProductsRowsEmpty();
                       }else{
                         this.insertProductsRows();
@@ -97,18 +99,18 @@ export class MyApp {
                   )
             },
             error => {
-                console.log(error);
+                console.log('error fillDataBase: '+error);
             }
         );
 
-        this.userService.getUsers()
+       this.userService.getUsers()
             .subscribe(
             users => {
                 this.users = users;
                 this.userServiceDb.getAll()
                 .then(usersDb =>(this.usersDb = usersDb))
                 .then(value => {                      
-                      if(this.usersDb.length < 1){
+                      if(this.usersDb.length === 0){
                         this.insertUsersRowsEmpty();
                       }else{
                         this.insertUsersRows();
@@ -125,6 +127,7 @@ export class MyApp {
 
      insertProductsRowsEmpty()
      {
+       console.log('insertProductsRowsEmpty');
        for(let i = 0; i < this.products.length ; i++ ){
          this.productAux = this.products[i];
          this.productAux.sync = true;
@@ -143,6 +146,7 @@ export class MyApp {
      }
 
      insertProductsRows(){
+       console.log('insertProductsRows');
        for(let i = 0; this.products.length; i++){
          let isInList = false;
          for(let j = 0; this.productsDb.length; j++){
@@ -177,6 +181,7 @@ export class MyApp {
      }
 
      syncProducts(){
+       console.log('syncProducts');
        this.productServiceDb.getSyncRows()
             .then(producs => {
                 this.products = producs;
@@ -208,7 +213,7 @@ export class MyApp {
                 this.userServiceDb.update(this.userAux);
             });
         }            
-     }     
+     }  
 }
 
 

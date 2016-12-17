@@ -5,6 +5,8 @@ import { Page1 } from '../pages/page1/page1';
 import { Page2 } from '../pages/page2/page2';
 import {UserService} from "../providers/user-service";
 import {ProductService} from "../providers/product-service";
+import {UserServiceDb} from "../providers/user-service-db";
+import {ProductServiceDb} from "../providers/product-service-db";
 import {RegisterUser} from '../pages/register-user/register-user';
 import {OptionsPage} from '../pages/options/options';
 import {Login} from '../pages/login/login';
@@ -52,6 +54,6 @@ import { Storage } from '@ionic/storage';
     EditProduct,
     CreateProduct
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, UserService, ProductService, Storage]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, UserService, ProductService, UserServiceDb, ProductServiceDb, Storage]
 })
 export class AppModule {}
