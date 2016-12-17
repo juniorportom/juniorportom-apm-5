@@ -665,7 +665,7 @@ pasos:
         a. Borrar la platafoma y volverla a agregar y ejecutar comando nuevamente.
         b. Entrar a la ruta platform/android/res  y modificar las imagenes de forma manual.
 
-rubyinstaller.org
+rubyinstaller.org   para que funcione SAS
 
 
 forever.js node 
@@ -694,3 +694,20 @@ ej:
 C:\android\build-tools\23.0.3\zipalign -v 4 C:\Users\Administrador\Documents\GitHub\project-app-apm5\product-app\platforms\android\build\outputs\apk\android-release-unsigned.apk ProductApp.apk
 
 cordova
+
+
+onesignal.com
+
+
+keytool -list -keystore "nombre store".keystore
+keytool -list -keystore product_app.keystore -alias alias_aname product_app
+
+Huella Digital de Certificado (SHA1): 5F:C6:B9:A5:84:77:E8:E6:C9:26:C8:45:78:4E:32:53:4C:6B:3D:4A
+
+push notification
+
+Se crea cuenta en onesignal.com y en firebase
+se crea un proyecto en firebase y se genera el .json correspondiente
+en configuración del proyecto, se seleciona mensajeria en la nube y se copian los valores de clave de servidor y id del remitente.
+Con los dos valores selecionados enteriomente, se agregan al proyecto creado en onesignal, se selecciona "Phonegap, Cordova, Ionic & Intel XDK Installation".
+Y luego se instala el plugin indicado con "ionic plugin update onesignal-cordova-plugin"
