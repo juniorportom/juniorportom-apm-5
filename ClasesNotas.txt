@@ -684,3 +684,13 @@ pruebaapp1
 
 
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore product_app.keystore C:\Users\Administrador\Documents\GitHub\project-app-apm5\product-app\platforms\android\build\outputs\apk\android-release-unsigned.apk product_app_apm5
+
+para publicar, va,os al sdk manager y abrimos la ruta built-tools
+C:\android\build-tools\23.0.3
+
+zipalign -v 4 HelloWorld-release-unsigned.apk HelloWorld.apk
+
+ej:
+C:\android\build-tools\23.0.3\zipalign -v 4 C:\Users\Administrador\Documents\GitHub\project-app-apm5\product-app\platforms\android\build\outputs\apk\android-release-unsigned.apk ProductApp.apk
+
+cordova
